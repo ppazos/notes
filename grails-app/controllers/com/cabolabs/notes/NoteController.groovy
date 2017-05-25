@@ -12,11 +12,18 @@ class NoteController {
 
     def springSecurityService
 
-    def index(Integer max) {
+    def index(Integer max, Long pid) {
         params.max = Math.min(max ?: 9, 100)
         params.sort = "id"
         params.order = "desc"
-        respond Note.list(params), model:[noteCount: Note.count()]
+        
+        def patient = Patient.get(pid)
+
+        assert patient != null
+
+
+        respond Note.findAllByPatient(patient, params), 
+                model:[noteCount: Note.countByPatient(patient), patient: patient]
     }
 
     def show(Note note) {
@@ -28,7 +35,12 @@ class NoteController {
     }
 
     @Transactional
-    def save(Note note) {
+    def save(Note note, Long pid) {
+
+        println "save "+ params
+
+
+
         if (note == null) {
             transactionStatus.setRollbackOnly()
             notFound()
@@ -38,18 +50,18 @@ class NoteController {
         def username = springSecurityService.principal.username
         note.color = 'info'
         note.author = User.findByUsername(username)
-        note.patient = Patient.get(1) // TODO: patient selector
+        note.patient = Patient.get(pid)
         note.validate()
 
         if (note.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond note.errors, view:'create'
+            respond note.errors, view:'index'
             return
         }
         
         note.save flush:true
 
-        redirect action: 'index'
+        redirect action: 'index', params: [pid: pid]
 
         /*
         request.withFormat {
