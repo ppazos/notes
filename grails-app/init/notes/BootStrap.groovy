@@ -27,6 +27,12 @@ class BootStrap {
                                   phone: '2523452542',
                                   sex: 'M',
                                   dob: (new Date() - (10*365))).save(failOnError: true)
+        def patient2 = new Patient(name: 'Carol',
+                                  lastname: 'Suarez',
+                                  phone: '5555224234',
+                                  sex: 'F',
+                                  dob: (new Date() - (25*365))).save(failOnError: true)
+
 
         (1..20).each {
             new Note(
@@ -39,13 +45,14 @@ class BootStrap {
 
 
         for (String url in [
-		      '/', '/error', '/index', '/index.gsp', '/**/favicon.ico', '/shutdown',
+		      '/error', '/index', '/index.gsp', '/**/favicon.ico', '/shutdown',
 		      '/**/js/**', '/**/css/**', '/**/images/**',
 		      '/login', '/login.*', '/login/*',
 		      '/logout', '/logout.*', '/logout/*']) {
 		   new RequestMap(url: url, configAttribute: 'permitAll').save()
 		}
 
+        new RequestMap(url: '/', configAttribute: 'ROLE_ADMIN').save()
         new RequestMap(url: '/dbconsole/**', configAttribute: 'ROLE_ADMIN').save()
         new RequestMap(url: '/note/**', configAttribute: 'ROLE_ADMIN').save()
         new RequestMap(url: '/patient/**', configAttribute: 'ROLE_ADMIN').save()
