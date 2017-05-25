@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    <head>
+  <head>
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'note.label', default: 'Note')}" />
         <title><g:message code="default.list.label" args="[entityName]" /></title>
@@ -9,49 +9,63 @@
             padding: 0;
           }
         </style>
-    </head>
-    <body>
-        <a href="#list-note" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
+  </head>
+  <body>
+    <div class="row">
+      <div class="col">
         <div class="nav" role="navigation">
-            <ul>
-                <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-                <li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-            </ul>
+          <ul>
+            <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label" /></a></li>
+          </ul>
         </div>
-        <div id="list-note" class="content scaffold-list" role="main">
-            <h1><g:message code="default.list.label" args="[entityName]" /></h1>
-            <g:if test="${flash.message}">
-                <div class="message" role="status">${flash.message}</div>
-            </g:if>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
 
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-              + Note
-            </button>
 
-            <!-- Modal -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-lg" role="document">
-                <g:form action="save">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">New note</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        <textarea id="editor" name="text"></textarea>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                      </div>
-                    </div>
-                </g:form>
+        <!-- Button trigger modal -->
+        <span class="float-right">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+          + Note
+          </button>
+        </span>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <g:form action="save">
+              <input type="hidden" name="pid" value="${params.pid}" />
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">New note</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <textarea id="editor" name="text"></textarea>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
               </div>
-            </div>
+            </g:form>
+          </div>
+        </div>
 
+        
+        <h1><g:message code="default.list.label" args="[entityName]" /></h1>
+        <g:if test="${flash.message}">
+            <div class="message" role="status">${flash.message}</div>
+        </g:if>
+
+      </div>
+    </div>
+            
+    <div class="row">
+      <div class="col">
             <%
             def cols = 3
             def list = noteList.collect() // new list
@@ -84,22 +98,22 @@
             <div class="pagination">
                 <g:paginate total="${noteCount ?: 0}" />
             </div>
-        </div>
+      </div>
+    </div>
 
-        <script>
-        $(document).ready(function() {
-          tinymce.init({
+    <script>
+      $(document).ready(function() {
+        tinymce.init({
            selector:'#editor',
            height: 400,
            resize: false,
            menubar: false,
            branding: false,
            border: 0
-          }).then(function(editors){
-            $('.mce-tinymce').css('border','0');
-          });
-
+        }).then(function(editors){
+          $('.mce-tinymce').css('border','0');
         });
-        </script>
-    </body>
+      });
+    </script>
+  </body>
 </html>
