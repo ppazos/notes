@@ -30,7 +30,7 @@
         <!-- Modal -->
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg" role="document">
-            <g:form action="save">
+            <g:form url="[action:'save']" id="create_form">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">New patient</h5>
@@ -125,5 +125,51 @@
         </div>
       </div>
     </div>
+
+    <script>
+/*
+    var success = function(json, a, b) {
+      if (json.status == 'error')
+      {
+        console.log(json, a, b);
+      }
+      else
+      {
+        console.log(json, a, b);
+      }
+    };
+*/
+
+        $("#create_form").submit(function(e) {
+
+          console.log(this.action);
+          console.log($("#create_form").serialize());
+
+
+          var url = this.action;
+
+          $.ajax({
+            type: "POST",
+            url: url,
+            data: $("#create_form").serialize(),
+            success: function(data, statusText, response)
+            {
+              // response.responseJSON == data
+              console.log(data);
+            }
+          });
+
+
+          //e.preventDefault(); // avoid to execute the actual submit of the form.
+          return false;
+        });
+
+    $(document).ready(function() { 
+
+        
+      
+    });
+    </script>
+
   </body>
 </html>

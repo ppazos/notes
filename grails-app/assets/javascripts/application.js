@@ -6,6 +6,7 @@
 // to create separate JavaScript files as needed.
 //
 //= require tinymce/tinymce.min
+//= _require jquery.form.min
 //= _require jquery-2.2.0.min
 //= _require bootstrap
 //= _require_tree .

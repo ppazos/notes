@@ -4,6 +4,12 @@ server:
 
 ---
 grails:
+    databinding:
+        dateFormats:
+            - "yyyy-MM-dd'T'HH:mm:ssZ"
+            - "yyyy-MM-dd"
+---
+grails:
     profile: web
     codegen:
         defaultPackage: notes

@@ -26,11 +26,13 @@ class BootStrap {
                                   lastname: 'Perez',
                                   phone: '2523452542',
                                   sex: 'M',
+                                  email: 'man@uel.com',
                                   dob: (new Date() - (10*365))).save(failOnError: true)
         def patient2 = new Patient(name: 'Carol',
                                   lastname: 'Suarez',
                                   phone: '5555224234',
                                   sex: 'F',
+                                  email: 'car@ol.com',
                                   dob: (new Date() - (25*365))).save(failOnError: true)
 
 

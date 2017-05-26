@@ -6,6 +6,7 @@ class Patient {
    String name
    String lastname
    String phone
+   String email
    String sex
    Date dob
    
