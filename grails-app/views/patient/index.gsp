@@ -96,30 +96,17 @@
     </div>
 
     <div class="row">
-      <div class="col">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Dob</th>
-              <th>Sex</th>
-            </tr>
-          </thead>
-          <tbody>
-            <g:each in="${patientList}" var="p">
-              <tr>
-                <td>
-                  <g:link controller="note" action="index" params="[pid: p.id]">${p.name}</g:link>
-                </td>
-                <td>${p.lastname}</td>
-                <td>${p.dob}</td>
-                <td>${p.sex}</td>
-              </tr>
-            </g:each>
-          </tbody>
-        </table>
+      <div class="col" id="table">
+      <%--
+        <g:render template="patients_table" bean="${patientList}" />
+--%>
+        <g:include action="patients_table" />
 
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
         <div class="pagination">
           <g:paginate total="${patientCount ?: 0}" />
         </div>
@@ -156,6 +143,22 @@
             {
               // response.responseJSON == data
               console.log(data);
+              console.log(response);
+// TODO: process errors
+              $('#table').html(data);
+
+              $('#myModal').modal('hide');
+            },
+            error: function(response, statusText)
+            {
+                console.log(JSON.parse(response.responseText));
+
+                errors = JSON.parse(response.responseText);
+                $.each(errors, function( index, error ) {
+                  //alert( index + ": " + value );
+                  $('input[name='+error.field+']').parent().addClass('has-danger');
+                  $('input[name='+error.field+']').addClass('form-control-danger');
+                });
             }
           });
 

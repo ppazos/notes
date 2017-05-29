@@ -10,8 +10,13 @@ class PatientController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
+        //params.max = Math.min(max ?: 10, 100)
+        //respond Patient.list(params), model:[patientCount: Patient.count()]
+    }
+
+    def patients_table(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Patient.list(params), model:[patientCount: Patient.count()]
+        render(template: "patients_table", model: [patientList: Patient.list(params)])
     }
 
     def show(Patient patient) {
@@ -85,7 +90,7 @@ class PatientController {
 }]
 
             */
-            render patient.errors.fieldErrors as JSON
+            render patient.errors.fieldErrors as JSON, status: 400, contentType: "application/json"
             //respond patient.errors, view:'create'
             return
         }
@@ -93,8 +98,9 @@ class PatientController {
         patient.save flush:true
 
         // TODO: return the html update to the list to update the partial
-        render patient as JSON
+        //render patient as JSON
 
+redirect action:'patients_table'
     
         /* redirects to show
         request.withFormat {
