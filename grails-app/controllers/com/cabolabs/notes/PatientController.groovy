@@ -88,10 +88,8 @@ class PatientController {
     "objectName": "com.cabolabs.notes.Patient",
     "rejectedValue": null
 }]
-
             */
             render patient.errors.fieldErrors as JSON, status: 400, contentType: "application/json"
-            //respond patient.errors, view:'create'
             return
         }
 
@@ -100,17 +98,7 @@ class PatientController {
         // TODO: return the html update to the list to update the partial
         //render patient as JSON
 
-redirect action:'patients_table'
-    
-        /* redirects to show
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'patient.label', default: 'Patient'), patient.id])
-                redirect patient
-            }
-            '*' { respond patient, [status: CREATED] }
-        }
-        */
+        redirect action:'patients_table'
     }
 
     def edit(Patient patient) {

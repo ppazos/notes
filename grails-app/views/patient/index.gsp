@@ -42,24 +42,24 @@
                   
                   <div class="form-group">
                     <label for="name">Name</label>
-                    <input type="text" class="form-control-file" id="name" name="name" aria-describedby="fileHelp">
+                    <input type="text" class="form-control" id="name" name="name" aria-describedby="fileHelp">
                     <small id="fileHelp" class="form-text text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small>
                   </div>
                   <div class="form-group">
                     <label for="lastname">Lastname</label>
-                    <input type="text" class="form-control-file" id="lastname" name="lastname">
+                    <input type="text" class="form-control" id="lastname" name="lastname">
                   </div>
                   <div class="form-group">
                     <label for="dob">Dob</label>
-                    <input type="date" class="form-control-file" id="dob" name="dob">
+                    <input type="date" class="form-control" id="dob" name="dob">
                   </div>
                   <div class="form-group">
                     <label for="phone">Phone</label>
-                    <input type="text" class="form-control-file" id="phone" name="phone">
+                    <input type="text" class="form-control" id="phone" name="phone">
                   </div>
                   <div class="form-group">
                     <label for="phone">Email</label>
-                    <input type="email" class="form-control-file" id="email" name="email">
+                    <input type="email" class="form-control" id="email" name="email">
                   </div>
                   
                   <div class="form-group">
@@ -97,82 +97,51 @@
 
     <div class="row">
       <div class="col" id="table">
-      <%--
-        <g:render template="patients_table" bean="${patientList}" />
---%>
         <g:include action="patients_table" />
-
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col">
-        <div class="pagination">
-          <g:paginate total="${patientCount ?: 0}" />
-        </div>
       </div>
     </div>
 
     <script>
-/*
-    var success = function(json, a, b) {
-      if (json.status == 'error')
-      {
-        console.log(json, a, b);
-      }
-      else
-      {
-        console.log(json, a, b);
-      }
-    };
-*/
+      $("#create_form").submit(function(e) {
 
-        $("#create_form").submit(function(e) {
+        var url = this.action;
 
-          console.log(this.action);
-          console.log($("#create_form").serialize());
+        // Reset validation
+        $('input').parent().removeClass('has-danger');
+        $('input').removeClass('form-control-danger');
 
-
-          var url = this.action;
-
-          $.ajax({
-            type: "POST",
-            url: url,
-            data: $("#create_form").serialize(),
-            success: function(data, statusText, response)
-            {
-              // response.responseJSON == data
-              console.log(data);
-              console.log(response);
-// TODO: process errors
+        $.ajax({
+          type: "POST",
+          url: url,
+          data: $("#create_form").serialize(),
+          success: function(data, statusText, response)
+          {
+              // Update patient table with new patient
               $('#table').html(data);
-
               $('#myModal').modal('hide');
-            },
-            error: function(response, statusText)
-            {
-                console.log(JSON.parse(response.responseText));
-
-                errors = JSON.parse(response.responseText);
-                $.each(errors, function( index, error ) {
-                  //alert( index + ": " + value );
-                  $('input[name='+error.field+']').parent().addClass('has-danger');
-                  $('input[name='+error.field+']').addClass('form-control-danger');
-                });
-            }
-          });
-
-
-          //e.preventDefault(); // avoid to execute the actual submit of the form.
-          return false;
+          },
+          error: function(response, statusText)
+          {
+            //console.log(JSON.parse(response.responseText));
+            
+            // Display validation errors on for fields
+            errors = JSON.parse(response.responseText);
+            $.each(errors, function( index, error ) {
+              $('input[name='+error.field+']').parent().addClass('has-danger');
+              $('input[name='+error.field+']').addClass('form-control-danger');
+            });
+          }
         });
 
-    $(document).ready(function() { 
+        e.preventDefault();
+      });
 
-        
-      
-    });
+      /*
+       * Reset form on modal open
+       */
+      $('#myModal').on('show.bs.modal', function (event) {
+        $("#create_form")[0].reset();
+      });
     </script>
-
   </body>
 </html>
