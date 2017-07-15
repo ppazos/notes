@@ -48,7 +48,7 @@ class BootStrap {
 
         for (String url in [
 		      '/error', '/index', '/index.gsp', '/**/favicon.ico', '/shutdown',
-		      '/**/js/**', '/**/css/**', '/**/images/**',
+		      '/**/js/**', '/**/css/**', '/**/images/**', '/**/fonts/**',
 		      '/login', '/login.*', '/login/*',
 		      '/logout', '/logout.*', '/logout/*']) {
 		   new RequestMap(url: url, configAttribute: 'permitAll').save()

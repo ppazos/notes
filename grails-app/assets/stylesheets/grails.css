@@ -29,7 +29,8 @@ pre {
 /* customizing bootstrap nav bar */
 .navbar {
     margin-bottom: 0px;
-    padding-right: 110px;
+    /*padding-right: 110px;*/
+    padding: 0;
 }
 .navbar .container {
     margin: 10px;
@@ -65,12 +66,14 @@ a.navbar-brand {
 .navbar-nav>li>a {
     color: #c0d3db;
 }
+/*
 .navbar-default .navbar-toggle .icon-bar {
     background-color: white;
 }
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
     background-color: #db4800;
 }
+*/
 
 @media (min-width: 768px) {
     .container {
@@ -504,6 +507,7 @@ h8 {
     color: #db4800
 }
 
+/*
 .row {
     position: relative;
     max-width: 1400px;
@@ -519,6 +523,7 @@ h8 {
 .row:after {
     clear: both
 }
+*/
 
 .band {
     background: #4298b8;
