@@ -2,12 +2,23 @@ package notes
 
 import com.cabolabs.security.*
 import com.cabolabs.notes.*
+import com.cabolabs.ehrserver.* // groovy client
 
 class BootStrap {
 
     def springSecurityService
 
     def init = { servletContext ->
+
+        // test
+        def ehrserver = new EhrServerClient('https://', 'ehrserver-cabolabs2.rhcloud.com', 443, '/')
+        def token = ehrserver.login('orgman', 'orgman', '123456')
+        //println token
+        def result = ehrserver.getEhrs()
+        result.ehrs.each {
+          println it
+        }
+
 
         def adminRole = Role.findOrSaveByAuthority('ROLE_ADMIN')
         def admin
