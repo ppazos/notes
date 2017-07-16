@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="layout" content="test" />
-    <g:set var="entityName" value="${message(code: 'patient.label', default: 'Patient')}" />
-    <title><g:message code="default.list.label" args="[entityName]" /></title>
+    <meta name="layout" content="notes-internal" />
+    <title><g:message code="patient.index.title" /></title>
   </head>
   <body>
+    <!--
     <div class="row">
       <div class="col">
         <div class="nav" role="navigation">
@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-
+    -->
     <div class="row">
       <div class="col">
 
@@ -88,12 +88,17 @@
           </div>
         </div>
 
-        <h1><g:message code="default.list.label" args="[entityName]" /></h1>
-        <g:if test="${flash.message}">
-          <div class="message" role="status">${flash.message}</div>
-        </g:if>
+        <h1><g:message code="patient.index.title" /></h1>
       </div>
     </div>
+
+    <g:if test="${flash.message}">
+      <div class="row">
+        <div class="col">
+          <div class="message" role="status">${flash.message}</div>
+        </div>
+      </div>
+    </g:if>
 
     <div class="row">
       <div class="col" id="table">
@@ -116,9 +121,9 @@
           data: $("#create_form").serialize(),
           success: function(data, statusText, response)
           {
-              // Update patient table with new patient
-              $('#table').html(data);
-              $('#myModal').modal('hide');
+            // Update patient table with new patient
+            $('#table').html(data);
+            $('#myModal').modal('hide');
           },
           error: function(response, statusText)
           {

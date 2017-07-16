@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-        <meta name="layout" content="main" />
-        <g:set var="entityName" value="${message(code: 'note.label', default: 'Note')}" />
-        <title><g:message code="default.list.label" args="[entityName]" /></title>
-        <style>
-          .modal-body {
-            padding: 0;
-          }
-        </style>
+    <meta name="layout" content="notes-internal" />
+    <title><g:message code="note.index.title" /></title>
+    <style>
+      .modal-body {
+        padding: 0;
+      }
+    </style>
   </head>
   <body>
+  <!--
     <div class="row">
       <div class="col">
         <div class="nav" role="navigation">
@@ -20,10 +20,9 @@
         </div>
       </div>
     </div>
-    
+    -->
     <div class="row">
       <div class="col">
-
 
         <!-- Button trigger modal -->
         <span class="float-right">
@@ -57,51 +56,56 @@
         </div>
 
         
-        <h1><g:message code="default.list.label" args="[entityName]" /></h1>
-        <g:if test="${flash.message}">
-            <div class="message" role="status">${flash.message}</div>
-        </g:if>
-
+        <h1><g:message code="note.index.title" /></h1>
       </div>
     </div>
+
+    <g:if test="${flash.message}">
+      <div class="row">
+        <div class="col">
+          <div class="message" role="status">${flash.message}</div>
+        </div>
+      </div>
+    </g:if>
             
     <div class="row">
       <div class="col">
-            <%
-            def cols = 3
-            def list = noteList.collect() // new list
-            def row = list.take(cols)
-            %>
-            <g:while test="${list}">
-              <div class="card-deck"><!-- card-columns = masonry -->
-                  <g:each in="${row}" var="note">
+        <%
+        def cols = 1
+        def list = noteList.collect() // new list
+        def row = list.take(cols)
+        %>
+        <g:while test="${list}">
+          <div class="card-deck"><!-- card-columns = masonry -->
+            <g:each in="${row}" var="note">
 
-                    <div class="card">
-                      <!--<img class="card-img-top" src="..." alt="Card image cap">-->
-                      <div class="card-block">
-                        <h4 class="card-title">${note.id} ${note.dateCreated}</h4>
-                        <p class="card-text">
-                          ${note.text.encodeAsRaw()}
-                        </p>
-                      </div>
-                      <div class="card-footer card-${note.color}">
-                      </div>
-                    </div>
-                  </g:each>
-              </div>
-              <br/>
-              <%
-                list = list.drop(cols)
-                row = list.take(cols)
-              %>
-            </g:while>
+                <div class="card">
+                  <!--<img class="card-img-top" src="..." alt="Card image cap">-->
+                  <div class="card-block">
+                    <h4 class="card-title">${note.id} ${note.dateCreated}</h4>
+                    <p class="card-text">
+                      ${note.text.encodeAsRaw()}
+                    </p>
+                  </div>
+                  <div class="card-footer card-${note.color}">
+                  </div>
+                </div>
+            </g:each>
+          </div>
+          <br/>
+          <%
+            list = list.drop(cols)
+            row = list.take(cols)
+          %>
+        </g:while>
 
-            <div class="pagination">
-                <g:paginate total="${noteCount ?: 0}" />
-            </div>
+        <div class="pagination">
+            <g:paginate total="${noteCount ?: 0}" />
+        </div>
       </div>
     </div>
 
+    <asset:javascript src="tinymce/tinymce.min.js"/>
     <script>
       $(document).ready(function() {
         tinymce.init({

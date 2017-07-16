@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="layout" content="main" />
+    <meta name="layout" content="notes-modal" />
     <g:set var="entityName" value="${message(code: 'patient.label', default: 'Patient')}" />
     <title><g:message code="default.list.label" args="[entityName]" /></title>
 
     <style type='text/css' media='screen'>
+    .login-panel {
+      margin-top: 15%;
+    }
 	  #login {
 	    margin: 15px 0px;
 	    padding: 0px;
@@ -84,39 +87,31 @@
 	  #login .inner .chk {
 	    height: 12px;
 	  }
-     
-     .navbar-header img {
-       max-height: 20px;
-     }
-     a.active {
-       font-weight: bold;
-     }
     </style>
   </head>
   <body>
     <div class="row">
       <div class="col-md-4 offset-md-4">
-        <div class="login-panel panel panel-default">
-            <div class="panel-heading">
-              <h3 class="panel-title"><g:message code="login.title" /></h3>
-            </div>
-            <div class="panel-body">
-              <g:if test='${flash.message}'>
-                <div class='login_message'>${flash.message}</div><br/>
-              </g:if>
-              
-              <form  action="${postUrl ?: '/login/authenticate'}" method="POST" id="loginForm" class="cssform" autocomplete="off">
-                <fieldset>
+        <div class="login-panel card">
+          <div class="card-header">
+            <g:message code="login.card.title" />
+          </div>
+          <div class="card-block">
+            <g:if test='${flash.message}'>
+              <div class='login_message'>${flash.message}</div><br/>
+            </g:if>
+            <form  action="${postUrl ?: '/login/authenticate'}" method="POST" id="loginForm" class="cssform" autocomplete="off">
+              <fieldset>
                   <div class="form-group">
-                    <label for='username'><g:message code="springSecurity.login.username.label"/></label>
+                    <label for='username'><g:message code="login.username.label"/></label>
                     <input type='text' class='form-control' name='username' id='username' required="required" />
                   </div>
                   <div class="form-group">
-                    <label for='password'><g:message code="springSecurity.login.password.label"/></label>
+                    <label for='password'><g:message code="login.password.label"/></label>
                     <input type='password' class='form-control' name='password' id='password' required="required" value="" />
                   </div>
                   
-                  <input type='submit' id="submit" class="btn btn-lg btn-success btn-block" value='${message(code: "springSecurity.login.button")}'/>
+                  <input type='submit' id="submit" class="btn btn-lg btn-success btn-block" value='${message(code: "login.button.text")}'/>
                   
                   <!--
                   <div class="form-group" style="margin:0; padding:15px 0 15px 0; text-align:center;">
@@ -125,15 +120,15 @@
                     </g:link>
                   </div>
                   -->
-                </fieldset>
-              </form>
-            </div>
+              </fieldset>
+            </form>
+          </div>
         </div>
       </div>
     </div>
     <script type='text/javascript'>
     (function() {
-      document.forms['loginForm'].elements['j_username'].focus();
+      document.forms['loginForm'].elements['username'].focus();
     })();
     </script>
   </body>
