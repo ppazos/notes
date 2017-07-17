@@ -40,6 +40,13 @@ class NoteController {
 
         println "save "+ params
 
+        if (note == null) {
+            transactionStatus.setRollbackOnly()
+            notFound()
+            return
+        }
+
+
         // TODO: put this on a service
         def loggedInUser = springSecurityService.currentUser
 
@@ -79,12 +86,6 @@ class NoteController {
         //// test
 
 
-        if (note == null) {
-            transactionStatus.setRollbackOnly()
-            notFound()
-            return
-        }
-
         def username = springSecurityService.principal.username
         note.color = 'info'
         note.author = User.findByUsername(username)
@@ -100,16 +101,6 @@ class NoteController {
         note.save flush:true
 
         redirect action: 'index', params: [pid: pid]
-
-        /*
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'note.label', default: 'Note'), note.id])
-                redirect note
-            }
-            '*' { respond note, [status: CREATED] }
-        }
-        */
     }
 
     def edit(Note note) {

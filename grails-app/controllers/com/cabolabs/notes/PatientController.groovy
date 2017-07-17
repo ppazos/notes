@@ -95,6 +95,8 @@ class PatientController {
 
         patient.save flush:true
 
+        // TODO: EHRServer create EHR for patient and save uid
+
         // TODO: return the html update to the list to update the partial
         //render patient as JSON
 
