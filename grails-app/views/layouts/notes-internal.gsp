@@ -66,6 +66,9 @@
     main {
       padding: 10px;
     }
+    main > div:first-child {
+      margin-bottom: 15px;
+    }
 
     /* Small viewport or below */
     @media (max-width : 767px) {
