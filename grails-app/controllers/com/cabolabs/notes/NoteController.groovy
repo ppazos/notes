@@ -40,12 +40,12 @@ class NoteController {
 
         println "save "+ params
 
-
+        // TODO: put this on a service
         def loggedInUser = springSecurityService.currentUser
 
         // test file
         String PS = System.getProperty("file.separator")
-        def template_document = new File("openehr" +PS+ "Psychotherapy_Note_20170717044030_1_tags.xml")
+        def template_document = new File("openehr" +PS+ "Psychotherapy_Note_tags_envelope.xml")
         def xml = template_document.text
 
         def datetime_format_openEHR = "yyyyMMdd'T'HHmmss,SSSZ"
@@ -71,7 +71,7 @@ class NoteController {
            println "$k : $v"
            xml = xml.replace(k, v) // reaplace all strings
         }
-        println xml
+        //println xml
 
         // generate file to commit
         def out = new File("documents" +PS+ "pending" +PS+ data['[[COMPOSITION:::UUID:::ANY]]'] +".xml")
