@@ -122,7 +122,7 @@
             <value>Synopsis</value>
           </name>
           <value xsi:type="DV_TEXT">
-            <value>[[Synopsis:::STRING:::J]]</value>
+            <value>[[Synopsis:::STRING:::]]</value>
           </value>
         </items>
       </data>

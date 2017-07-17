@@ -58,8 +58,8 @@ class NoteController {
 
         def data = [
           '[[CONTRIBUTION:::UUID:::ANY]]'          : java.util.UUID.randomUUID() as String,
-          '[[COMMITTER_ID:::UUID:::ANY]]'          : 'sdfsdf', // TODO: user.uid
-          '[[COMMITTER_NAME:::STRING:::Dr. House]]': loggedInUser.username, // TODO: first and last name
+          '[[COMMITTER_ID:::UUID:::ANY]]'          : loggedInUser.uid,
+          '[[COMMITTER_NAME:::STRING:::Dr. House]]': loggedInUser.name+" "+loggedInUser.lastname,
           '[[TIME_COMMITTED:::DATETIME:::NOW]]'    : str_date_openEHR,
           '[[VERSION_ID:::VERSION_ID:::ANY]]'      : (java.util.UUID.randomUUID() as String) +'::PSY.NOTES::1',
           '[[COMPOSITION:::UUID:::ANY]]'           : java.util.UUID.randomUUID() as String,
