@@ -1,7 +1,7 @@
 <version xmlns="http://schemas.openehr.org/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ORIGINAL_VERSION">
   <contribution>
     <id xsi:type="HIER_OBJECT_ID">
-      <value>[[CONTRIBUTION:::UUID:::ANY]]</value>
+      <value>5858ac0e-4002-4162-882b-697f9660cc1b</value>
     </id>
     <namespace>EHR::COMMON</namespace>
     <type>CONTRIBUTION</type>
@@ -11,15 +11,15 @@
     <committer xsi:type="PARTY_IDENTIFIED">
       <external_ref>
         <id xsi:type="HIER_OBJECT_ID">
-          <value>[[COMMITTER_ID:::UUID:::ANY]]</value>
+          <value>sdfsdf</value>
         </id>
         <namespace>DEMOGRAPHIC</namespace>
         <type>PERSON</type>
       </external_ref>
-      <name>[[COMMITTER_NAME:::STRING:::Dr. House]]</name>
+      <name>admin</name>
     </committer>
     <time_committed>
-      <value>[[TIME_COMMITTED:::DATETIME:::NOW]]</value>
+      <value>20170717T063738,405-0300</value>
     </time_committed>
     <change_type>
       <value>creation</value>
@@ -32,14 +32,14 @@
     </change_type>
   </commit_audit>
   <uid>
-    <value>[[VERSION_ID:::VERSION_ID:::ANY]]</value>
+    <value>77034856-bdbd-48c8-b63f-4670030898dc::PSY.NOTES::1</value>
   </uid>
   <data xsi:type="COMPOSITION" archetype_node_id="openEHR-EHR-COMPOSITION.health_summary.v1">
     <name>
       <value>Health summary</value>
     </name>
     <uid xsi:type="HIER_OBJECT_ID">
-      <value>[[COMPOSITION:::UUID:::ANY]]</value>
+      <value>1374ffff-7458-4082-8ee3-6106722c10fa</value>
     </uid>
     <archetype_details>
       <archetype_id>
@@ -74,16 +74,16 @@
     <composer xsi:type="PARTY_IDENTIFIED">
       <external_ref>
         <id xsi:type="HIER_OBJECT_ID">
-          <value>[[COMMITTER_ID:::UUID:::ANY]]</value>
+          <value>sdfsdf</value>
         </id>
         <namespace>DEMOGRAPHIC</namespace>
         <type>PERSON</type>
       </external_ref>
-      <name>[[COMMITTER_NAME:::STRING:::Dr. House]]</name>
+      <name>admin</name>
     </composer>
     <context>
       <start_time>
-        <value>[[COMPOSITION_DATE:::DATETIME:::NOW]]</value>
+        <value>20170717T063738,405-0300</value>
       </start_time>
       <setting>
         <value>Hospital C</value>

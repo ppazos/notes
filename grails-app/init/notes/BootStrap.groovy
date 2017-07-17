@@ -58,12 +58,12 @@ class BootStrap {
 
 
         for (String url in [
-		      '/error', '/index', '/index.gsp', '/**/favicon.ico', '/shutdown',
-		      '/**/js/**', '/**/css/**', '/**/images/**', '/**/fonts/**',
-		      '/login', '/login.*', '/login/*',
-		      '/logout', '/logout.*', '/logout/*']) {
-		   new RequestMap(url: url, configAttribute: 'permitAll').save()
-		}
+          '/error', '/index', '/index.gsp', '/**/favicon.ico', '/shutdown',
+          '/**/js/**', '/**/css/**', '/**/images/**', '/**/fonts/**',
+          '/login', '/login.*', '/login/*',
+          '/logout', '/logout.*', '/logout/*']) {
+       new RequestMap(url: url, configAttribute: 'permitAll').save()
+    }
 
         new RequestMap(url: '/', configAttribute: 'ROLE_ADMIN').save()
         new RequestMap(url: '/dbconsole/**', configAttribute: 'ROLE_ADMIN').save()

@@ -2,6 +2,7 @@ package com.cabolabs.notes
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
+import java.text.SimpleDateFormat
 
 import com.cabolabs.security.*
 
@@ -39,6 +40,43 @@ class NoteController {
 
         println "save "+ params
 
+
+        def loggedInUser = springSecurityService.currentUser
+
+        // test file
+        String PS = System.getProperty("file.separator")
+        def template_document = new File("openehr" +PS+ "Psychotherapy_Note_20170717044030_1_tags.xml")
+        def xml = template_document.text
+
+        def datetime_format_openEHR = "yyyyMMdd'T'HHmmss,SSSZ"
+        def format_oehr = new SimpleDateFormat(datetime_format_openEHR)
+        def str_date_openEHR = format_oehr.format(new Date())
+        println str_date_openEHR
+
+        def note_text = note.text.replace('&', '&amp;')
+        println note_text
+
+        def data = [
+          '[[CONTRIBUTION:::UUID:::ANY]]'          : java.util.UUID.randomUUID() as String,
+          '[[COMMITTER_ID:::UUID:::ANY]]'          : 'sdfsdf', // TODO: user.uid
+          '[[COMMITTER_NAME:::STRING:::Dr. House]]': loggedInUser.username, // TODO: first and last name
+          '[[TIME_COMMITTED:::DATETIME:::NOW]]'    : str_date_openEHR,
+          '[[VERSION_ID:::VERSION_ID:::ANY]]'      : (java.util.UUID.randomUUID() as String) +'::PSY.NOTES::1',
+          '[[COMPOSITION:::UUID:::ANY]]'           : java.util.UUID.randomUUID() as String,
+          '[[COMPOSITION_DATE:::DATETIME:::NOW]]'  : str_date_openEHR,
+          '[[Synopsis:::STRING:::]]' : groovy.xml.XmlUtil.escapeXml(note_text)
+        ]
+
+        data.each { k, v ->
+           println "$k : $v"
+           xml = xml.replace(k, v) // reaplace all strings
+        }
+        println xml
+
+        // generate file to commit
+        def out = new File("documents" +PS+ "pending" +PS+ data['[[COMPOSITION:::UUID:::ANY]]'] +".xml")
+        out << xml
+        //// test
 
 
         if (note == null) {
