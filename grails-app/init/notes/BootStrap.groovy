@@ -10,22 +10,25 @@ class BootStrap {
 
     def init = { servletContext ->
 
+println ">>>>>>>>>>>>>>>>>>>>>>>>>>>>"
         // test
-        def ehrserver = new EhrServerClient('https://', 'ehrserver-cabolabs2.rhcloud.com', 443, '/')
-        def token = ehrserver.login('orgman', 'orgman', '123456')
+        // ehrserver-cabolabs2.rhcloud.com
+        def ehrserver = new EhrServerClient('https://', 'cabolabs-ehrserver.rhcloud.com', 443, '/')
+        def token = ehrserver.login('userx', 'user', '123456')
         //println token
         def result = ehrserver.getEhrs()
         result.ehrs.each {
           println it
         }
-
+println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 
         def adminRole = Role.findOrSaveByAuthority('ROLE_ADMIN')
         def admin
 
         if (!User.findByUsername('admin'))
         {
-            admin = new User(username: 'admin', password: 'admin').save(failOnError:true)
+            admin = new User(username: 'admin', password: 'admin',
+                             name: 'Pablo', lastname: 'Pazos').save(failOnError:true)
 
             UserRole.create admin, adminRole
 
