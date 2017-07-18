@@ -1,0 +1,8 @@
+.card {
+	border: 1px solid #9B8FCD;
+	margin-bottom: 10px;
+}
+.card-header {
+	background-color: #8274C1; /* lavender dark */
+	color: #fff;
+}

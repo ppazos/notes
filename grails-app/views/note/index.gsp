@@ -71,28 +71,27 @@
     <div class="row">
       <div class="col">
         <%
-        def cols = 1
+        def cols = 2
         def list = noteList.collect() // new list
         def row = list.take(cols)
         %>
         <g:while test="${list}">
           <div class="card-deck"><!-- card-columns = masonry -->
             <g:each in="${row}" var="note">
-
-                <div class="card">
-                  <!--<img class="card-img-top" src="..." alt="Card image cap">-->
-                  <div class="card-block">
-                    <h4 class="card-title">${note.id} ${note.dateCreated}</h4>
-                    <p class="card-text">
-                      ${note.text.encodeAsRaw()}
-                    </p>
-                  </div>
-                  <div class="card-footer card-${note.color}">
-                  </div>
+              <div class="card">
+                <div class="card-header">
+                  ${note.id} ${note.dateCreated}
                 </div>
+                <div class="card-block">
+                  <p class="card-text">
+                    ${note.text.encodeAsRaw()}
+                  </p>
+                </div>
+                <div class="card-footer card-${note.color}">
+                </div>
+              </div>
             </g:each>
           </div>
-          <br/>
           <%
             list = list.drop(cols)
             row = list.take(cols)

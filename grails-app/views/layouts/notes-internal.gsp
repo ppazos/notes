@@ -27,6 +27,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
     <asset:stylesheet src="font-awesome.min.css"/>
+    <asset:stylesheet src="notes.css"/>
 
     <g:layoutHead/>
 
@@ -38,10 +39,14 @@
       background-color: #8274C1; /* lavender dark */
       padding:  10px 15px 0 15px;
       margin: 0;
+      max-width: 220px;
     }
     .navbar-brand {
       color: #fff;
       font-size: 1.4em;
+    }
+    .navbar-toggler {
+      color: #fff;
     }
     #menu {
       background-color: #9B8FCD; /* lavender light */
@@ -75,6 +80,9 @@
       .navbar-toggler {
         display: inline;
         top: 10px; /* adjust vertical position to middle top bar */
+      }
+      .navbar {
+        max-width: 100%;
       }
       #menu {
         display: none;
@@ -152,7 +160,8 @@
                 <img src="https://v4-alpha.getbootstrap.com/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-middle" alt="" />
                 Notes
               </a>
-              <button class="navbar-toggler navbar-toggler-right collapse" type="button" data-toggle="collapse" data-target="#menu">&#9776;</button>
+              <button class="navbar-toggler navbar-toggler-right collapse" type="button" data-toggle="collapse" data-target="#menu"><i class="fa fa-bars" aria-hidden="true"></i>
+</button>
             </div>
           </div><!-- top -->
           <div class="row navbar-collapse" id="menu">
