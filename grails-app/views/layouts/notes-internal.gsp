@@ -39,7 +39,6 @@
       background-color: #8274C1; /* lavender dark */
       padding:  10px 15px 0 15px;
       margin: 0;
-      max-width: 220px;
     }
     .navbar-brand {
       color: #fff;
@@ -153,11 +152,11 @@
   <body>
     <div class="container-fluid">
       <div class="row">
-        <nav class="navbar col-md-3 col-sm-12">
+        <nav class="navbar col-md-2 col-sm-12">
           <div class="row top">
             <div class="col-12">
               <a class="navbar-brand" href="#">
-                <img src="https://v4-alpha.getbootstrap.com/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-middle" alt="" />
+               <!-- <img src="https://v4-alpha.getbootstrap.com/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-middle" alt="" />-->
                 Notes
               </a>
               <button class="navbar-toggler navbar-toggler-right collapse" type="button" data-toggle="collapse" data-target="#menu"><i class="fa fa-bars" aria-hidden="true"></i>
@@ -186,7 +185,7 @@ Overview</a>
             </div>
           </div><!-- menu -->
         </nav>
-        <main class="col-md-9 col-sm-12">
+        <main class="col-md-10 col-sm-12">
           <g:layoutBody/>
         </main>
       </div>
