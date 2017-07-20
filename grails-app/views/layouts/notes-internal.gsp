@@ -159,27 +159,23 @@
                <!-- <img src="https://v4-alpha.getbootstrap.com/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-middle" alt="" />-->
                 Notes
               </a>
-              <button class="navbar-toggler navbar-toggler-right collapse" type="button" data-toggle="collapse" data-target="#menu"><i class="fa fa-bars" aria-hidden="true"></i>
-</button>
+              <button class="navbar-toggler navbar-toggler-right collapse" type="button" data-toggle="collapse" data-target="#menu"><i class="fa fa-bars" aria-hidden="true"></i></button>
             </div>
           </div><!-- top -->
           <div class="row navbar-collapse" id="menu">
             <div class="col-12">
               <ul class="navbar-nav flex-column">
                 <li class="nav-item">
-                  <a class="nav-link ${(controllerName=='dashboard')?'active':''}" href="#"><i class="fa fa-tachometer fa-fw" aria-hidden="true"></i>
-Overview</a>
+                  <a class="nav-link ${(controllerName=='dashboard')?'active':''}" href="#"><i class="fa fa-tachometer fa-fw" aria-hidden="true"></i> Overview</a>
                 </li>
                 <li class="nav-item">
                   <g:link controller="patient" action="index" class="nav-link ${(controllerName=='patient')?'active':''}"><i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i> Patients</g:link>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link ${(controllerName=='agenda')?'active':''}" href="#"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i>
- Agenda</a>
+                  <g:link controller="timeSlot" action="index" class="nav-link ${(controllerName=='timeSlot')?'active':''}"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> Agenda</g:link>
                 </li>
                 <li class="nav-item">
-                  <g:link controller="logout" class="nav-link"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>
- Logout</g:link>
+                  <g:link controller="logout" class="nav-link"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i> Logout</g:link>
                 </li>
               </ul>
             </div>

@@ -72,6 +72,7 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
         new RequestMap(url: '/dbconsole/**', configAttribute: 'ROLE_ADMIN').save()
         new RequestMap(url: '/note/**', configAttribute: 'ROLE_ADMIN').save()
         new RequestMap(url: '/patient/**', configAttribute: 'ROLE_ADMIN').save()
+        new RequestMap(url: '/timeSlot/**', configAttribute: 'ROLE_ADMIN').save()
 
 
         springSecurityService.clearCachedRequestmaps()
