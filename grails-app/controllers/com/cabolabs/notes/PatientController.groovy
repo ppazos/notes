@@ -40,10 +40,7 @@ class PatientController {
             println "errors "+ patient.errors.fieldErrors.getClass() // errors class java.util.Collections$UnmodifiableList
             transactionStatus.setRollbackOnly()
 
-
-
             /*
-
 [{
     "arguments": ["phone", "com.cabolabs.notes.Patient"],
     "bindingFailure": false,
