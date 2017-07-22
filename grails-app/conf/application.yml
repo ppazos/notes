@@ -6,6 +6,8 @@ server:
 grails:
     databinding:
         dateFormats:
+            - "yyyy-MM-dd'T'HH:mm:ss'Z'" # UTC date
+            - "yyyy-MM-dd'T'HH:mm:ss.S'Z'" # UTC with fraction
             - "yyyy-MM-dd'T'HH:mm:ssZ"
             - "yyyy-MM-dd"
 ---
