@@ -32,6 +32,14 @@
     <g:layoutHead/>
 
     <style>
+    /* show 100% H main bg white */
+    html, body, .container-fluid, .container-fluid > .row, main {
+      height: 100%;
+    }
+    /* show menu 100% H bg lavender */
+    body {
+      background-color: #8274C1;
+    }
     nav > div {
       margin: 0
     }
@@ -69,6 +77,7 @@
     }
     main {
       padding: 10px;
+      background-color: #fff;
     }
     main > div:first-child {
       margin-bottom: 15px;
@@ -94,9 +103,6 @@
     @media (min-width : 768px) {
       #menu {
         display: block;
-      }
-      html, body, .container-fluid, .container-fluid > .row {
-        height: 100%; /* menu 100% vertical on big screens */
       }
     }
 
@@ -155,9 +161,15 @@ button.fc-button {
   border-color: #9675ce;
   color: #9675ce;
 }
-button.fc-button:active, button.fc-button:focus {
-  outline: none !important; /* removes blue outline when calendar header buttons are clicked */
+
+:focus {
+  outline: none;
 }
+/*
+button.fc-button:active, button.fc-button:focus {
+  outline: none !important; / * removes blue outline when calendar header buttons are clicked * /
+}
+*/
 .fc-state-down, .fc-state-active {
   background-color: #9675ce !important;
   color: #FFF !important;
@@ -330,6 +342,9 @@ button.fc-button:active, button.fc-button:focus {
                 </li>
                 <li class="nav-item">
                   <g:link controller="timeSlot" action="index" class="nav-link ${(controllerName=='timeSlot')?'active':''}"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> Agenda</g:link>
+                </li>
+                <li class="nav-item">
+                  <g:link controller="noteCategory" action="index" class="nav-link ${(controllerName=='noteCategory')?'active':''}"><i class="fa fa-th-list fa-fw" aria-hidden="true"></i> Categories</g:link>
                 </li>
                 <li class="nav-item">
                   <g:link controller="logout" class="nav-link"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i> Logout</g:link>

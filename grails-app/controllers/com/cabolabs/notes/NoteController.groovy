@@ -13,18 +13,34 @@ class NoteController {
 
     def springSecurityService
 
-    def index(Integer max, Long pid) {
+    def index(Integer max, Long pid, String categoryName)
+    {
         params.max = Math.min(max ?: 9, 100)
         params.sort = "id"
         params.order = "desc"
         
         def patient = Patient.get(pid)
 
+        def loggedInUser = springSecurityService.currentUser
+        def categories = NoteCategory.findAllByOwner(loggedInUser)
+
         assert patient != null
 
+        // Default category to list notes, can be null and show no category notes
+        def category = categories[0]
 
-        respond Note.findAllByPatient(patient, params), 
-                model:[noteCount: Note.countByPatient(patient), patient: patient]
+        if (categoryName)
+        {
+            category = categories.find {it.name == categoryName}
+        }
+
+        respond Note.findAllByPatientAndCategory(patient, category, params), 
+                model:[
+                  noteCount: Note.countByPatientAndCategory(patient, category),
+                  patient: patient,
+                  categories: categories,
+                  category: category
+                ]
     }
 
     def show(Note note) {
@@ -36,8 +52,8 @@ class NoteController {
     }
 
     @Transactional
-    def save(Note note, Long pid) {
-
+    def save(Note note, Long pid)
+    {
         println "save "+ params
 
         if (note == null) {
@@ -46,6 +62,9 @@ class NoteController {
             return
         }
 
+
+        note.properties = params
+        
 
         // TODO: put this on a service
         def loggedInUser = springSecurityService.currentUser
@@ -87,14 +106,24 @@ class NoteController {
 
 
         def username = springSecurityService.principal.username
-        note.color = 'info'
+        note.color = 'info' // TODO: set by user, is a bootstrap class
         note.author = User.findByUsername(username)
         note.patient = Patient.get(pid)
         note.validate()
 
-        if (note.hasErrors()) {
+        if (note.hasErrors())
+        {
+            println "note errors"
+            //println note.errors
+            //println note.errors.allErrors
+            println note.errors.fieldErrors
+
             transactionStatus.setRollbackOnly()
-            respond note.errors, view:'index'
+            //respond note.errors, view:'index'
+            //return
+
+            // TODO: report error like patient save
+            redirect action: 'index', params: [pid: pid]
             return
         }
         

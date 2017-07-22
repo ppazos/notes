@@ -7,44 +7,43 @@
       .modal-body {
         padding: 0;
       }
+      .modal-body > .form-group {
+        padding: 15px;
+      }
+      .nav {
+        margin-bottom: 10px;
+      }
     </style>
   </head>
   <body>
-  <!--
-    <div class="row">
-      <div class="col">
-        <div class="nav" role="navigation">
-          <ul>
-            <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label" /></a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    -->
     <div class="row">
       <div class="col">
 
         <!-- Button trigger modal -->
         <span class="float-right">
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_modal">
           + Note
           </button>
         </span>
 
         <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="create_modal" tabindex="-1" role="dialog" aria-labelledby="create_modal_label" aria-hidden="true">
           <div class="modal-dialog modal-lg" role="document">
             <g:form action="save">
               <input type="hidden" name="pid" value="${params.pid}" />
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">New note</h5>
+                  <h5 class="modal-title" id="create_modal_label">New note</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
                   <textarea id="editor" name="text"></textarea>
+                  <div class="form-group">
+                    <label for="name">Category</label>
+                    <g:select name="category" class="form-control" from="${categories}" optionKey="id" optionValue="name" />
+                  </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -54,7 +53,6 @@
             </g:form>
           </div>
         </div>
-
         
         <h1><g:message code="note.index.title" /></h1>
       </div>
@@ -67,7 +65,22 @@
         </div>
       </div>
     </g:if>
-            
+    
+    <div class="row">
+      <div class="col">
+        <ul class="nav nav-tabs nav-fill">
+          <g:each in="${categories}" var="_category">
+            <li class="nav-item">
+              <a class="nav-link ${category.name == _category.name ? 'active' : ''}" href="${createLink(action:'index', params:[categoryName:_category.name, pid: params.pid])}">${_category.name}</a>
+            </li>
+          </g:each>
+          <li class="nav-item">
+            <a class="nav-link ${category == null ? 'active' : ''}" href="#">Uncategorized</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
     <div class="row">
       <div class="col">
         <%
@@ -99,7 +112,7 @@
         </g:while>
 
         <div class="pagination">
-            <g:paginate total="${noteCount ?: 0}" />
+          <g:paginate total="${noteCount ?: 0}" />
         </div>
       </div>
     </div>

@@ -3,12 +3,20 @@ package notes
 import com.cabolabs.security.*
 import com.cabolabs.notes.*
 import com.cabolabs.ehrserver.* // groovy client
+import grails.converters.JSON
 
 class BootStrap {
 
     def springSecurityService
 
     def init = { servletContext ->
+
+        // Define server timezone
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
+
+        // JSON Marshallers
+        registerJSONMarshallers()
+
 
 println ">>>>>>>>>>>>>>>>>>>>>>>>>>>>"
         // test
@@ -49,13 +57,17 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
                                   email: 'car@ol.com',
                                   dob: (new Date() - (25*365))).save(failOnError: true)
 
+        def cat1 = new NoteCategory(name: 'Patient', owner: admin).save(failOnError: true)
+        def cat2 = new NoteCategory(name: 'Family', owner: admin).save(failOnError: true)
+        def cat3 = new NoteCategory(name: 'Work', owner: admin).save(failOnError: true)
 
-        (1..20).each {
+        (1..5).each {
             new Note(
                 color: 'success',
                 text: 'dfas sdf a asfasf asdasdf asd fas fas fasdfasdf asdf as fas dfas fasd fasf as dfasd fasd fasdf asdf asdf asdf asdfas fasd fasd fas dfasd fasd fasdf asf asdfasd fasdfa',
                 author: admin,
-                patient: patient).save(failOnError: true)
+                patient: patient,
+                category: cat1).save(failOnError: true)
         }
 
 
@@ -73,10 +85,22 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
         new RequestMap(url: '/note/**', configAttribute: 'ROLE_ADMIN').save()
         new RequestMap(url: '/patient/**', configAttribute: 'ROLE_ADMIN').save()
         new RequestMap(url: '/timeSlot/**', configAttribute: 'ROLE_ADMIN').save()
-
+        new RequestMap(url: '/noteCategory/**', configAttribute: 'ROLE_ADMIN').save()
 
         springSecurityService.clearCachedRequestmaps()
     }
     def destroy = {
     }
+
+   def registerJSONMarshallers()
+   {
+      JSON.registerObjectMarshaller(TimeSlot) { ts ->
+        return [id:     ts.uid,
+                start:  ts.start,
+                end:    ts.end,
+                title:  ts.name,
+                color:  ts.color
+               ]
+      }
+   }
 }
