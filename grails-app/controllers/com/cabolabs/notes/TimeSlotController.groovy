@@ -10,8 +10,13 @@ class TimeSlotController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
+        
+    }
+
+    def timeslot_list(Integer max)
+    {
         params.max = Math.min(max ?: 10, 100)
-        respond TimeSlot.list(params), model:[timeSlotCount: TimeSlot.count()]
+        render TimeSlot.list(params) as JSON //, model:[timeSlotCount: TimeSlot.count()]
     }
 
     def show(TimeSlot timeSlot) {
@@ -24,7 +29,10 @@ class TimeSlotController {
 
     @Transactional
     def save(TimeSlot timeSlot) {
+        
+        println "save"
         println params
+
         if (timeSlot == null) {
             transactionStatus.setRollbackOnly()
             //notFound()
