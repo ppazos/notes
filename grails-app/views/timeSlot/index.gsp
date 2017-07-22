@@ -44,15 +44,16 @@
                   </div>
                   <div class="form-group">
                     <label for="start">Start</label>
-                    <input type="text" class="form-control" id="start" name="start" readonly="true">
+                    <input type="text" class="form-control" id="start" name="start" readonly="true" />
                   </div>
                   <div class="form-group">
                     <label for="end">End</label>
-                    <input type="text" class="form-control" id="end" name="end" readonly="true">
+                    <input type="text" class="form-control" id="end" name="end" readonly="true" />
+                    <!--<input type="datetime-local" class="form-control" id="end" name="end" />-->
                   </div>
                   <div class="form-group">
                     <label for="color">Color</label>
-                    <input type="color" class="form-control" id="color" name="color">
+                    <input type="color" id="color" name="color" value="#9B8FCD" />
                   </div>
                 </div>
                 <div class="modal-footer">
@@ -80,14 +81,6 @@
       <div class="col">
         <div id='calendar'></div>
       </div>
-      <%--
-      <div class="col" id="table">
-        <f:table collection="${timeSlotList}" />
-        <div class="pagination">
-          <g:paginate total="${timeSlotCount ?: 0}" />
-        </div>
-      </div>
-      --%>
     </div>
     <script type="text/javascript">
     $(document).ready(function() {
@@ -99,7 +92,7 @@
           right:  'today prev,next'
         },
         dayClick: function() {
-          alert('a day has been clicked!');
+          //alert('a day has been clicked!');
         },
         showNonCurrentDates: false,
         height: 700,
@@ -115,6 +108,8 @@
         selectHelper: true, // draws event while selecting
         timezone: 'local',
         longPressDelay: 300, // for touch events
+        events: '${createLink(action:"timeslot_list")}',
+        /*
         events: [
           {
             id: 1, // TODO: UID
@@ -129,6 +124,7 @@
             end:   "2017-07-21T15:30-03:00"
           }
         ],
+        */
         eventClick: function(evn, jsEvent, view) {
 
           console.log('Event: ' + evn.title +' '+ new Date(evn.start));
@@ -156,15 +152,31 @@
           //}
         },
         select: function( start, end, jsEvent, view, resource ) {
+
           console.log(start, end, jsEvent, view, resource);
-          if (confirm('Create event?'))
+          console.log($('#calendar').fullCalendar('getView'));
+
+          // On month view, show the time pickers because start and end dont have time
+          if ($('#calendar').fullCalendar('getView').type == 'month')
           {
-            console.log(start.toISOString(), end.toISOString());
 
-            $('input[name=start]').val(start.toISOString()); // UTC date considers local TZ
-            $('input[name=end]').val(end.toISOString());
-            $('#create_modal').modal('show');
+          }
 
+          console.log(start.format());
+          console.log(start.format("YYYY-MM-DDThh:mm"));
+          console.log(start.format('YYYY-MM-DDTHH:mm:ssZ'));
+
+          //console.log(start.toDate().format("YYYY-MM-DDThh:mm"));
+
+          $('input[name=start]').val(start.toISOString()); // UTC date considers local TZ
+          $('input[name=end]').val(end.toISOString());
+
+          //$('input[name=start]').val('2017-07-21T10:00'); // This works but moment is not retrieving the right format
+//          $('input[name=start]').val(start.format('YYYY-MM-DDThh:mm')); // format needed by HTML5 datetime-local
+//          $('input[name=end]').val(end.format('YYYY-MM-DDThh:mm'));
+          $('#create_modal').modal('show');
+
+/*
             // TODO: render on server response
             $('#calendar').fullCalendar('renderEvent', 
             {
@@ -172,11 +184,8 @@
               start : start.toDate(),
               end   : end.toDate(),
             }, true);
-          }
-          else
-          {
-            $('#calendar').fullCalendar('unselect');
-          }
+*/
+
         }
       })
     });
@@ -202,6 +211,8 @@
             //$('#table').html(data);
             console.log(data);
             $('#create_modal').modal('hide');
+
+            $('#calendar').fullCalendar('refetchEvents');
           },
           error: function(response, statusText)
           {
@@ -225,6 +236,9 @@
       //$('#create_modal').on('show.bs.modal', function (event) {
       //  $("#create_form")[0].reset();
       //});
+      $('#create_modal').on('hide.bs.modal', function (event) {
+        $('#calendar').fullCalendar('unselect');
+      });
     </script>
 
   </body>
