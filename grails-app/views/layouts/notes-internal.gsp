@@ -148,7 +148,7 @@
     }
 
 
-    /* Buttons
+    /* Buttons calendar
 ------------------------------------------------------------------------*/
 button.fc-button {
   /*font-family: 'Roboto', sans-serif;*/
@@ -182,20 +182,17 @@ button.fc-button:active, button.fc-button:focus {
 .fc-header .ui-state-hover {
   z-index: 2;
 }
-  
 .fc-header .fc-state-down {
   z-index: 3;
 }
-
 .fc-header .fc-state-active,
 .fc-header .ui-state-active {
   z-index: 4;
 }
-  
 .fc-header .fc-button {
   margin-bottom: 1em;
   vertical-align: top;
-  }
+}
 .fc-button {
   position: relative;
   display: inline-block;
@@ -205,22 +202,23 @@ button.fc-button:active, button.fc-button:focus {
   line-height: 1.9em;
   white-space: nowrap;
   cursor: pointer;
-  }
-  
+}
 .fc-state-default { /* non-theme */
   border: 1px solid;
   background: #fff;
-  }
-
+}
+.fc-state-default {
+  border-color: #ff3b30;
+  color: #ff3b30; 
+}
 .fc-state-default.fc-corner-left { /* non-theme */
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-  }
-
+}
 .fc-state-default.fc-corner-right { /* non-theme */
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-  }
+}
 
 /*
   Our default prev/next buttons use HTML entities like ‹ › « »
@@ -232,21 +230,20 @@ button.fc-button:active, button.fc-button:focus {
   font-size: 2em;
   line-height: 23px;
   vertical-align: baseline; /* for IE7 */
-  }
+}
 
 .fc-button-prev .fc-text-arrow,
 .fc-button-next .fc-text-arrow { /* for ‹ › */
   font-weight: bold;
-  }
-  
+}
+
 /* icon (for jquery ui) */
-  
+
 .fc-button .fc-icon-wrap {
   position: relative;
   float: left;
   top: 50%;
-  }
-  
+}
 .fc-button .ui-icon {
   position: relative;
   float: left;
@@ -254,15 +251,10 @@ button.fc-button:active, button.fc-button:focus {
   
   *margin-top: 0;
   *top: -50%;
-  }
-
-
-.fc-state-default {
-  border-color: #ff3b30;
-  color: #ff3b30; 
 }
+
 .fc-button-month.fc-state-default, .fc-button-agendaWeek.fc-state-default, .fc-button-agendaDay.fc-state-default{
-    min-width: 67px;
+  min-width: 67px;
   text-align: center;
   transition: all 0.2s;
   -webkit-transition: all 0.2s;
@@ -278,13 +270,6 @@ button.fc-button:active, button.fc-button:focus {
 .fc-state-hover {
   color: #ff3b30;
   text-decoration: none;
-  /*
-  background-position: 0 -15px;
-  -webkit-transition: background-position 0.1s linear;
-     -moz-transition: background-position 0.1s linear;
-       -o-transition: background-position 0.1s linear;
-          transition: background-position 0.1s linear;
-          */
 }
 
 .fc-state-down,
@@ -298,31 +283,28 @@ button.fc-button:active, button.fc-button:focus {
 .fc-state-disabled {
   cursor: default;
   background-image: none;
-  background-color: #FFE3E3;
+  background-color: #DDD;
   filter: alpha(opacity=65);
   box-shadow: none;
-  border:1px solid #FFE3E3;
+  border:1px solid #333;
   color: #ff3b30;
-  }
+}
 
-  .fc-week .fc-day:hover .fc-day-number{
-    background-color: #B8B8B8;
-    /*border-radius: 50%;*/
-    color: #FFFFFF;
-    /*transition: background-color 0.2s;*/
+.fc-week .fc-day:hover .fc-day-number{
+  background-color: #B8B8B8;
+  color: #FFFFFF;
 }
 .fc-week .fc-day.fc-state-highlight:hover .fc-day-number{
-    background-color:  #ff3b30;
+  background-color:  #ff3b30;
 }
 .fc-button-today{
-    border: 1px solid rgba(255,255,255,.0);
+  border: 1px solid rgba(255,255,255,.0);
 }
 .fc-view-agendaDay thead tr.fc-first .fc-widget-header{
-    text-align: right;
-    padding-right: 10px;
+  text-align: right;
+  padding-right: 10px;
 }
     </style>
-
   </head>
   <body>
     <div class="container-fluid">

@@ -2,12 +2,12 @@ package com.cabolabs.notes
 
 class CommitJob {
    static triggers = {
-      simple repeatInterval: 5000l // execute job once in 5 seconds
+      simple repeatInterval: 60000l // execute job once in 60 seconds
    }
 
    def execute()
    {
-      println "job"
+      //println "job"
        // execute job
       String PS  = System.getProperty("file.separator")
       def outbox = new File("documents" +PS+ "pending")

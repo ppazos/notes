@@ -5,21 +5,8 @@
     <title><g:message code="patient.index.title" /></title>
   </head>
   <body>
-    <!--
     <div class="row">
       <div class="col">
-        <div class="nav" role="navigation">
-          <ul>
-            <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-            <li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    -->
-    <div class="row">
-      <div class="col">
-
         <!-- Button trigger modal -->
         <span class="float-right">
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">

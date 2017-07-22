@@ -20,10 +20,49 @@
     <div class="row">
       <div class="col">
         <span class="float-right">
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_modal">
           + Slot
           </button>
         </span>
+
+        <!-- Modal -->
+        <div class="modal fade" id="create_modal" tabindex="-1" role="dialog" aria-labelledby="create_modal_label" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <g:form url="[action:'save']" id="create_form">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="create_modal_label">New event</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  
+                  <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" />
+                  </div>
+                  <div class="form-group">
+                    <label for="start">Start</label>
+                    <input type="text" class="form-control" id="start" name="start" readonly="true">
+                  </div>
+                  <div class="form-group">
+                    <label for="end">End</label>
+                    <input type="text" class="form-control" id="end" name="end" readonly="true">
+                  </div>
+                  <div class="form-group">
+                    <label for="color">Color</label>
+                    <input type="color" class="form-control" id="color" name="color">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </g:form>
+          </div>
+        </div>
 
         <h1><g:message code="timeSlot.index.title" /></h1>
       </div>
@@ -120,6 +159,13 @@
           console.log(start, end, jsEvent, view, resource);
           if (confirm('Create event?'))
           {
+            console.log(start.toISOString(), end.toISOString());
+
+            $('input[name=start]').val(start.toISOString()); // UTC date considers local TZ
+            $('input[name=end]').val(end.toISOString());
+            $('#create_modal').modal('show');
+
+            // TODO: render on server response
             $('#calendar').fullCalendar('renderEvent', 
             {
               title : 'my pickup slot',
@@ -134,6 +180,51 @@
         }
       })
     });
+    </script>
+
+    <script>
+      $("#create_form").submit(function(e) {
+
+        var url = this.action;
+        console.log(url, $("#create_form").serialize());
+
+        // Reset validation
+        $('input').parent().removeClass('has-danger');
+        $('input').removeClass('form-control-danger');
+
+        $.ajax({
+          type: "POST",
+          url: url,
+          data: $("#create_form").serialize(),
+          success: function(data, statusText, response)
+          {
+            // Update patient table with new patient
+            //$('#table').html(data);
+            console.log(data);
+            $('#create_modal').modal('hide');
+          },
+          error: function(response, statusText)
+          {
+            //console.log(JSON.parse(response.responseText));
+            
+            // Display validation errors on for fields
+            errors = JSON.parse(response.responseText);
+            $.each(errors, function( index, error ) {
+              $('input[name='+error.field+']').parent().addClass('has-danger');
+              $('input[name='+error.field+']').addClass('form-control-danger');
+            });
+          }
+        });
+
+        e.preventDefault();
+      });
+
+      /*
+       * Reset form on modal open // commented for now to let the script assign the start/end dates into fields
+       */
+      //$('#create_modal').on('show.bs.modal', function (event) {
+      //  $("#create_form")[0].reset();
+      //});
     </script>
 
   </body>

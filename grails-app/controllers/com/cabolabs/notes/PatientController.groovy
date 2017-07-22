@@ -37,8 +37,10 @@ class PatientController {
         }
 
         if (patient.hasErrors()) {
-            println "B"
+            println "errors "+ patient.errors.fieldErrors.getClass() // errors class java.util.Collections$UnmodifiableList
             transactionStatus.setRollbackOnly()
+
+
 
             /*
 

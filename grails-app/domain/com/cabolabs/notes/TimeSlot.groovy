@@ -9,10 +9,11 @@ class TimeSlot {
    Date start
    Date end
 
-   String status
+   String status = 'open'
    Date scheduledOn // when status changes to scheduled, records that moment
 
    static constraints = {
       status(inList: ['open','scheduled'])
+      scheduledOn(nullable: true)
    }
 }
