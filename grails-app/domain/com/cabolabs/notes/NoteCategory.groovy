@@ -6,6 +6,7 @@ class NoteCategory {
 
    String name
    User owner
+   String uid = java.util.UUID.randomUUID() as String
 
    static constraints = {
    }
