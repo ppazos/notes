@@ -99,6 +99,7 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
         new RequestMap(url: '/patient/**', configAttribute: 'ROLE_ADMIN').save()
         new RequestMap(url: '/timeSlot/**', configAttribute: 'ROLE_ADMIN').save()
         new RequestMap(url: '/noteCategory/**', configAttribute: 'ROLE_ADMIN').save()
+        new RequestMap(url: '/dashboard/**', configAttribute: 'ROLE_ADMIN').save()
 
         springSecurityService.clearCachedRequestmaps()
     }
