@@ -335,7 +335,7 @@ button.fc-button:active, button.fc-button:focus {
             <div class="col-12">
               <ul class="navbar-nav flex-column">
                 <li class="nav-item">
-                  <g:link controller="patient" action="index" class="nav-link ${(controllerName=='dashboard')?'active':''}"><i class="fa fa-tachometer fa-fw" aria-hidden="true"></i> Overview</g:link>
+                  <g:link controller="dashboard" action="index" class="nav-link ${(controllerName=='dashboard')?'active':''}"><i class="fa fa-tachometer fa-fw" aria-hidden="true"></i> Overview</g:link>
                 </li>
                 <li class="nav-item">
                   <g:link controller="patient" action="index" class="nav-link ${(controllerName=='patient')?'active':''}"><i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i> Patients</g:link>
