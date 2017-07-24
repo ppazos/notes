@@ -11,7 +11,7 @@ class UrlMappings {
 
         //"/"(view:"/index")
         "/" {
-            controller = 'patient'
+            controller = 'dashboard'
             action = 'index'
         }
         "500"(view:'/error')
