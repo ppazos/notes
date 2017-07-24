@@ -12,6 +12,29 @@
       }
       .nav {
         margin-bottom: 10px;
+        padding-top: 5px;
+        padding-left: 3px;
+        padding-right: 3px;
+        background-color: #8274C1;
+      }
+      .nav > .nav-item { /* space between tabs */
+        margin-left: 2px;
+        margin-right: 2px;
+      }
+      .nav > .nav-item > a {
+        color: #FFF;
+      }
+      .zero-state-container {
+        height: 300px;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-align-items: center;
+        -align-items: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+      }
+      .zero-state {
+        color: #DDD;
       }
     </style>
   </head>
@@ -83,6 +106,13 @@
 
     <div class="row">
       <div class="col">
+
+       <g:if test="${!noteList}">
+         <div class="zero-state-container">
+           <h1 class="zero-state">Ups! we don't have any notes here.</h1>
+         </div>
+       </g:if>
+
         <%
         def cols = 2
         def list = noteList.collect() // new list
