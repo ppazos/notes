@@ -9,34 +9,54 @@ class PatientController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def index(Integer max) {
+    def springSecurityService
+
+    def index(Integer max)
+    {
         //params.max = Math.min(max ?: 10, 100)
         //respond Patient.list(params), model:[patientCount: Patient.count()]
     }
 
-    def patients_table(Integer max) {
+    def patients_table(Integer max)
+    {
+        def loggedInUser = springSecurityService.currentUser
         params.max = Math.min(max ?: 10, 100)
-        render(template: "patients_table", model: [patientList: Patient.list(params)])
+
+        def c = Patient.createCriteria()
+        def patientList =  c.list(params) {
+            eq('owner', loggedInUser)
+        }
+        
+        render(template: "patients_table", model: [patientList: patientList])
     }
 
-    def show(Patient patient) {
+    def show(Patient patient)
+    {
         respond patient
     }
 
-    def create() {
+    def create()
+    {
         respond new Patient(params)
     }
 
     @Transactional
-    def save(Patient patient) {
-        if (patient == null) {
+    def save(Patient patient)
+    {
+        if (patient == null)
+        {
             println "A"
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (patient.hasErrors()) {
+        def loggedInUser = springSecurityService.currentUser
+        patient.owner = loggedInUser
+        patient.validate()
+
+        if (patient.hasErrors())
+        {
             println "errors "+ patient.errors.fieldErrors.getClass() // errors class java.util.Collections$UnmodifiableList
             transactionStatus.setRollbackOnly()
 
@@ -102,19 +122,23 @@ class PatientController {
         redirect action:'patients_table'
     }
 
-    def edit(Patient patient) {
+    def edit(Patient patient)
+    {
         respond patient
     }
 
     @Transactional
-    def update(Patient patient) {
-        if (patient == null) {
+    def update(Patient patient)
+    {
+        if (patient == null)
+        {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (patient.hasErrors()) {
+        if (patient.hasErrors())
+        {
             transactionStatus.setRollbackOnly()
             respond patient.errors, view:'edit'
             return
@@ -132,8 +156,8 @@ class PatientController {
     }
 
     @Transactional
-    def delete(Patient patient) {
-
+    def delete(Patient patient)
+    {
         if (patient == null) {
             transactionStatus.setRollbackOnly()
             notFound()

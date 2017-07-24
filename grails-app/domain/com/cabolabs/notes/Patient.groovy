@@ -1,5 +1,7 @@
 package com.cabolabs.notes
 
+import com.cabolabs.security.User
+
 class Patient {
 
    String uid = java.util.UUID.randomUUID() as String
@@ -10,6 +12,8 @@ class Patient {
    String sex
    Date dob
    
+   User owner
+
    static constraints = {
    }
 }
