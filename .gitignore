@@ -33,3 +33,6 @@ stacktrace.log
 /target
 
 *.class
+*.bin
+
+*.lock
