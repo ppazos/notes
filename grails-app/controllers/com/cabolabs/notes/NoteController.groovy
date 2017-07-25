@@ -62,6 +62,7 @@ class NoteController {
             return
         }
 
+// TODO: note text is required, validate + error report
 
         note.properties = params
         
@@ -71,7 +72,8 @@ class NoteController {
 
         // test file
         String PS = System.getProperty("file.separator")
-        def template_document = new File("openehr" +PS+ "Psychotherapy_Note_tags_envelope.xml")
+        //def template_document = new File("openehr" +PS+ "Psychotherapy_Note_tags_envelope.xml")
+        def template_document = new File("openehr" +PS+ "with_category" +PS+ "Psychotherapy_Note.EN.v1_tags_envelope.xml")
         def xml = template_document.text
 
         def datetime_format_openEHR = "yyyyMMdd'T'HHmmss,SSSZ"
@@ -90,7 +92,9 @@ class NoteController {
           '[[VERSION_ID:::VERSION_ID:::ANY]]'      : (java.util.UUID.randomUUID() as String) +'::PSY.NOTES::1',
           '[[COMPOSITION:::UUID:::ANY]]'           : java.util.UUID.randomUUID() as String,
           '[[COMPOSITION_DATE:::DATETIME:::NOW]]'  : str_date_openEHR,
-          '[[Synopsis:::STRING:::]]' : groovy.xml.XmlUtil.escapeXml(note_text)
+          '[[Synopsis:::STRING:::]]'               : groovy.xml.XmlUtil.escapeXml(note_text),
+          '[[Category.Name]]'                      : note.category.name,
+          '[[Category.Code]]'                      : note.category.uid
         ]
 
         data.each { k, v ->
