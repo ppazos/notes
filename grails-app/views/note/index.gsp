@@ -91,7 +91,7 @@
     
     <div class="row">
       <div class="col">
-        <ul class="nav nav-tabs nav-fill">
+        <ul class="nav nav-tabs nav-fill flex-column flex-sm-row">
           <g:each in="${categories}" var="_category">
             <li class="nav-item">
               <a class="nav-link ${category.name == _category.name ? 'active' : ''}" href="${createLink(action:'index', params:[categoryName:_category.name, pid: params.pid])}">${_category.name}</a>
