@@ -37,20 +37,6 @@ stacktrace.log
 
 *.lock
 
-.gradle/3.4.1/taskHistory/taskHistory.lock
+.gradle/**
 
-.gradle/3.4.1/fileContent/annotation-processors.bin
-
-.gradle/3.4.1/fileContent/fileContent.lock
-
-.gradle/3.4.1/taskHistory/fileHashes.bin
-
-.gradle/3.4.1/taskHistory/fileSnapshots.bin
-
-.gradle/3.4.1/taskHistory/taskHistory.bin
-
-.gradle/3.4.1/taskHistory/taskHistory.lock
-
-build/resources/main/messages.properties
-
-build/classes/main/messages.properties
+build/**
