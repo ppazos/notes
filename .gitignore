@@ -34,9 +34,11 @@ stacktrace.log
 
 *.class
 *.bin
-
 *.lock
 
-.gradle/**
-
-build/**
+.gradle
+.asscache
+build
+out
+logs
+classes
