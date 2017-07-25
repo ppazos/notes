@@ -17,6 +17,7 @@ class DashboardController {
       }
 
       return [patients: Patient.countByOwner(loggedInUser),
-              notes: notes]
+              slots:    TimeSlot.countByOwner(loggedInUser),
+              notes:    notes]
    }
 }

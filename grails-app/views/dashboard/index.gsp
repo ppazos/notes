@@ -27,12 +27,11 @@
 
     <div class="row">
       <div class="col-6">
-
         <div class="card">
           <div class="card-header">
             <div class="row">
               <div class="col-6">
-                <i class="fa fa-user-circle-o fa-fw fa-4x" aria-hidden="true"></i>
+                <i class="fa fa-user-circle-o fa-4x" aria-hidden="true"></i>
               </div>
               <div class="col-6 text-right">
                 <div class="dashboard-number">${patients}</div>
@@ -46,16 +45,14 @@
           </div>
           -->
         </div>
-
       </div>
 
       <div class="col-6">
-
         <div class="card">
           <div class="card-header">
             <div class="row">
               <div class="col-6">
-                <i class="fa fa-file-text-o fa-fw fa-4x" aria-hidden="true"></i>
+                <i class="fa fa-file-text-o fa-4x" aria-hidden="true"></i>
               </div>
               <div class="col-6 text-right">
                 <div class="dashboard-number">${notes}</div>
@@ -69,7 +66,29 @@
           </div>
           -->
         </div>
+      </div>
+    </div>
 
+    <div class="row">
+      <div class="col-6">
+        <div class="card">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-6">
+                <i class="fa fa-calendar fa-4x" aria-hidden="true"></i>
+              </div>
+              <div class="col-6 text-right">
+                <div class="dashboard-number">${slots}</div>
+                <div>Slots</div>
+              </div>
+            </div>
+          </div>
+          <!--
+          <div class="card-footer">
+          foot
+          </div>
+          -->
+        </div>
       </div>
     </div>
   </body>

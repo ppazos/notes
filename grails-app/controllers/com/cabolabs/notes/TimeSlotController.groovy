@@ -7,6 +7,8 @@ import grails.converters.JSON
 @Transactional(readOnly = true)
 class TimeSlotController {
 
+    def springSecurityService
+
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
@@ -15,8 +17,9 @@ class TimeSlotController {
 
     def timeslot_list(Integer max)
     {
+        def loggedInUser = springSecurityService.currentUser
         params.max = Math.min(max ?: 10, 100)
-        render TimeSlot.list(params) as JSON //, model:[timeSlotCount: TimeSlot.count()]
+        render TimeSlot.findAllByOwner(loggedInUser, params) as JSON //, model:[timeSlotCount: TimeSlot.count()]
     }
 
     def show(TimeSlot timeSlot) {
@@ -28,19 +31,25 @@ class TimeSlotController {
     }
 
     @Transactional
-    def save(TimeSlot timeSlot) {
-        
+    def save(TimeSlot timeSlot)
+    {
         println "save"
         println params
 
-        if (timeSlot == null) {
+        if (timeSlot == null)
+        {
             transactionStatus.setRollbackOnly()
             //notFound()
             render text: [result: 'NO_CONTENT'] as JSON, status: 400, contentType: "application/json"
             return
         }
 
-        if (timeSlot.hasErrors()) {
+        def loggedInUser = springSecurityService.currentUser
+        timeSlot.owner = loggedInUser
+        timeSlot.validate()
+
+        if (timeSlot.hasErrors())
+        {
             transactionStatus.setRollbackOnly()
             //respond timeSlot.errors, view:'create'
 

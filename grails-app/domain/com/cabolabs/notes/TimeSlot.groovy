@@ -1,6 +1,10 @@
 package com.cabolabs.notes
 
+import com.cabolabs.security.User
+
 class TimeSlot {
+
+   User owner
 
    String uid = java.util.UUID.randomUUID() as String
    
