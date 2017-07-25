@@ -17,18 +17,21 @@ class BootStrap {
         // JSON Marshallers
         registerJSONMarshallers()
 
-
+/*
 println ">>>>>>>>>>>>>>>>>>>>>>>>>>>>"
         // test
         // ehrserver-cabolabs2.rhcloud.com
-        def ehrserver = new EhrServerClient('https://', 'cabolabs-ehrserver.rhcloud.com', 443, '/')
-        def token = ehrserver.login('userx', 'user', '123456')
+        //def ehrserver = new EhrServerClient('https://', 'cabolabs-ehrserver.rhcloud.com', 443, '/')
+        //def token = ehrserver.login('userx', 'user', '123456')
+        def ehrserver = new EhrServerClient('http://', '192.168.1.108', 8090, '/ehr/')
+        def token = ehrserver.login('user', 'user', '123456')
         //println token
         def result = ehrserver.getEhrs()
         result.ehrs.each {
           println it
         }
 println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+*/
 
         def adminRole = Role.findOrSaveByAuthority('ROLE_ADMIN')
         def admin

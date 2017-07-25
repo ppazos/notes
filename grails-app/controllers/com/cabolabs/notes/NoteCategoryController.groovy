@@ -12,7 +12,8 @@ class NoteCategoryController {
 
     def springSecurityService
 
-    def index(Integer max) {
+    def index(Integer max)
+    {
         def loggedInUser = springSecurityService.currentUser
         params.max = Math.min(max ?: 10, 100)
         respond NoteCategory.findAllByOwner(loggedInUser, params), model:[noteCategoryCount: NoteCategory.countByOwner(loggedInUser)]
@@ -29,11 +30,14 @@ class NoteCategoryController {
     @Transactional
     def save(NoteCategory noteCategory)
     {
-        if (noteCategory == null) {
+        if (noteCategory == null)
+        {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
+
+// TODO: validate + error report name is mandatory
 
         def loggedInUser = springSecurityService.currentUser
         noteCategory.owner = loggedInUser
