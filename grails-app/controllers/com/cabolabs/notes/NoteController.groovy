@@ -14,18 +14,23 @@ class NoteController {
 
     def springSecurityService
 
-    def index(Integer max, Long pid, String categoryName)
+    def index(Integer max, Long pid, String categoryName, boolean uncategorized)
     {
+        def loggedInUser = springSecurityService.currentUser
+        def categories = NoteCategory.findAllByOwner(loggedInUser)
+        [categories: categories]
+    }
+
+    def note_list(Integer max, Long pid, String categoryName, boolean uncategorized)
+    {
+        println params
         params.max = Math.min(max ?: 9, 100)
         params.sort = "id"
         params.order = "desc"
         
         def patient = Patient.get(pid)
-
         def loggedInUser = springSecurityService.currentUser
         def categories = NoteCategory.findAllByOwner(loggedInUser)
-
-        assert patient != null
 
         // Default category to list notes, can be null and show no category notes
         def category = categories[0]
@@ -35,13 +40,31 @@ class NoteController {
             category = categories.find {it.name == categoryName}
         }
 
-        respond Note.findAllByPatientAndCategory(patient, category, params), 
-                model:[
-                  noteCount: Note.countByPatientAndCategory(patient, category),
-                  patient: patient,
-                  categories: categories,
-                  category: category
-                ]
+        if (uncategorized)
+        {
+            category = null
+        }
+
+        def c = Note.createCriteria()
+        def noteList = c.list(params) {
+            eq('patient', patient)
+            if (category)
+            {
+                eq('category', category)
+            }
+            else
+            {
+                isNull('category')
+            }
+        }
+
+        render template: 'note_list',
+               model:[
+                 noteList:   noteList,
+                 patient:    patient,
+                 categories: categories,
+                 category:   category
+               ]
     }
 
     def show(Note note) {
@@ -142,8 +165,7 @@ class NoteController {
 */
 
 
-// TODO: refactor to return just the contents, should filter by the selectedcategory
-        redirect action: 'index', params: [pid: pid]
+        redirect action: 'note_list', params: [categoryName: note.category?.name, pid: pid, uncategorized: (note.category == null)]
     }
 
     def edit(Note note) {

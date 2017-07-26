@@ -71,7 +71,7 @@
                   </div>
                   <div class="form-group">
                     <label for="name">Category</label>
-                    <g:select name="category" class="form-control" from="${categories}" optionKey="id" optionValue="name" />
+                    <g:select name="category" class="form-control" from="${categories}" optionKey="id" optionValue="name" noSelection="['null':'Uncategorized']" />
                   </div>
                 </div>
                 <div class="modal-footer">
@@ -94,63 +94,11 @@
         </div>
       </div>
     </g:if>
-    
-    <div class="row">
-      <div class="col">
-        <ul class="nav nav-tabs nav-fill flex-column flex-sm-row">
-          <g:each in="${categories}" var="_category">
-            <li class="nav-item">
-              <a class="nav-link ${category.name == _category.name ? 'active' : ''}" href="${createLink(action:'index', params:[categoryName:_category.name, pid: params.pid])}">${_category.name}</a>
-            </li>
-          </g:each>
-          <li class="nav-item">
-            <a class="nav-link ${category == null ? 'active' : ''}" href="#">Uncategorized</a>
-          </li>
-        </ul>
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="col">
 
-       <g:if test="${!noteList}">
-         <div class="zero-state-container">
-           <h1 class="zero-state">Ups! we don't have any notes here.</h1>
-         </div>
-       </g:if>
-
-        <%
-        def cols = 2
-        def list = noteList.collect() // new list
-        def row = list.take(cols)
-        %>
-        <g:while test="${list}">
-          <div class="card-deck"><!-- card-columns = masonry -->
-            <g:each in="${row}" var="note">
-              <div class="card">
-                <div class="card-header">
-                  ${note.id} ${note.dateCreated}
-                </div>
-                <div class="card-block">
-                  <p class="card-text">
-                    ${note.text.encodeAsRaw()}
-                  </p>
-                </div>
-                <div class="card-footer card-${note.color}">
-                </div>
-              </div>
-            </g:each>
-          </div>
-          <%
-            list = list.drop(cols)
-            row = list.take(cols)
-          %>
-        </g:while>
-
-        <div class="pagination">
-          <g:paginate total="${noteCount ?: 0}" />
-        </div>
-      </div>
+    <%-- params received by index are sent to note_list automatically --%>
+    <div id="note_list_container">
+    <g:include action="note_list" />
     </div>
 
     <asset:javascript src="tinymce/tinymce.min.js"/>
@@ -176,14 +124,19 @@
         $('input').parent().removeClass('has-danger');
         $('input').removeClass('form-control-danger');
 
+        // makes tinyMCE to save the content to the textarea for submit
+        // without this, the first submit has empty text
+        tinyMCE.get("editor").save();
+
         $.ajax({
           type: "POST",
           url: url,
           data: $("#create_form").serialize(),
           success: function(data, statusText, response)
           {
+            console.log(data);
             // Update patient table with new patient
-            $('#table').html(data);
+            $('#note_list_container').html(data);
             $('#create_modal').modal('hide');
           },
           error: function(response, statusText)
