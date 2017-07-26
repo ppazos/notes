@@ -4,12 +4,16 @@
     <meta name="layout" content="notes-internal" />
     <title><g:message code="note.index.title" /></title>
     <style>
+    /*
       .modal-body {
         padding: 0;
       }
+      */
+      /*
       .modal-body > .form-group {
         padding: 15px;
       }
+      */
       .nav {
         margin-bottom: 10px;
         padding-top: 5px;
@@ -52,7 +56,7 @@
         <!-- Modal -->
         <div class="modal fade" id="create_modal" tabindex="-1" role="dialog" aria-labelledby="create_modal_label" aria-hidden="true">
           <div class="modal-dialog modal-lg" role="document">
-            <g:form action="save">
+            <g:form url="[action:'save']" id="create_form">
               <input type="hidden" name="pid" value="${params.pid}" />
               <div class="modal-content">
                 <div class="modal-header">
@@ -62,7 +66,9 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <textarea id="editor" name="text"></textarea>
+                  <div class="form-group">
+                    <textarea id="editor" name="text"></textarea>
+                  </div>
                   <div class="form-group">
                     <label for="name">Category</label>
                     <g:select name="category" class="form-control" from="${categories}" optionKey="id" optionValue="name" />
@@ -156,10 +162,54 @@
            resize: false,
            menubar: false,
            branding: false,
-           border: 0
+           //border: 0
         }).then(function(editors){
-          $('.mce-tinymce').css('border','0');
+          //$('.mce-tinymce').css('border','0');
         });
+      });
+
+      $("#create_form").submit(function(e) {
+
+        var url = this.action;
+
+        // Reset validation
+        $('input').parent().removeClass('has-danger');
+        $('input').removeClass('form-control-danger');
+
+        $.ajax({
+          type: "POST",
+          url: url,
+          data: $("#create_form").serialize(),
+          success: function(data, statusText, response)
+          {
+            // Update patient table with new patient
+            $('#table').html(data);
+            $('#create_modal').modal('hide');
+          },
+          error: function(response, statusText)
+          {
+            //console.log(JSON.parse(response.responseText));
+            
+            // Display validation errors on for fields
+            errors = JSON.parse(response.responseText);
+            $.each(errors, function( index, error ) {
+              console.log(error.defaultMessage);
+              $('[name='+error.field+']').parent().addClass('has-danger'); // shows border on form-control children
+              $('[name='+error.field+']').addClass('form-control-danger'); // shows icon if input
+
+              if (error.field == 'text') $('.mce-tinymce').addClass('form-control'); // shows border
+            });
+          }
+        });
+
+        e.preventDefault();
+      });
+
+      /*
+       * Reset form on modal open
+       */
+      $('#create_modal').on('show.bs.modal', function (event) {
+        $("#create_form")[0].reset();
       });
     </script>
   </body>

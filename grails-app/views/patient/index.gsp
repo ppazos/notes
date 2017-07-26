@@ -7,20 +7,21 @@
   <body>
     <div class="row">
       <div class="col">
+
         <!-- Button trigger modal -->
         <span class="float-right">
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_modal">
           + Patient
           </button>
         </span>
 
         <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="create_modal" tabindex="-1" role="dialog" aria-labelledby="create_modal_label" aria-hidden="true">
           <div class="modal-dialog modal-lg" role="document">
             <g:form url="[action:'save']" id="create_form">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">New patient</h5>
+                  <h5 class="modal-title" id="create_modal_label">New patient</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -110,7 +111,7 @@
           {
             // Update patient table with new patient
             $('#table').html(data);
-            $('#myModal').modal('hide');
+            $('#create_modal').modal('hide');
           },
           error: function(response, statusText)
           {
@@ -119,8 +120,9 @@
             // Display validation errors on for fields
             errors = JSON.parse(response.responseText);
             $.each(errors, function( index, error ) {
-              $('input[name='+error.field+']').parent().addClass('has-danger');
-              $('input[name='+error.field+']').addClass('form-control-danger');
+              console.log(error.defaultMessage);
+              $('[name='+error.field+']').parent().addClass('has-danger'); // shows border on form-control 
+              $('[name='+error.field+']').addClass('form-control-danger'); // shows icon if input
             });
           }
         });
@@ -131,7 +133,7 @@
       /*
        * Reset form on modal open
        */
-      $('#myModal').on('show.bs.modal', function (event) {
+      $('#create_modal').on('show.bs.modal', function (event) {
         $("#create_form")[0].reset();
       });
     </script>

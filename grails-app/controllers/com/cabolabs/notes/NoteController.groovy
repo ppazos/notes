@@ -3,6 +3,7 @@ package com.cabolabs.notes
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import java.text.SimpleDateFormat
+import grails.converters.JSON
 
 import com.cabolabs.security.*
 
@@ -56,7 +57,8 @@ class NoteController {
     {
         println "save "+ params
 
-        if (note == null) {
+        if (note == null)
+        {
             transactionStatus.setRollbackOnly()
             notFound()
             return
@@ -67,8 +69,37 @@ class NoteController {
         note.properties = params
         
 
-        // TODO: put this on a service
         def loggedInUser = springSecurityService.currentUser
+
+
+        def username = springSecurityService.principal.username
+        note.color = 'info' // TODO: set by user, is a bootstrap class
+        note.author = User.findByUsername(username)
+        note.patient = Patient.get(pid)
+        note.validate()
+
+        if (note.hasErrors())
+        {
+            println "note errors"
+            //println note.errors
+            //println note.errors.allErrors
+            println note.errors.fieldErrors
+
+            transactionStatus.setRollbackOnly()
+            //respond note.errors, view:'index'
+            //return
+
+            // TODO: report error like patient save
+            //redirect action: 'index', params: [pid: pid]
+            render note.errors.fieldErrors as JSON, status: 400, contentType: "application/json"
+            return
+        }
+        
+        note.save flush:true
+
+
+/*
+        // TODO: put this on a service
 
         // test file
         String PS = System.getProperty("file.separator")
@@ -83,6 +114,7 @@ class NoteController {
 
         def note_text = note.text.replace('&', '&amp;')
         println note_text
+
 
         def data = [
           '[[CONTRIBUTION:::UUID:::ANY]]'          : java.util.UUID.randomUUID() as String,
@@ -107,32 +139,10 @@ class NoteController {
         def out = new File("documents" +PS+ "pending" +PS+ data['[[COMPOSITION:::UUID:::ANY]]'] +".xml")
         out << xml
         //// test
+*/
 
 
-        def username = springSecurityService.principal.username
-        note.color = 'info' // TODO: set by user, is a bootstrap class
-        note.author = User.findByUsername(username)
-        note.patient = Patient.get(pid)
-        note.validate()
-
-        if (note.hasErrors())
-        {
-            println "note errors"
-            //println note.errors
-            //println note.errors.allErrors
-            println note.errors.fieldErrors
-
-            transactionStatus.setRollbackOnly()
-            //respond note.errors, view:'index'
-            //return
-
-            // TODO: report error like patient save
-            redirect action: 'index', params: [pid: pid]
-            return
-        }
-        
-        note.save flush:true
-
+// TODO: refactor to return just the contents, should filter by the selectedcategory
         redirect action: 'index', params: [pid: pid]
     }
 
