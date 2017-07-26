@@ -17,6 +17,8 @@ class CommitJob {
 
       outbox.eachFile { f ->
 
+         if (!f.name.endsWith('.xml')) return
+
          println "File to commit "+ f.name
          
          // commit, the file already has the versions envelope
