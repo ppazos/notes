@@ -18,7 +18,7 @@ class NoteController {
     {
         def loggedInUser = springSecurityService.currentUser
         def categories = NoteCategory.findAllByOwner(loggedInUser)
-        [categories: categories]
+        [categories: categories, patient: Patient.get(pid)]
     }
 
     def note_list(Integer max, Long pid, String categoryName, boolean uncategorized)

@@ -95,6 +95,28 @@
       </div>
     </g:if>
 
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-4">
+                <i class="fa fa-user-circle-o fa-4x" aria-hidden="true"></i>
+              </div>
+              <div class="col-8 text-right">
+                ${patient.name} ${patient.lastname} (${patient.sex})
+              </div>
+            </div>
+          </div>
+          <!--
+          <div class="card-footer">
+          foot
+          </div>
+          -->
+        </div>
+      </div>
+    </div>
+
 
     <%-- params received by index are sent to note_list automatically --%>
     <div id="note_list_container">
