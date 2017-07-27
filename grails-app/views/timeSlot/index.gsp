@@ -3,9 +3,9 @@
   <head>
     <meta name="layout" content="notes-internal" />
     <title><g:message code="timeSlot.index.title" /></title>
-    <link rel="stylesheet" href="https://fullcalendar.io/js/fullcalendar-3.4.0/fullcalendar.min.css"></link>
-    <script type="text/javascript" src="https://fullcalendar.io/js/fullcalendar-3.4.0/lib/moment.min.js"></script>
-    <script type="text/javascript" src="https://fullcalendar.io/js/fullcalendar-3.4.0/fullcalendar.min.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css"></link>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
     <style>
     #calendar h2 {
       font-size: 22px;
@@ -49,7 +49,6 @@
                   <div class="form-group">
                     <label for="end">End</label>
                     <input type="text" class="form-control" id="end" name="end" readonly="true" />
-                    <!--<input type="datetime-local" class="form-control" id="end" name="end" />-->
                   </div>
                   <div class="form-group">
                     <label for="color">Color</label>
@@ -154,17 +153,21 @@
         select: function( start, end, jsEvent, view, resource ) {
 
           console.log(start, end, jsEvent, view, resource);
-          console.log($('#calendar').fullCalendar('getView'));
+          //console.log($('#calendar').fullCalendar('getView'));
 
           // On month view, show the time pickers because start and end dont have time
           if ($('#calendar').fullCalendar('getView').type == 'month')
           {
-
+            console.log('view month');
+            //end.set({hour: 0, minute: 0, second: 0, millisecond: 0});
           }
 
-          console.log(start.format());
-          console.log(start.format("YYYY-MM-DDThh:mm"));
-          console.log(start.format('YYYY-MM-DDTHH:mm:ssZ'));
+          console.log(start.format(), start.toDate());
+          console.log(end.format(), end.toDate());
+          //console.log(start.format("YYYY-MM-DDThh:mm"));
+          //console.log(start.format('YYYY-MM-DDTHH:mm:ssZ'));
+
+          console.log(start.format("YYYY-MM-DD[T]hh:mm"));
 
           //console.log(start.toDate().format("YYYY-MM-DDThh:mm"));
 
@@ -172,8 +175,8 @@
           $('input[name=end]').val(end.toISOString());
 
           //$('input[name=start]').val('2017-07-21T10:00'); // This works but moment is not retrieving the right format
-//          $('input[name=start]').val(start.format('YYYY-MM-DDThh:mm')); // format needed by HTML5 datetime-local
-//          $('input[name=end]').val(end.format('YYYY-MM-DDThh:mm'));
+          //$('input[name=start]').val(start.format('YYYY-MM-DD[T]hh:mm')); // format needed by HTML5 datetime-local
+          //$('input[name=end]').val(end.format('YYYY-MM-DD[T]hh:mm'));
           $('#create_modal').modal('show');
 
 /*
