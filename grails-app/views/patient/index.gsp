@@ -110,7 +110,7 @@
           success: function(data, statusText, response)
           {
             // Update patient table with new patient
-            $('#table').html(data);
+            $('#table').html(data); // FIXME: this is not a container of the paginator
             $('#create_modal').modal('hide');
           },
           error: function(response, statusText)

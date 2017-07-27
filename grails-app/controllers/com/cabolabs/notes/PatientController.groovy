@@ -13,8 +13,6 @@ class PatientController {
 
     def index(Integer max)
     {
-        //params.max = Math.min(max ?: 10, 100)
-        //respond Patient.list(params), model:[patientCount: Patient.count()]
     }
 
     def patients_table(Integer max)

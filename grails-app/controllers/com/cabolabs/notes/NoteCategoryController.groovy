@@ -2,7 +2,7 @@ package com.cabolabs.notes
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
-
+import grails.converters.JSON
 import com.cabolabs.security.*
 
 @Transactional(readOnly = true)
@@ -14,9 +14,18 @@ class NoteCategoryController {
 
     def index(Integer max)
     {
+    }
+
+    def category_list(Integer max)
+    {
         def loggedInUser = springSecurityService.currentUser
         params.max = Math.min(max ?: 10, 100)
-        respond NoteCategory.findAllByOwner(loggedInUser, params), model:[noteCategoryCount: NoteCategory.countByOwner(loggedInUser)]
+        //respond NoteCategory.findAllByOwner(loggedInUser, params), model:[noteCategoryCount: NoteCategory.countByOwner(loggedInUser)]
+        render template:'category_list',
+               model:[
+                 noteCategoryList: NoteCategory.findAllByOwner(loggedInUser, params),
+                 noteCategoryCount: NoteCategory.countByOwner(loggedInUser)
+               ]
     }
 
     def show(NoteCategory noteCategory) {
@@ -46,13 +55,14 @@ class NoteCategoryController {
         if (noteCategory.hasErrors())
         {
             transactionStatus.setRollbackOnly()
-            respond noteCategory.errors, view:'create'
+            //respond noteCategory.errors, view:'create'
+            render noteCategory.errors.fieldErrors as JSON, status: 400, contentType: "application/json"
             return
         }
 
         noteCategory.save flush:true
 
-        redirect action: 'index'
+        redirect action: 'category_list'
     }
 
     def edit(NoteCategory noteCategory) {
