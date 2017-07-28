@@ -149,6 +149,29 @@
           //if (!confirm("is this okay?")) {
           //  revertFunc();
           //}
+
+          $.ajax({
+            type: "POST",
+            url: '${createLink(action:"update")}',
+            data: {uid: event.id, start: event.start.toISOString(), end: event.end.toISOString()},
+            success: function(data, statusText, response)
+            {
+              console.log(data);
+              $('#create_modal').modal('hide');
+
+              $('#calendar').fullCalendar('refetchEvents');
+            },
+            error: function(response, statusText)
+            {
+              //console.log(JSON.parse(response.responseText));
+              
+              // Display validation errors on for fields
+              errors = JSON.parse(response.responseText);
+              $.each(errors, function( index, error ) {
+                console.log(error);
+              });
+            }
+          });
         },
         select: function( start, end, jsEvent, view, resource ) {
 
@@ -188,7 +211,6 @@
               end   : end.toDate(),
             }, true);
 */
-
         }
       })
     });
@@ -210,8 +232,6 @@
           data: $("#create_form").serialize(),
           success: function(data, statusText, response)
           {
-            // Update patient table with new patient
-            //$('#table').html(data);
             console.log(data);
             $('#create_modal').modal('hide');
 

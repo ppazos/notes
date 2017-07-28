@@ -9,7 +9,7 @@ class TimeSlotController {
 
     def springSecurityService
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
 
     def index(Integer max) {
         
@@ -82,28 +82,35 @@ class TimeSlotController {
     }
 
     @Transactional
-    def update(TimeSlot timeSlot) {
-        if (timeSlot == null) {
+    def update()
+    {
+        println "timeslot update"
+        println params
+
+        def timeSlot = TimeSlot.findByUid(params.uid)
+        
+        if (timeSlot == null)
+        {
             transactionStatus.setRollbackOnly()
-            notFound()
+            render text: [result: 'NO_CONTENT'] as JSON, status: 400, contentType: "application/json"
             return
         }
 
-        if (timeSlot.hasErrors()) {
+        timeSlot.properties = params
+        timeSlot.validate()
+
+        if (timeSlot.hasErrors())
+        {
             transactionStatus.setRollbackOnly()
-            respond timeSlot.errors, view:'edit'
+            //respond timeSlot.errors, view:'edit'
+            render text: timeSlot.errors.fieldErrors as JSON, status: 400, contentType: "application/json"
             return
         }
 
         timeSlot.save flush:true
 
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'timeSlot.label', default: 'TimeSlot'), timeSlot.id])
-                redirect timeSlot
-            }
-            '*'{ respond timeSlot, [status: OK] }
-        }
+        render text: [result: 'OK'] as JSON, status: 201, contentType: "application/json"
+        return
     }
 
     @Transactional
