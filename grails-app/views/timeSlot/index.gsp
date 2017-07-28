@@ -87,12 +87,13 @@
       $('#calendar').fullCalendar({
         header: {
           left:   'title',
-          center: 'month agendaWeek',
+          center: 'agendaWeek', //month // month needs work on the create modal to set whole day or time from user, need datetimepicker for that
           right:  'today prev,next'
         },
         dayClick: function() {
           //alert('a day has been clicked!');
         },
+        defaultView: 'agendaWeek',
         showNonCurrentDates: false,
         height: 700,
         firstDay: 1,
@@ -141,6 +142,30 @@
           //if (!confirm("Are you sure about this change?")) {
           //  revertFunc();
           //}
+
+          // FIXME: refactor, same as resizeEvent
+          $.ajax({
+            type: "POST",
+            url: '${createLink(action:"update")}',
+            data: {uid: event.id, start: event.start.toISOString(), end: event.end.toISOString()},
+            success: function(data, statusText, response)
+            {
+              console.log(data);
+              $('#create_modal').modal('hide');
+
+              $('#calendar').fullCalendar('refetchEvents');
+            },
+            error: function(response, statusText)
+            {
+              //console.log(JSON.parse(response.responseText));
+              
+              // Display validation errors on for fields
+              errors = JSON.parse(response.responseText);
+              $.each(errors, function( index, error ) {
+                console.log(error);
+              });
+            }
+          });
         },
         eventResize: function(event, delta, revertFunc) {
 
