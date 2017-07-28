@@ -119,7 +119,7 @@
 
 
     <%-- params received by index are sent to note_list automatically --%>
-    <div id="note_list_container">
+    <div id="list_container">
     <g:include action="note_list" />
     </div>
 
@@ -158,7 +158,7 @@
           {
             console.log(data);
             // Update patient table with new patient
-            $('#note_list_container').html(data);
+            $('#list_container').html(data);
             $('#create_modal').modal('hide');
           },
           error: function(response, statusText)

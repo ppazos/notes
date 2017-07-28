@@ -25,6 +25,7 @@ class NoteController {
     {
         println params
         params.max = Math.min(max ?: 9, 100)
+        if (!params.offset) params.offset = 0
         params.sort = "id"
         params.order = "desc"
         

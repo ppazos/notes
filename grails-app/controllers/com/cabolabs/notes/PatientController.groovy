@@ -18,7 +18,7 @@ class PatientController {
     def patients_table(Integer max)
     {
         def loggedInUser = springSecurityService.currentUser
-        params.max = Math.min(max ?: 10, 100)
+        params.max = Math.min(max ?: 4, 100)
 
         def c = Patient.createCriteria()
         def patientList =  c.list(params) {

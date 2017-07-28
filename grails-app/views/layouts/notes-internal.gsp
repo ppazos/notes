@@ -109,6 +109,17 @@
       }
     }
 
+    .pagination {
+      border: 1px solid #8274C1;
+    }
+    .pagination > * {
+      padding: 5px 10px;
+    }
+    .pagination > .currentStep {
+      background-color: #8274C1;
+      color: #FFF;
+    }
+
     /* button material */
     .btn {
       font-size: .8rem;
@@ -361,5 +372,17 @@ button.fc-button:active, button.fc-button:focus {
         </main>
       </div>
     </div>
+    <script>
+      // attaches event to dynamically loaded list pagination
+      $(document.body).on('click', '.pagination > a', function(e) {
+
+        console.log(e.target.href);
+        $.get(e.target.href, function (data) {
+          $('#list_container').html(data); // TODO: id other list containers with the same id, this works for notes only!!!
+        });
+
+        e.preventDefault();
+      });
+    </script>
   </body>
 </html>

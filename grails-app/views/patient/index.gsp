@@ -89,7 +89,7 @@
     </g:if>
 
     <div class="row">
-      <div class="col" id="table">
+      <div class="col" id="list_container">
         <g:include action="patients_table" />
       </div>
     </div>
@@ -110,7 +110,7 @@
           success: function(data, statusText, response)
           {
             // Update patient table with new patient
-            $('#table').html(data); // FIXME: this is not a container of the paginator
+            $('#list_container').html(data); // FIXME: this is not a container of the paginator
             $('#create_modal').modal('hide');
           },
           error: function(response, statusText)

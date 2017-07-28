@@ -52,7 +52,7 @@
         </g:while>
 
         <div class="pagination">
-          <g:paginate total="${noteList.totalCount ?: 0}" />
+          <g:paginate total="${noteList.totalCount ?: 0}" params="[pid: params.pid]" />
         </div>
       </div>
     </div>

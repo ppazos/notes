@@ -55,7 +55,7 @@
 
     <div class="row">
       <div class="col">
-        <div id="category_list_container">
+        <div id="list_container">
           <g:include action="category_list" />
         </div>
       </div>
@@ -77,7 +77,7 @@
           success: function(data, statusText, response)
           {
             // Update list
-            $('#category_list_container').html(data);
+            $('#list_container').html(data);
             $('#create_modal').modal('hide');
           },
           error: function(response, statusText)
