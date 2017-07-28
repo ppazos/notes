@@ -36,6 +36,9 @@
     html, body, .container-fluid, .container-fluid > .row, main {
       height: 100%;
     }
+    main {
+      overflow: auto; /* expands the container to the contents length, fixes a problem in responsive for note list */
+    }
     /* show menu 100% H bg lavender */
     body {
       background-color: #8274C1;
