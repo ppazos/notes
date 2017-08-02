@@ -8,11 +8,18 @@ import grails.converters.JSON
 class BootStrap {
 
     def springSecurityService
+    def mailService
 
     def init = { servletContext ->
 
         // Define server timezone
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
+
+        mailService.sendMail {
+            to "pablo.swp@gmail.com"
+            subject "Hello John"
+            html "<b>Hello</b> World"
+        }
 
         // JSON Marshallers
         registerJSONMarshallers()

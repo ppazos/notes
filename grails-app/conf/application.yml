@@ -146,3 +146,18 @@ environments:
                 testOnReturn: false
                 jdbcInterceptors: ConnectionState
                 defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
+
+---
+grails:
+    mail:
+        host: ${NOTES_EMAIL_HOST}
+        port: ${NOTES_EMAIL_PORT}
+        username: ${NOTES_EMAIL_USER}
+        password: ${NOTES_EMAIL_PASS}
+        default:
+            from: ${NOTES_EMAIL_FROM}
+        #props:
+        #    mail.smtp.auth: "true"
+        #    mail.smtp.socketFactory.port: System.getenv('NOTES_EMAIL_PORT')
+        #    mail.smtp.socketFactory.class: "javax.net.ssl.SSLSocketFactory"
+        #    mail.smtp.socketFactory.fallback: "false"
