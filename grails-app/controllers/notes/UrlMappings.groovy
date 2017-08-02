@@ -14,6 +14,9 @@ class UrlMappings {
             controller = 'dashboard'
             action = 'index'
         }
+
+        post "/user/signup" (controller:'user', action:'dosignup')
+
         "500"(view:'/error')
         "404"(view:'/notFound')
     }

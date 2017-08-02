@@ -99,7 +99,8 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
           '/error', '/index', '/index.gsp', '/**/favicon.ico', '/shutdown',
           '/**/js/**', '/**/css/**', '/**/images/**', '/**/fonts/**',
           '/login', '/login.*', '/login/*',
-          '/logout', '/logout.*', '/logout/*']) {
+          '/logout', '/logout.*', '/logout/*',
+          '/user/signup']) {
        new RequestMap(url: url, configAttribute: 'permitAll').save()
     }
 
