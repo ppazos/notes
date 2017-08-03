@@ -30,18 +30,18 @@
                     <label for="username"><g:message code="signup.email.label"/></label>
                     <input type="email" class="form-control ${errors?.username ? 'form-control-danger':''}"
                      name="username" id="username" required="required" value="${params.username}" />
+                     <g:if test="${errors?.username}">
+                       <small class="form-control-feedback"><g:message code="user.username.${errors.username.code}" /></small>
+                     </g:if>
                   </div>
-
                   
-                  <input type="submit" id="submit" class="btn btn-lg btn-success btn-block" value="${message(code: 'signup.button.text')}"/>
+                  <input type="submit" id="submit" name="submit" class="btn btn-lg btn-success btn-block" value="${message(code: 'signup.button.text')}"/>
                   
-                  <!--
-                  <div class="form-group" style="margin:0; padding:15px 0 15px 0; text-align:center;">
-                    <g:link controller="user" action="forgotPassword">
-                      <g:message code="springSecurity.login.forgotPassword.label"/>
+                  <div class="form-group" style="margin:0; padding:15px 0 0 0; text-align:center;">
+                    <g:link controller="login">
+                      <g:message code="back.action"/>
                     </g:link>
                   </div>
-                  -->
               </fieldset>
             </form>
           </div>

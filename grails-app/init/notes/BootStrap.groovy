@@ -47,7 +47,7 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 
         if (!User.findByUsername('admin'))
         {
-            admin = new User(username: 'admin', password: 'admin',
+            admin = new User(username: 'admin@admin.com', password: 'admin',
                              name: 'Pablo', lastname: 'Pazos').save(failOnError:true)
 
             UserRole.create admin, adminRole
@@ -58,7 +58,7 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
         // other user
         if (!User.findByUsername('user'))
         {
-            def user = new User(username: 'user', password: 'user',
+            def user = new User(username: 'user@user.com', password: 'user',
                              name: 'User', lastname: 'Resu').save(failOnError:true)
 
             UserRole.create user, adminRole
@@ -103,7 +103,8 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
           '/login', '/login.*', '/login/*',
           '/logout', '/logout.*', '/logout/*',
           '/user/signup',
-          '/user/reset']) {
+          '/user/reset',
+          '/user/forgot']) {
        new RequestMap(url: url, configAttribute: 'permitAll').save()
     }
 

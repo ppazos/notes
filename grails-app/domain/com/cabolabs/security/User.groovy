@@ -16,7 +16,7 @@ class User implements Serializable {
 	String name
 	String lastname
 
-	String username
+	String username // is the email
 	String password
 	boolean enabled = true
 	boolean accountExpired
@@ -31,7 +31,7 @@ class User implements Serializable {
 
 	static constraints = {
 		password blank: false, password: true
-		username blank: false, unique: true
+		username blank: false, unique: true, email: true
 		resetPasswordToken nullable: true
 	}
 

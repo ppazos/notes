@@ -10,7 +10,12 @@ class UserController {
 
     def signup()
     {
-
+        /*
+        if (!params.submit)
+        {
+            return params
+        }
+        */
     }
 
     def dosignup(String name, String lastname, String username)
@@ -86,8 +91,6 @@ class UserController {
             return params
         }
 
-        // TODO: reset and login
-
         def user = User.findByResetPasswordToken(token)
 
         if (!user)
@@ -97,12 +100,33 @@ class UserController {
 
         if (!password || !confirm)
         {
-            return params
+            return [
+              errors: [
+                password: [
+                  field: 'password',
+                  code:  'empty',
+                  rejectedValue: password
+                ],
+                confirm: [
+                  field: 'confirm',
+                  code:  'empty',
+                  rejectedValue: confirm
+                ]
+              ]
+            ]
         }
 
         if (password != confirm)
         {
-            return params
+            return [
+              errors: [
+                confirm: [
+                  field: 'confirm',
+                  code:  'invalid',
+                  rejectedValue: confirm
+                ]
+              ]
+            ]
         }
 
         user.assignPassword(password)
@@ -112,8 +136,69 @@ class UserController {
             return params
         }
 
+        flash.message = message(code:'user.reset.done')
         redirect controller:'login'
     }
+
+
+    /*
+    Password reset request.
+    */
+    def forgot(String email)
+    {
+        if (!params.submit)
+        {
+            return params
+        }
+
+        if (!email)
+        {
+            return [
+              errors: [
+                email: [
+                  field: 'email',
+                  code:  'empty',
+                  rejectedValue: email
+                ]
+              ]
+            ]
+        }
+
+        def user = User.findByUsername(email)
+
+        if (!user)
+        {
+            return [
+              errors: [
+                email: [
+                  field: 'email',
+                  code:  'invalid',
+                  rejectedValue: email
+                ]
+              ]
+            ]
+        }
+
+        user.setPasswordToken()
+        user.save(flush:true)
+
+        // email
+        def g = grailsApplication.mainContext.getBean('org.grails.plugins.web.taglib.ApplicationTagLib')
+        def u = g.createLink(controller:'user', action:'reset', absolute:true, params:[token:user.resetPasswordToken])
+
+        Thread.start {
+           
+            sendMail {
+               to "pablo.swp@gmail.com"
+               subject "Your notes password reset!"
+               html '<b>Hey!</b> we have received a password reset request. If it was you, please <a href="'+ u +'">update your password</a>'
+            }
+        }
+
+        flash.message = message(code:'user.forgot.done')
+        return
+    }
+
 
     /*
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
