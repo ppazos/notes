@@ -25,9 +25,10 @@ class UserController {
        // temp password, user disabled until pass reset
        user.password = java.util.UUID.randomUUID() as String
        user.enabled = false
+       user.setPasswordToken()
 
        //user.save(failOnError: true)
-       if (!user.save())
+       if (!user.save(flush:true))
        {
            println user.errors.allErrors
            println fieldErrors(user.errors.allErrors)
@@ -37,11 +38,21 @@ class UserController {
            return
        }
 
+       // TODO: role user
+       def ur = UserRole.create user, Role.findByAuthority('ROLE_ADMIN'), true
+       println ur.errors
+
+
+       // email
+       def g = grailsApplication.mainContext.getBean('org.grails.plugins.web.taglib.ApplicationTagLib')
+       def u = g.createLink(controller:'user', action:'reset', absolute:true, params:[token:user.resetPasswordToken])
+
        Thread.start {
+           
            sendMail {
               to "pablo.swp@gmail.com"
               subject "Welcome to notes!"
-              html "<b>Hello</b> World"
+              html '<b>Welcome!</b> <a href="'+ u +'">Set your password</a>'
            }
        }
 
@@ -49,6 +60,9 @@ class UserController {
        redirect action:'signup'
     }
 
+    /*
+    Error structure for showing field errors on the view.
+    */
     private Map fieldErrors(allErrors)
     {
         def res = [:]
@@ -60,6 +74,45 @@ class UserController {
             ]
         }
         return res
+    }
+
+    /*
+    Reset password.
+    */
+    def reset(String token, String password, String confirm)
+    {
+        if (!params.submit)
+        {
+            return params
+        }
+
+        // TODO: reset and login
+
+        def user = User.findByResetPasswordToken(token)
+
+        if (!user)
+        {
+            return params
+        }
+
+        if (!password || !confirm)
+        {
+            return params
+        }
+
+        if (password != confirm)
+        {
+            return params
+        }
+
+        user.assignPassword(password)
+        if (!user.save(flush:true))
+        {
+            println user.errors
+            return params
+        }
+
+        redirect controller:'login'
     }
 
     /*

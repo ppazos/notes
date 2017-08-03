@@ -15,11 +15,13 @@ class BootStrap {
         // Define server timezone
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
 
+/*
         mailService.sendMail {
             to "pablo.swp@gmail.com"
             subject "Hello John"
             html "<b>Hello</b> World"
         }
+*/
 
         // JSON Marshallers
         registerJSONMarshallers()
@@ -100,7 +102,8 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
           '/**/js/**', '/**/css/**', '/**/images/**', '/**/fonts/**',
           '/login', '/login.*', '/login/*',
           '/logout', '/logout.*', '/logout/*',
-          '/user/signup']) {
+          '/user/signup',
+          '/user/reset']) {
        new RequestMap(url: url, configAttribute: 'permitAll').save()
     }
 
