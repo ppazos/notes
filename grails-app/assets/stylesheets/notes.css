@@ -6,3 +6,9 @@
 	background-color: #8274C1; /* lavender dark */
 	color: #fff;
 }
+.navbar-toggler {
+	top: 5px !important;
+}
+h1 {
+	margin-top: 5px;
+}
