@@ -23,9 +23,7 @@
     <div class="row">
       <div class="col">
         <span class="float-right">
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_modal">
-          + Slot
-          </button>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_modal"> + </button>
         </span>
 
         <!-- Modal -->
