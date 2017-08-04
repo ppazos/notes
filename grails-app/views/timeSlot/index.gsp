@@ -14,6 +14,9 @@
       background-color: #8274C1;
       color: #FFF;
     }
+    #status, #patients {
+      display: none; /* display for event edit */
+    }
     </style>
   </head>
   <body>
@@ -29,6 +32,7 @@
         <div class="modal fade" id="create_modal" tabindex="-1" role="dialog" aria-labelledby="create_modal_label" aria-hidden="true">
           <div class="modal-dialog modal-lg" role="document">
             <g:form url="[action:'save']" id="create_form">
+              <input type="hidden" name="uid" value="" />
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="create_modal_label">New event</h5>
@@ -53,6 +57,17 @@
                   <div class="form-group">
                     <label for="color">Color</label>
                     <input type="color" id="color" name="color" value="#9B8FCD" />
+                  </div>
+                  <div class="form-group" id="status">
+                    <label>Status</label>
+                    <label><input type="radio" name="status" value="open" /> Open</label>
+                    <label><input type="radio" name="status" value="scheduled" /> Scheduled</label>
+                  </div>
+                  <div class="form-group" id="patients">
+                    <label>Schedule for: <input name="patientSearch" /></label>
+                    <select name="scheduledFor">
+                      <option></option>
+                    </select>
                   </div>
                 </div>
                 <div class="modal-footer">
@@ -83,6 +98,15 @@
     </div>
     <script type="text/javascript">
     $(document).ready(function() {
+
+      $('[value=scheduled]').on('click', function(){
+        $('#patients').show();
+        // TODO: show patient search
+      });
+      $('[value=open]').on('click', function(){
+        $('#patients').hide();
+        // TODO: clean search
+      });
       
       $('#calendar').fullCalendar({
         header: {
@@ -127,13 +151,24 @@
         */
         eventClick: function(evn, jsEvent, view) {
 
-          console.log('Event: ' + evn.title +' '+ new Date(evn.start));
-          console.log(evn.id)
+          //console.log('Event: ' + evn.title +' '+ new Date(evn.start));
+          //console.log(evn.id, evn.color);
+          console.log(evn, evn.status);
           //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
           //alert('View: ' + view.name); // month
 
           // change the border color just for fun
           //$(this).css('border-color', 'red');
+          $('input[name=name]').val(evn.title);
+          $('input[name=uid]').val(evn.id);
+          $('input[name=color]').val(evn.color);
+          $('input[name=start]').val(evn.start.toISOString()); // UTC date considers local TZ
+          $('input[name=end]').val(evn.end.toISOString());
+
+          $('[name=status][value='+ evn.status +']').prop('checked', true);
+          $('#status').show();
+
+          $('#create_modal').modal('show');
         },
         eventDrop: function(event, delta, revertFunc) { // delta is miliseconds
 
@@ -245,6 +280,14 @@
       $("#create_form").submit(function(e) {
 
         var url = this.action;
+        
+console.log($('input[name=uid]').val());
+
+        if ($('input[name=uid]').val() != "")
+        {
+          url = url.replace('save', 'update');
+        }
+
         console.log(url, $("#create_form").serialize());
 
         // Reset validation
@@ -279,13 +322,13 @@
       });
 
       /*
-       * Reset form on modal open // commented for now to let the script assign the start/end dates into fields
+       * Reset form on modal close.
        */
-      //$('#create_modal').on('show.bs.modal', function (event) {
-      //  $("#create_form")[0].reset();
-      //});
       $('#create_modal').on('hide.bs.modal', function (event) {
+
+        $("#create_form")[0].reset();
         $('#calendar').fullCalendar('unselect');
+        $('#status').hide();
       });
     </script>
 

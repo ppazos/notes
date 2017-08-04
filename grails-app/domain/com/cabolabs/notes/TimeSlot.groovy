@@ -15,9 +15,11 @@ class TimeSlot {
 
    String status = 'open'
    Date scheduledOn // when status changes to scheduled, records that moment
+   Patient scheduledFor
 
    static constraints = {
       status(inList: ['open','scheduled'])
       scheduledOn(nullable: true)
+      scheduledFor(nullable: true)
    }
 }

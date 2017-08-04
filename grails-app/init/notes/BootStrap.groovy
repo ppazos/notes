@@ -128,7 +128,10 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
                 start:  ts.start,
                 end:    ts.end,
                 title:  ts.name,
-                color:  ts.color
+                color:  ts.color,
+                status: ts.status,
+                scheduledOn: ts.scheduledOn,
+                scheduledFor: ts.scheduledFor
                ]
       }
    }

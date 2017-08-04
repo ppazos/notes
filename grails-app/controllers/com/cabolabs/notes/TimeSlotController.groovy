@@ -39,12 +39,15 @@ class TimeSlotController {
         if (timeSlot == null)
         {
             transactionStatus.setRollbackOnly()
-            //notFound()
             render text: [result: 'NO_CONTENT'] as JSON, status: 400, contentType: "application/json"
             return
         }
 
         def loggedInUser = springSecurityService.currentUser
+        timeSlot.uid = java.util.UUID.randomUUID() as String
+
+println timeSlot.uid
+
         timeSlot.owner = loggedInUser
         timeSlot.validate()
 
