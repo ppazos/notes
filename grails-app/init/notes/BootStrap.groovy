@@ -81,6 +81,20 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
                                   email: 'car@ol.com',
                                   dob: (new Date() - (25*365)),
                                   owner: admin).save(failOnError: true)
+        def patient3 = new Patient(name: 'Carlos',
+                                  lastname: 'Perez',
+                                  phone: '54745477547',
+                                  sex: 'M',
+                                  email: 'car@los.com',
+                                  dob: (new Date() - (29*365)),
+                                  owner: admin).save(failOnError: true)
+        def patient4 = new Patient(name: 'Miguel',
+                                  lastname: 'Rodriguez',
+                                  phone: '36346363643',
+                                  sex: 'M',
+                                  email: 'mi@guel.com',
+                                  dob: (new Date() - (63*365)),
+                                  owner: admin).save(failOnError: true)
 
         def cat1 = new NoteCategory(name: 'Patient', owner: admin).save(failOnError: true)
         def cat2 = new NoteCategory(name: 'Family', owner: admin).save(failOnError: true)

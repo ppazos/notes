@@ -28,6 +28,20 @@ class PatientController {
         render(template: "patients_table", model: [patientList: patientList])
     }
 
+    def lookup(String q)
+    {
+        def matched = Patient.withCriteria {
+            or {
+                ilike('name', '%'+q+'%')
+                ilike('lastname', '%'+q+'%')
+                ilike('email', '%'+q+'%')
+            }
+        }
+
+        render matched as JSON, status: 200, contentType: "application/json"
+        return
+    }
+/*
     def show(Patient patient)
     {
         respond patient
@@ -37,6 +51,7 @@ class PatientController {
     {
         respond new Patient(params)
     }
+*/
 
     @Transactional
     def save(Patient patient)

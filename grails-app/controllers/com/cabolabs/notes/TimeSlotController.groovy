@@ -99,7 +99,50 @@ println timeSlot.uid
             return
         }
 
+        def wasScheduled = (timeSlot.status == 'scheduled')
+
         timeSlot.properties = params
+        
+        if (timeSlot.status == 'scheduled')
+        {
+            if (!params.scheduledForUid)
+            {
+                render text: [result: 'NO_CONTENT'] as JSON, status: 400, contentType: "application/json"
+                return
+            }
+
+            def patient = Patient.findByUid(params.scheduledForUid)
+
+            if (!patient)
+            {
+                render text: [result: 'UNKOWN_PATIENT'] as JSON, status: 404, contentType: "application/json"
+                return
+            }
+
+            // check that is my patient, throw unknown to avoid showing that the patient exists
+            def loggedInUser = springSecurityService.currentUser
+            if (patient.owner.id != loggedInUser.id)
+            {
+                render text: [result: 'UNKOWN_PATIENT'] as JSON, status: 404, contentType: "application/json"
+                return
+            }
+
+            timeSlot.scheduledFor = patient
+            timeSlot.scheduledOn = new Date()
+        }
+        else // currently open
+        {
+            if (wasScheduled)
+            {
+                println "cancel scheduled"
+                timeSlot.scheduledOn = null
+                timeSlot.scheduledFor = null
+
+                // TODO: create log of cancel
+                // TODO: notify patient
+            }
+        }
+
         timeSlot.validate()
 
         if (timeSlot.hasErrors())

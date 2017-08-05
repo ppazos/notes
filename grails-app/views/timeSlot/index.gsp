@@ -14,7 +14,7 @@
       background-color: #8274C1;
       color: #FFF;
     }
-    #status, #patients {
+    #status, #patients, #scheduledForContainer {
       display: none; /* display for event edit */
     }
     </style>
@@ -61,12 +61,74 @@
                     <label><input type="radio" name="status" value="open" /> Open</label>
                     <label><input type="radio" name="status" value="scheduled" /> Scheduled</label>
                   </div>
-                  <div class="form-group" id="patients">
-                    <label>Schedule for: <input name="patientSearch" /></label>
-                    <select name="scheduledFor">
-                      <option></option>
-                    </select>
+                  <!-- patient data for already scheduled -->
+                  <div class="form-group" id="scheduledForContainer">
+                    <table id="scheduledForTable" class="table">
+                      <thead>
+                      <tr>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>DoB</th>
+                        <th>Sex</th>
+                      </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
                   </div>
+                  <!-- lookup for schedule -->
+                  <div class="form-group" id="patients">
+                    <label id="lookup">Schedule for: <input name="patientSearch" /></label>
+                    <table id="scheduledForLookupTable" class="table">
+                      <thead>
+                      <tr>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>DoB</th>
+                        <th>Sex</th>
+                        <th>Select</th>
+                      </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                  <script type="text/javascript">
+                    // ajax patient lookup launched when the user stops writing for 500ms.
+                    var timer;
+                    $('[name=patientSearch]').on('keyup', function(){
+                      
+                      clearTimeout(timer);
+                      
+                      if (this.value)
+                      {
+                        timer = setTimeout(lookup.bind(null, this.value), 400);
+                      }
+                    });
+                    var lookup = function(q) {
+                      
+                      $.ajax({
+                        type: "GET",
+                        url: '${createLink(controller:"patient", action:"lookup")}',
+                        data: {q: q},
+                        success: function(data, statusText, response)
+                        {
+                          // empty previous patient lookup for scheduling
+                          $('#scheduledForLookupTable > tbody').empty();
+
+                          //console.log(data);
+                          $.each(data, function( index, patient ) {
+                            console.log(patient);
+                            $('#scheduledForLookupTable > tbody').append(
+                              '<tr><td>'+patient.name+'</td><td>'+patient.lastname+'</td><td>'+patient.dob+'</td><td>'+patient.sex+'</td><td><input type="radio" name="scheduledForUid" value="'+patient.uid+'" required="true"/></td></tr>'
+                            );
+                          });
+                        },
+                        error: function(response, statusText)
+                        {
+                          console.log(JSON.parse(response.responseText));
+                        }
+                      });
+                    };
+                  </script>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -98,12 +160,29 @@
     $(document).ready(function() {
 
       $('[value=scheduled]').on('click', function(){
+
         $('#patients').show();
-        // TODO: show patient search
       });
       $('[value=open]').on('click', function(){
+
         $('#patients').hide();
-        // TODO: clean search
+
+        // empty previous patient lookup for scheduling
+        $('#scheduledForLookupTable > tbody').empty();
+
+        // if event currently is scheduled let the user know it will lose the schedule if saved
+        if ($('#scheduledForTable > tbody').children().length > 0)
+        {
+          if (confirm('Event scheduled, if you save it the scuedule will be canceled'))
+          {
+            $('#scheduledForTable > tbody').empty();
+          }
+          else
+          {
+            return false;
+          }
+        }
+        
       });
       
       $('#calendar').fullCalendar({
@@ -154,6 +233,32 @@
           console.log(evn, evn.status);
           //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
           //alert('View: ' + view.name); // month
+
+          // clean search
+          $('[name=patientSearch]').val('');
+
+          // hide patiend schedule DOM
+          $('#patients').hide();
+
+          // empty previous patient lookup for scheduling
+          $('#scheduledForLookupTable > tbody').empty();
+
+          if (evn.scheduledFor)
+          {
+            $('#scheduledForContainer').show();
+
+            patient = evn.scheduledFor;
+
+            $('#scheduledForTable > tbody').empty();
+
+            $('#scheduledForTable > tbody').append(
+              '<tr><td>'+patient.name+'</td><td>'+patient.lastname+'</td><td>'+patient.dob+'</td><td>'+patient.sex+'</td></tr>'
+            );
+          }
+          else
+          {
+            $('#scheduledForContainer').hide();
+          }
 
           // change the border color just for fun
           //$(this).css('border-color', 'red');
@@ -278,12 +383,10 @@
       $("#create_form").submit(function(e) {
 
         var url = this.action;
-        
-console.log($('input[name=uid]').val());
 
         if ($('input[name=uid]').val() != "")
         {
-          url = url.replace('save', 'update');
+          url = url.replace('save', 'update'); // reuses the save form for update
         }
 
         console.log(url, $("#create_form").serialize());
