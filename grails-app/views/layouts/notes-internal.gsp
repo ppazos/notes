@@ -383,6 +383,22 @@ button.fc-button:active, button.fc-button:focus {
 
         e.preventDefault();
       });
+
+      $(document).ready(function() {
+
+        // disable submits to avoid double click / double submit
+        $('[type=submit]').on('click', function(){
+          
+          var o = this;
+          if (o.hasAttribute('disabled')) return;
+
+          o.setAttribute('disabled', true);
+
+          setTimeout(function(){
+            o.removeAttribute('disabled');
+          }, 700);
+        });
+      });
     </script>
   </body>
 </html>
