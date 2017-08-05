@@ -141,6 +141,7 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
         return [id:     ts.uid,
                 start:  ts.start,
                 end:    ts.end,
+                duration: ts.durationInMinutes,
                 title:  ts.name,
                 color:  ts.color,
                 status: ts.status,

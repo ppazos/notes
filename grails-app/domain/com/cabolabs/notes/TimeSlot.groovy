@@ -21,7 +21,7 @@ class TimeSlot {
 
    def getDurationInMinutes()
    {
-      TimeCategory.minus(this.end, this.start).minutes
+      groovy.time.TimeCategory.minus(this.end, this.start).toMilliseconds() / 1000 / 60
    }
 
    static constraints = {
