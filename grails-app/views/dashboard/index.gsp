@@ -45,7 +45,7 @@
               </div>
               <div class="col-6 text-right">
                 <div class="dashboard-number">${patients}</div>
-                <div>Patients</div>
+                <div><g:message code="dashboard.patients.label"/></div>
               </div>
             </div>
           </div>
@@ -66,7 +66,7 @@
               </div>
               <div class="col-6 text-right">
                 <div class="dashboard-number">${notes}</div>
-                <div>Notes</div>
+                <div><g:message code="dashboard.notes.label"/></div>
               </div>
             </div>
           </div>
@@ -89,7 +89,7 @@
               </div>
               <div class="col-6 text-right">
                 <div class="dashboard-number">${slots}</div>
-                <div>Slots</div>
+                <div><g:message code="dashboard.slots.label"/></div>
               </div>
             </div>
           </div>

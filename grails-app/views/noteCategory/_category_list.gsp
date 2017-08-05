@@ -1,7 +1,7 @@
 <table class="table">
   <thead>
     <tr>
-      <th>Name</th>
+      <th><g:message code="notecategory.attr.name"/></th>
       <th></th>
     </tr>
   </thead>

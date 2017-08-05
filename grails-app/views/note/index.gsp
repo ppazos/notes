@@ -58,7 +58,7 @@
               <input type="hidden" name="pid" value="${params.pid}" />
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="create_modal_label">New note</h5>
+                  <h5 class="modal-title" id="create_modal_label"><g:message code="note.new.title"/></h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -68,13 +68,13 @@
                     <textarea id="editor" name="text"></textarea>
                   </div>
                   <div class="form-group">
-                    <label for="name">Category</label>
+                    <label for="name"><g:message code="note.attr.category"/></label>
                     <g:select name="category" class="form-control" from="${categories}" optionKey="id" optionValue="name" noSelection="['null':'Uncategorized']" />
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">Save changes</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal"><g:message code="common.action.close"/></button>
+                  <button type="submit" class="btn btn-primary"><g:message code="common.action.save"/></button>
                 </div>
               </div>
             </g:form>

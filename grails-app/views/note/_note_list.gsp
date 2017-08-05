@@ -8,7 +8,7 @@
             </li>
           </g:each>
           <li class="nav-item">
-            <a class="nav-link ${category == null ? 'active' : ''}" href="${createLink(action:'index', params:[uncategorized: true, pid: params.pid])}">Uncategorized</a>
+            <a class="nav-link ${category == null ? 'active' : ''}" href="${createLink(action:'index', params:[uncategorized: true, pid: params.pid])}"><g:message code="note.category.uncategorized"/></a>
           </li>
         </ul>
       </div>
@@ -19,7 +19,7 @@
 
        <g:if test="${!noteList}">
          <div class="zero-state-container">
-           <h1 class="zero-state">Ups! we don't have any notes here.</h1>
+           <h1 class="zero-state"><g:message code="note.index.zero_state"/></h1>
          </div>
        </g:if>
 
