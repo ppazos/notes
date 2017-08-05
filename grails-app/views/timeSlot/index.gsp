@@ -210,6 +210,28 @@
         timezone: 'local',
         longPressDelay: 300, // for touch events
         events: '${createLink(action:"timeslot_list")}',
+        eventRender: function( event, element, view ) { // fat border if event is scheduled
+          console.log('render', event, element);
+          if (event.status == 'scheduled')
+          {
+            $(element).css('border-width', '3px');
+          }
+        },
+        /*
+        loading: function (isLoading) {
+          if (!isLoading) {
+            console.log();
+
+            events = $('#calendar').fullCalendar('clientEvents');
+            $.each(events, function( index, event ) {
+              if (event.status == 'scheduled')
+              {
+
+              }
+            });
+          }
+        },
+        */
         /*
         events: [
           {
