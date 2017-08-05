@@ -43,6 +43,9 @@
     body {
       background-color: #8274C1;
     }
+    button {
+      cursor: pointer;
+    }
     nav > div {
       margin: 0
     }
@@ -386,17 +389,30 @@ button.fc-button:active, button.fc-button:focus {
 
       $(document).ready(function() {
 
-        // disable submits to avoid double click / double submit
-        $('[type=submit]').on('click', function(){
-          
-          var o = this;
-          if (o.hasAttribute('disabled')) return;
+        // Solution for disabling the submit temporarily for all the submit buttons.
+        // Avoids double form submit.
+        // Doing it directly on the submit click made the form not to submit in Chrome.
+        // This works in FF and Chrome.
+        $('form').on('submit', function(e){
+          //console.log('submit2', e, $(this).find('[clicked=true]'));
 
-          o.setAttribute('disabled', true);
+          var submit = $(this).find('[clicked=true]')[0];
 
-          setTimeout(function(){
-            o.removeAttribute('disabled');
-          }, 700);
+          if (!submit.hasAttribute('disabled'))
+          {
+            submit.setAttribute('disabled', true);
+
+            setTimeout(function(){
+              submit.removeAttribute('disabled');
+            }, 1000);
+          }
+
+          submit.removeAttribute('clicked');
+
+          e.preventDefault();
+        });
+        $('[type=submit]').on('click touchstart', function(){
+          this.setAttribute('clicked', true);
         });
       });
     </script>
