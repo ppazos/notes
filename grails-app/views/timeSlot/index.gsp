@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta name="layout" content="notes-internal" />
-    <title><g:message code="timeSlot.index.title" /></title>
+    <title><g:message code="timeslot.index.title" /></title>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css"></link>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
@@ -33,7 +33,7 @@
               <input type="hidden" name="uid" value="" />
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="create_modal_label">New event</h5>
+                  <h5 class="modal-title" id="create_modal_label"><g:message code="timeslot.new.title"/></h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -41,35 +41,37 @@
                 <div class="modal-body">
                   
                   <div class="form-group">
-                    <label for="name">Name</label>
+                    <label for="name"><g:message code="timeslot.attr.name"/></label>
                     <input type="text" class="form-control" id="name" name="name" />
                   </div>
                   <div class="form-group">
-                    <label for="start">Start</label>
+                    <label for="start"><g:message code="timeslot.attr.start"/></label>
                     <input type="text" class="form-control" id="start" name="start" readonly="true" />
                   </div>
                   <div class="form-group">
-                    <label for="end">End</label>
+                    <label for="end"><g:message code="timeslot.attr.end"/></label>
                     <input type="text" class="form-control" id="end" name="end" readonly="true" />
                   </div>
                   <div class="form-group">
-                    <label for="color">Color</label>
+                    <label for="color"><g:message code="timeslot.attr.color"/></label>
                     <input type="color" id="color" name="color" value="#9B8FCD" />
                   </div>
                   <div class="form-group" id="status">
-                    <label>Status</label>
-                    <label><input type="radio" name="status" value="open" /> Open</label>
-                    <label><input type="radio" name="status" value="scheduled" /> Scheduled</label>
+                    <label><g:message code="timeslot.attr.status"/></label>
+                    <div>
+                    <label><input type="radio" name="status" value="open" /> <g:message code="timeslot.attr.status_open"/></label>
+                    <label><input type="radio" name="status" value="scheduled" /> <g:message code="timeslot.attr.status_scheduled"/></label>
+                    </div>
                   </div>
                   <!-- patient data for already scheduled -->
                   <div class="form-group" id="scheduledForContainer">
                     <table id="scheduledForTable" class="table">
                       <thead>
                       <tr>
-                        <th>First name</th>
-                        <th>Last name</th>
-                        <th>DoB</th>
-                        <th>Sex</th>
+                        <th><g:message code="patient.attr.firstname"/></th>
+                        <th><g:message code="patient.attr.lastname"/></th>
+                        <th><g:message code="patient.attr.dob"/></th>
+                        <th><g:message code="patient.attr.sex"/></th>
                       </tr>
                       </thead>
                       <tbody></tbody>
@@ -77,15 +79,15 @@
                   </div>
                   <!-- lookup for schedule -->
                   <div class="form-group" id="patients">
-                    <label id="lookup">Schedule for: <input name="patientSearch" /></label>
+                    <label id="lookup"><g:message code="timeslot.schedule_for.label"/> <input name="patientSearch" /></label>
                     <table id="scheduledForLookupTable" class="table">
                       <thead>
                       <tr>
-                        <th>First name</th>
-                        <th>Last name</th>
-                        <th>DoB</th>
-                        <th>Sex</th>
-                        <th>Select</th>
+                        <th><g:message code="patient.attr.firstname"/></th>
+                        <th><g:message code="patient.attr.lastname"/></th>
+                        <th><g:message code="patient.attr.dob"/></th>
+                        <th><g:message code="patient.attr.sex"/></th>
+                        <th><g:message code="timeslot.patient_select.label"/></th>
                       </tr>
                       </thead>
                       <tbody></tbody>
@@ -131,15 +133,15 @@
                   </script>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">Save changes</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal"><g:message code="common.action.close"/></button>
+                  <button type="submit" class="btn btn-primary"><g:message code="common.action.save"/></button>
                 </div>
               </div>
             </g:form>
           </div>
         </div>
 
-        <h1><g:message code="timeSlot.index.title" /></h1>
+        <h1><g:message code="timeslot.index.title" /></h1>
       </div>
     </div>
 
@@ -173,7 +175,7 @@
         // if event currently is scheduled let the user know it will lose the schedule if saved
         if ($('#scheduledForTable > tbody').children().length > 0)
         {
-          if (confirm('Event scheduled, if you save it the scuedule will be canceled'))
+          if (confirm('${message(code:"timeslot.confirm_unschedule.label")}'))
           {
             $('#scheduledForTable > tbody').empty();
           }

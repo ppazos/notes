@@ -17,6 +17,13 @@ class TimeSlot {
    Date scheduledOn // when status changes to scheduled, records that moment
    Patient scheduledFor
 
+   static transients = ['durationInMinutes']
+
+   def getDurationInMinutes()
+   {
+      TimeCategory.minus(this.end, this.start).minutes
+   }
+
    static constraints = {
       status(inList: ['open','scheduled'])
       scheduledOn(nullable: true)

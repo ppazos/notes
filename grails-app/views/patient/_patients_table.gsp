@@ -1,10 +1,10 @@
 <table class="table">
   <thead>
     <tr>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Dob</th>
-      <th>Sex</th>
+      <th><g:message code="patient.attr.firstname"/></th>
+      <th><g:message code="patient.attr.lastname"/></th>
+      <th><g:message code="patient.attr.dob"/></th>
+      <th><g:message code="patient.attr.sex"/></th>
     </tr>
   </thead>
   <tbody>

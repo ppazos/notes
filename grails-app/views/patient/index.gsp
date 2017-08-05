@@ -19,7 +19,7 @@
             <g:form url="[action:'save']" id="create_form">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="create_modal_label">New patient</h5>
+                  <h5 class="modal-title" id="create_modal_label"><g:message code="patient.new.title"/></h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -27,47 +27,47 @@
                 <div class="modal-body">
                   
                   <div class="form-group">
-                    <label for="name">Name</label>
+                    <label for="name"><g:message code="patient.attr.firstname"/></label>
                     <input type="text" class="form-control" id="name" name="name" aria-describedby="fileHelp">
-                    <small id="fileHelp" class="form-text text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small>
+                    <!--
+                    <small id="fileHelp" class="form-text text-muted">This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line.</small>-->
                   </div>
                   <div class="form-group">
-                    <label for="lastname">Lastname</label>
+                    <label for="lastname"><g:message code="patient.attr.lastname"/></label>
                     <input type="text" class="form-control" id="lastname" name="lastname">
                   </div>
                   <div class="form-group">
-                    <label for="dob">Dob</label>
+                    <label for="dob"><g:message code="patient.attr.dob"/></label>
                     <input type="date" class="form-control" id="dob" name="dob">
                   </div>
                   <div class="form-group">
-                    <label for="phone">Phone</label>
+                    <label for="phone"><g:message code="patient.attr.phone"/></label>
                     <input type="text" class="form-control" id="phone" name="phone">
                   </div>
                   <div class="form-group">
-                    <label for="phone">Email</label>
+                    <label for="phone"><g:message code="patient.attr.email"/></label>
                     <input type="email" class="form-control" id="email" name="email">
                   </div>
                   
                   <div class="form-group">
-                    <label>Sex</label>
+                    <label><g:message code="patient.attr.sex"/></label>
                     <div class="form-check">
                       <label class="form-check-label">
                         <input type="radio" class="form-check-input" name="sex" id="optionsRadios1" value="M" checked>
-                        M
+                        <g:message code="patient.attr.sex_masculine"/>
                       </label>
                     </div>
                     <div class="form-check">
                     <label class="form-check-label">
                         <input type="radio" class="form-check-input" name="sex" id="optionsRadios2" value="F">
-                        F
+                        <g:message code="patient.attr.sex_feminine"/>
                       </label>
                     </div>
                   </div>
-
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">Save changes</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal"><g:message code="common.action.close"/></button>
+                  <button type="submit" class="btn btn-primary"><g:message code="common.action.save"/></button>
                 </div>
               </div>
             </g:form>

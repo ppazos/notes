@@ -29,7 +29,7 @@
                   
                   <input type="submit" id="submit" name="submit" class="btn btn-lg btn-success btn-block" value="${message(code: 'login.button.text')}"/>
                   
-                  <div class="form-group" style="margin:0; padding:15px 0 15px 0; text-align:center;">
+                  <div class="form-group" style="margin:0; padding:15px 0 0 0; text-align:center;">
                     <g:link controller="user" action="signup">
                       <g:message code="user.signup.action"/>
                     </g:link>
