@@ -9,11 +9,6 @@
     <title>
       <g:layoutTitle default="Grails"/>
     </title>
-
-    <!-- jQuery Slim, needed by Bootstrap 4
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-    -->
-
     <script
   src="https://code.jquery.com/jquery-3.2.1.min.js"
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
@@ -352,19 +347,19 @@ button.fc-button:active, button.fc-button:focus {
             <div class="col-12">
               <ul class="navbar-nav flex-column">
                 <li class="nav-item">
-                  <g:link controller="dashboard" action="index" class="nav-link ${(controllerName=='dashboard')?'active':''}"><i class="fa fa-tachometer fa-fw" aria-hidden="true"></i> Dashboard</g:link>
+                  <g:link controller="dashboard" action="index" class="nav-link ${(controllerName=='dashboard')?'active':''}"><i class="fa fa-tachometer fa-fw" aria-hidden="true"></i> <g:message code="menu.dashboard"/></g:link>
                 </li>
                 <li class="nav-item">
-                  <g:link controller="patient" action="index" class="nav-link ${(controllerName=='patient')?'active':''}"><i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i> Patients</g:link>
+                  <g:link controller="patient" action="index" class="nav-link ${(controllerName=='patient')?'active':''}"><i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i> <g:message code="menu.patients"/></g:link>
                 </li>
                 <li class="nav-item">
-                  <g:link controller="timeSlot" action="index" class="nav-link ${(controllerName=='timeSlot')?'active':''}"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> Agenda</g:link>
+                  <g:link controller="timeSlot" action="index" class="nav-link ${(controllerName=='timeSlot')?'active':''}"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> <g:message code="menu.agenda"/></g:link>
                 </li>
                 <li class="nav-item">
-                  <g:link controller="noteCategory" action="index" class="nav-link ${(controllerName=='noteCategory')?'active':''}"><i class="fa fa-th-list fa-fw" aria-hidden="true"></i> Categories</g:link>
+                  <g:link controller="noteCategory" action="index" class="nav-link ${(controllerName=='noteCategory')?'active':''}"><i class="fa fa-th-list fa-fw" aria-hidden="true"></i> <g:message code="menu.categories"/></g:link>
                 </li>
                 <li class="nav-item">
-                  <g:link controller="logout" class="nav-link"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i> Logout</g:link>
+                  <g:link controller="logout" class="nav-link"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i> <g:message code="menu.logout"/></g:link>
                 </li>
               </ul>
             </div>
