@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <title>
-      <g:layoutTitle default="Grails"/>
+      <g:layoutTitle default="Notes"/>
     </title>
     <script
   src="https://code.jquery.com/jquery-3.2.1.min.js"
