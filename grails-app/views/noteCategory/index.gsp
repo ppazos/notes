@@ -19,20 +19,20 @@
             <g:form url="[action:'save']" id="create_form">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="create_modal_label">New category</h5>
+                  <h5 class="modal-title" id="create_modal_label"><g:message code="notecategory.new.title"/></h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
                   <div class="form-group">
-                    <label for="name">Name</label>
+                    <label for="name"><g:message code="notecategory.attr.name"/></label>
                     <input type="text" class="form-control" id="name" name="name" />
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">Save changes</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal"><g:message code="common.action.close"/></button>
+                  <button type="submit" class="btn btn-primary"><g:message code="common.action.save"/></button>
                 </div>
               </div>
             </g:form>
