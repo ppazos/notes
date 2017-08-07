@@ -1,0 +1,15 @@
+---
+applications:
+  - name: notes
+    memory: 1G
+    instances: 1
+    path: build/libs/notes-0.1.war
+    buildpack: java_buildpack
+    env:
+      NOTES_EMAIL_HOST: smtp.sendgrid.net
+      NOTES_EMAIL_PORT: 25
+      NOTES_EMAIL_USER: apikey
+      NOTES_EMAIL_PASS: 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
+      NOTES_EMAIL_FROM: 'engineerbell@gmail.com'
+
+  
