@@ -6,6 +6,10 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css"></link>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
+
+    <asset:javascript src="tempusdominus-bootstrap-4.min.js" />
+    <asset:stylesheet src="tempusdominus-bootstrap-4.min.css"/>
+    
     <style>
     #calendar h2 {
       font-size: 22px;
@@ -16,6 +20,16 @@
     }
     #status, #patients, #scheduledForContainer {
       display: none; /* display for event edit */
+    }
+    .timepicker-picker .btn {
+      background-color: transparent;
+      box-shadow: none;
+    }
+    .timepicker-picker .btn span, .timepicker-picker button {
+      background-color: #9B8FCD !important;
+    }
+    .timepicker-picker .btn span:hover {
+      background-color: #8274C1 !important;
     }
     </style>
   </head>
@@ -46,11 +60,11 @@
                   </div>
                   <div class="form-group">
                     <label for="start"><g:message code="timeslot.attr.start"/></label>
-                    <input type="text" class="form-control" id="start" name="start" readonly="true" />
+                    <input type="text" class="form-control datetimepicker-input" id="start" name="start" data-toggle="datetimepicker" data-target="#start" />
                   </div>
                   <div class="form-group">
                     <label for="end"><g:message code="timeslot.attr.end"/></label>
-                    <input type="text" class="form-control" id="end" name="end" readonly="true" />
+                    <input type="text" class="form-control datetimepicker-input" id="end" name="end" data-toggle="datetimepicker" data-target="#end" />
                   </div>
                   <div class="form-group">
                     <label for="color"><g:message code="timeslot.attr.color"/></label>
@@ -161,6 +175,21 @@
     <script type="text/javascript">
     $(document).ready(function() {
 
+      // ---------------------------------------------------------
+      // start/end fields are datetime pickers
+      $('#start').datetimepicker({sideBySide: true, icons: {up: 'fa fa-chevron-up', down: 'fa fa-chevron-down'}});
+      $('#end').datetimepicker(  {sideBySide: true, icons: {up: 'fa fa-chevron-up', down: 'fa fa-chevron-down'}, useCurrent: false});
+
+      // both datetime pikers are linked
+      $('#start').on('change.datetimepicker', function(e){
+        $('#end').datetimepicker('minDate', e.date);
+      });
+      $('#end').on('change.datetimepicker', function(e){
+        $('#start').datetimepicker('maxDate', e.date);
+      });
+      // ---------------------------------------------------------
+
+      // update UI status when status value is changed (shows/hides stuff)
       $('[value=scheduled]').on('click', function(){
 
         $('#patients').show();
@@ -213,7 +242,8 @@
         longPressDelay: 300, // for touch events
         events: '${createLink(action:"timeslot_list")}',
         eventRender: function( event, element, view ) { // fat border if event is scheduled
-          console.log('render', event, element);
+          //console.log('render', event, element);
+          //called when selecting event on calendar and changing its size
           if (event.status == 'scheduled')
           {
             $(element).css('border-width', '3px');
@@ -289,8 +319,10 @@
           $('input[name=name]').val(evn.title);
           $('input[name=uid]').val(evn.id);
           $('input[name=color]').val(evn.color);
-          $('input[name=start]').val(evn.start.toISOString()); // UTC date considers local TZ
-          $('input[name=end]').val(evn.end.toISOString());
+          //$('input[name=start]').val(evn.start.toISOString()); // UTC date considers local TZ
+          //$('input[name=end]').val(evn.end.toISOString());
+          $('#start').data('datetimepicker').date(evn.start);
+          $('#end').data('datetimepicker').date(evn.end);
 
           $('[name=status][value='+ evn.status +']').prop('checked', true);
           $('#status').show();
@@ -362,7 +394,11 @@
         },
         select: function( start, end, jsEvent, view, resource ) {
 
-          console.log(start, end, jsEvent, view, resource);
+          //console.log(start, end, jsEvent, view, resource);
+
+//console.log( $('#start') );
+//console.log( $('#start').data('datetimepicker').options() );
+
           //console.log($('#calendar').fullCalendar('getView'));
 
           // On month view, show the time pickers because start and end dont have time
@@ -377,12 +413,14 @@
           //console.log(start.format("YYYY-MM-DDThh:mm"));
           //console.log(start.format('YYYY-MM-DDTHH:mm:ssZ'));
 
-          console.log(start.format("YYYY-MM-DD[T]hh:mm"));
-
+          //console.log(start.format("YYYY-MM-DD[T]hh:mm"));
           //console.log(start.toDate().format("YYYY-MM-DDThh:mm"));
 
-          $('input[name=start]').val(start.toISOString()); // UTC date considers local TZ
-          $('input[name=end]').val(end.toISOString());
+
+          //$('input[name=start]').val(start.toISOString()); // UTC date considers local TZ
+          //$('input[name=end]').val(end.toISOString());
+          $('#start').data('datetimepicker').date(start);
+          $('#end').data('datetimepicker').date(end);
 
           //$('input[name=start]').val('2017-07-21T10:00'); // This works but moment is not retrieving the right format
           //$('input[name=start]').val(start.format('YYYY-MM-DD[T]hh:mm')); // format needed by HTML5 datetime-local
@@ -413,16 +451,25 @@
           url = url.replace('save', 'update'); // reuses the save form for update
         }
 
-        console.log(url, $("#create_form").serialize());
+        //console.log(url, $("#create_form").serialize());
 
         // Reset validation
         $('input').parent().removeClass('has-danger');
         $('input').removeClass('form-control-danger');
 
+        // format dates in the servers format
+        var data = $("#create_form").serializeArray();
+        data.find( function(el){ if (el.name == 'start') return el; } ).value = $('#start').data('datetimepicker').date().toISOString();
+        data.find( function(el){ if (el.name == 'end')   return el; } ).value = $('#end').data('datetimepicker').date().toISOString();
+        //data['start'] = $('#start').data('datetimepicker').date().toISOString();
+        //data['end'] = $('#end').data('datetimepicker').date().toISOString();
+
+        //console.log(data, $.param(data), $('#start').data('datetimepicker').date().toISOString());
+
         $.ajax({
           type: "POST",
           url: url,
-          data: $("#create_form").serialize(),
+          data: $.param(data),
           success: function(data, statusText, response)
           {
             console.log(data);
