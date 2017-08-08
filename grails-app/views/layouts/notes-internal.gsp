@@ -52,13 +52,6 @@
       padding: 0;
       margin: 0;
     }
-    .navbar-brand {
-      color: #fff;
-      font-size: 1.4em;
-    }
-    .navbar-toggler {
-      color: #fff;
-    }
     #menu {
       background-color: #9B8FCD; /* lavender light */
     }

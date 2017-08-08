@@ -1,16 +1,18 @@
 .card {
-	border: 1px solid #9B8FCD;
-	margin-bottom: 10px;
+  border: 1px solid #9B8FCD;
+  margin-bottom: 10px;
 }
 .card-header {
-	background-color: #8274C1; /* lavender dark */
-	color: #fff;
+  background-color: #8274C1; /* lavender dark */
+  color: #fff;
 }
 .navbar-toggler {
-	top: 5px !important;
+  top: 6px !important;
+  font-size: 1.5em;
+  color: #fff;
 }
 h1 {
-	margin-top: 5px;
+  margin-top: 5px;
 }
 
 /* button material */
@@ -38,9 +40,12 @@ h1 {
 
 /* fixes position of buttons for modal submit and top add new */
 .modal-footer .btn, .float-right .btn {
-	margin: 6px;
+  margin: 6px;
 }
-
+.float-right .btn {
+  font-size: 1.2em;
+  padding: 0.6em 1.2em;
+}
 .btn:focus,.btn:hover {
   text-decoration: none
 }
