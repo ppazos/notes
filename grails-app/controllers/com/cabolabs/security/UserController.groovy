@@ -61,7 +61,7 @@ class UserController {
            }
        }
 
-       flash.message = message(code:'user.signup.done')
+       flash.message = message(code:'user.signup.done', args:[user.username])
        redirect action:'signup'
     }
 
@@ -195,7 +195,7 @@ class UserController {
             }
         }
 
-        flash.message = message(code:'user.forgot.done')
+        flash.message = message(code:'user.forgot.done', args:[user.username])
         return
     }
 

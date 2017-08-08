@@ -17,7 +17,7 @@
           </div>
           <div class="card-block">
             <g:if test="${flash.message}">
-              <div class="login_message">${flash.message}</div><br/>
+              <div class="login_message">${raw(flash.message)}</div><br/>
             </g:if>
             <form  action="${createLink(action:'signup')}" method="POST" id="loginForm" class="cssform" autocomplete="off">
               <fieldset>
