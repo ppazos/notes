@@ -177,7 +177,7 @@
 
       // ---------------------------------------------------------
       // start/end fields are datetime pickers
-      $('#start').datetimepicker({sideBySide: true, icons: {up: 'fa fa-chevron-up', down: 'fa fa-chevron-down'}});
+      $('#start').datetimepicker({sideBySide: true, icons: {up: 'fa fa-chevron-up', down: 'fa fa-chevron-down'}, useCurrent: false});
       $('#end').datetimepicker(  {sideBySide: true, icons: {up: 'fa fa-chevron-up', down: 'fa fa-chevron-down'}, useCurrent: false});
 
       // both datetime pikers are linked
@@ -213,7 +213,6 @@
             return false;
           }
         }
-        
       });
       
       $('#calendar').fullCalendar({
@@ -249,37 +248,6 @@
             $(element).css('border-width', '3px');
           }
         },
-        /*
-        loading: function (isLoading) {
-          if (!isLoading) {
-            console.log();
-
-            events = $('#calendar').fullCalendar('clientEvents');
-            $.each(events, function( index, event ) {
-              if (event.status == 'scheduled')
-              {
-
-              }
-            });
-          }
-        },
-        */
-        /*
-        events: [
-          {
-            id: 1, // TODO: UID
-            title: "hola",
-            start: "2017-07-21T10:00-03:00", // NO TZ is GMT
-            end:   "2017-07-21T14:30-03:00"
-          },
-          {
-            id: 2,
-            title: "hola",
-            start: "2017-07-21T15:00-03:00", // NO TZ is GMT
-            end:   "2017-07-21T15:30-03:00"
-          }
-        ],
-        */
         eventClick: function(evn, jsEvent, view) {
 
           //console.log('Event: ' + evn.title +' '+ new Date(evn.start));
@@ -319,8 +287,25 @@
           $('input[name=name]').val(evn.title);
           $('input[name=uid]').val(evn.id);
           $('input[name=color]').val(evn.color);
+
+/*
+          console.log(evn.start, evn.start.format());
+          console.log($('#start').data('datetimepicker').date());
+          console.log(evn.end, evn.end.format());
+          console.log($('#end').data('datetimepicker').date());
+          */
+
           //$('input[name=start]').val(evn.start.toISOString()); // UTC date considers local TZ
           //$('input[name=end]').val(evn.end.toISOString());
+
+          //console.$('#end').datetimepicker('minDate')
+
+          //$('#start').val('');
+          //$('#end').val('');
+
+          //$('#start').datetimepicker('maxDate', null);
+          //$('#end').datetimepicker('minDate', null);
+
           $('#start').data('datetimepicker').date(evn.start);
           $('#end').data('datetimepicker').date(evn.end);
 
@@ -402,14 +387,20 @@
           //console.log($('#calendar').fullCalendar('getView'));
 
           // On month view, show the time pickers because start and end dont have time
+          /*
           if ($('#calendar').fullCalendar('getView').type == 'month')
           {
             console.log('view month');
             //end.set({hour: 0, minute: 0, second: 0, millisecond: 0});
           }
+          */
 
-          console.log(start.format(), start.toDate());
-          console.log(end.format(), end.toDate());
+          /*
+          console.log(start, start.format(), start.toDate());
+          console.log($('#start').data('datetimepicker').date());
+          console.log(end, end.format(), end.toDate());
+          console.log($('#end').data('datetimepicker').date());
+          */
           //console.log(start.format("YYYY-MM-DDThh:mm"));
           //console.log(start.format('YYYY-MM-DDTHH:mm:ssZ'));
 
@@ -419,14 +410,19 @@
 
           //$('input[name=start]').val(start.toISOString()); // UTC date considers local TZ
           //$('input[name=end]').val(end.toISOString());
+
+          //$('#start').val('');
+          //$('#end').val('');
+
           $('#start').data('datetimepicker').date(start);
           $('#end').data('datetimepicker').date(end);
+
+          console.log($('#start').data('datetimepicker').date(), $('#end').data('datetimepicker').date());
 
           //$('input[name=start]').val('2017-07-21T10:00'); // This works but moment is not retrieving the right format
           //$('input[name=start]').val(start.format('YYYY-MM-DD[T]hh:mm')); // format needed by HTML5 datetime-local
           //$('input[name=end]').val(end.format('YYYY-MM-DD[T]hh:mm'));
           $('#create_modal').modal('show');
-
 /*
             // TODO: render on server response
             $('#calendar').fullCalendar('renderEvent', 
@@ -461,8 +457,6 @@
         var data = $("#create_form").serializeArray();
         data.find( function(el){ if (el.name == 'start') return el; } ).value = $('#start').data('datetimepicker').date().toISOString();
         data.find( function(el){ if (el.name == 'end')   return el; } ).value = $('#end').data('datetimepicker').date().toISOString();
-        //data['start'] = $('#start').data('datetimepicker').date().toISOString();
-        //data['end'] = $('#end').data('datetimepicker').date().toISOString();
 
         //console.log(data, $.param(data), $('#start').data('datetimepicker').date().toISOString());
 
@@ -499,6 +493,11 @@
       $('#create_modal').on('hide.bs.modal', function (event) {
 
         $("#create_form")[0].reset();
+
+        // this also updates the minDate/maxDate constraints
+        $('#start').data('datetimepicker').date(null);
+        $('#end').data('datetimepicker').date(null);
+
         $('#calendar').fullCalendar('unselect');
         $('#status').hide();
       });
