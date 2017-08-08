@@ -69,9 +69,6 @@
       /*border-left: 3px solid #9B8FCD;
       padding-left: 12px; *//* keeps menu items aligment when left boder is shown */
     }
-    .navbar .top {
-      padding-bottom: 10px;
-    }
     main {
       padding: 10px;
       background-color: #fff;
@@ -117,7 +114,6 @@
     /* Buttons calendar
 ------------------------------------------------------------------------*/
 button.fc-button {
-  /*font-family: 'Roboto', sans-serif;*/
   border-color: #9675ce;
   color: #9675ce;
 }
@@ -278,6 +274,8 @@ button.fc-button:active, button.fc-button:focus {
 }
 #logo {
 	width: 100%;
+	max-height: 70px;
+	max-width: 257px;
 }
     /* Small viewport or below */
     @media (max-width : 767px) {
@@ -324,10 +322,11 @@ button.fc-button:active, button.fc-button:focus {
             </div>
           </div>
           -->
-
-          <div id="logo_container top">
+          <div id="top_bar">
             <img src="${assetPath(src:'hor_margin_white_72_300x87.png')}" class="align-middle" alt="Psy.Notes" id="logo" />
-            <button class="navbar-toggler navbar-toggler-right collapse" type="button" data-toggle="collapse" data-target="#menu"><i class="fa fa-bars" aria-hidden="true"></i></button>
+            <div class="navbar-toggler-containder pull-right">
+            <button class="navbar-toggler collapse align-middle" type="button" data-toggle="collapse" data-target="#menu"><i class="fa fa-bars" aria-hidden="true"></i></button><!-- navbar-toggler-right -->
+            </div>
           </div>
           <div class="navbar-collapse" id="menu">
             <ul class="navbar-nav flex-column">

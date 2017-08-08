@@ -9,10 +9,33 @@
 .navbar-toggler {
   top: 6px !important;
   font-size: 1.5em;
-  color: #fff;
+  color: #8274C1;
 }
 h1 {
   margin-top: 5px;
+}
+#top_bar {
+  background-color: #fff;
+  overflow: hidden;
+  position: relative;
+  max-height: 80px;
+  border-bottom: 1px solid #8274C1;
+}
+#top_bar img {
+  margin: 5px;
+}
+.navbar-toggler-containder {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.navbar-toggler-containder button i {
+  
+}
+.navbar-toggler-containder button {
+  font-size: 2em;
+  height: 100%;
 }
 
 /* button material */
@@ -41,10 +64,6 @@ h1 {
 /* fixes position of buttons for modal submit and top add new */
 .modal-footer .btn, .float-right .btn {
   margin: 6px;
-}
-.float-right .btn {
-  font-size: 1.2em;
-  padding: 0.6em 1.2em;
 }
 .btn:focus,.btn:hover {
   text-decoration: none
