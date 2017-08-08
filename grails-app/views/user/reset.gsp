@@ -8,6 +8,9 @@
   <body>
     <div class="row">
       <div class="col-md-4 offset-md-4">
+        <div align="center" id="logo">
+          <asset:image src="hor_margin_white_72_300x87.png" />
+        </div>
         <div class="login-panel card">
           <div class="card-header">
             <g:message code="reset.card.title" />

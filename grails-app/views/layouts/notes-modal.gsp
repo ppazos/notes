@@ -25,10 +25,14 @@
 
     <asset:stylesheet src="font-awesome.min.css"/>
     <asset:stylesheet src="notes.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
 
     <g:layoutHead/>
 
     <style>
+    html, body {
+      font-family: 'Roboto', sans-serif;
+    }
     </style>
 
   </head>

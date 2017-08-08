@@ -8,6 +8,9 @@
   <body>
     <div class="row">
       <div class="col-md-4 offset-md-4">
+        <div align="center" id="logo">
+          <asset:image src="hor_margin_white_72_300x87.png" />
+        </div>
         <div class="login-panel card">
           <div class="card-header">
             <g:message code="login.card.title" />
@@ -26,9 +29,9 @@
                     <label for="password"><g:message code="login.password.label"/></label>
                     <input type="password" class="form-control" name="password" id="password" required="required" value="" />
                   </div>
-                  
+                  <div class="form-group">
                   <input type="submit" id="submit" name="submit" class="btn btn-lg btn-success btn-block" value="${message(code: 'login.button.text')}"/>
-                  
+                  </div>
                   <div class="form-group" style="margin:0; padding:15px 0 0 0; text-align:center;">
                     <g:link controller="user" action="signup">
                       <g:message code="user.signup.action"/>

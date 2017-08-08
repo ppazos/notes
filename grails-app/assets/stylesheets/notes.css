@@ -12,3 +12,54 @@
 h1 {
 	margin-top: 5px;
 }
+
+/* button material */
+.btn {
+  font-size: .8rem;
+  padding: .85rem 2.13rem;
+  border-radius: 2px;
+  border: 0;
+  -webkit-transition: .2s ease-out;
+  transition: .2s ease-out;
+  color: #fff!important;
+  /*margin: 6px;*/
+  white-space: normal!important;
+  word-wrap: break-word;
+  text-transform: uppercase;
+
+  -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
+  display: inline-block;
+  line-height: 1.25;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+}
+
+/* fixes position of buttons for modal submit and top add new */
+.modal-footer .btn, .float-right .btn {
+	margin: 6px;
+}
+
+.btn:focus,.btn:hover {
+  text-decoration: none
+}
+.btn-primary {
+  background-color: #9B8FCD;
+}
+.btn-primary:hover {
+   background-color: #8274C1;
+}
+.btn-primary.focus,.btn-primary:focus {
+  -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
+}
+.btn-primary.disabled,.btn-primary:disabled {
+   border-color: #ccc;
+}
+.btn-secondary {
+  background-color: #a0d468;
+}
+.btn-secondary:hover {
+   background-color: #8cc152;
+}

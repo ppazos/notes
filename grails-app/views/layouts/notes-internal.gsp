@@ -23,6 +23,7 @@
 
     <asset:stylesheet src="font-awesome.min.css"/>
     <asset:stylesheet src="notes.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
 
     <g:layoutHead/>
 
@@ -30,6 +31,7 @@
     /* show 100% H main bg white */
     html, body, .container-fluid, .container-fluid > .row, main {
       height: 100%;
+      font-family: 'Roboto', sans-serif;
     }
     main {
       overflow: auto; /* expands the container to the contents length, fixes a problem in responsive for note list */
@@ -46,7 +48,8 @@
     }
     .navbar {
       background-color: #8274C1; /* lavender dark */
-      padding:  10px 15px 0 15px;
+      /*padding:  10px 15px 0 15px;*/
+      padding: 0;
       margin: 0;
     }
     .navbar-brand {
@@ -117,54 +120,6 @@
       background-color: #8274C1;
       color: #FFF;
     }
-
-    /* button material */
-    .btn {
-      font-size: .8rem;
-      padding: .85rem 2.13rem;
-      border-radius: 2px;
-      border: 0;
-      -webkit-transition: .2s ease-out;
-      transition: .2s ease-out;
-      color: #fff!important;
-      margin: 6px;
-      white-space: normal!important;
-      word-wrap: break-word;
-      text-transform: uppercase;
-
-      -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
-      box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
-      display: inline-block;
-      line-height: 1.25;
-      text-align: center;
-      vertical-align: middle;
-      user-select: none;
-    }
-    .btn:focus,.btn:hover {
-      text-decoration: none
-    }
-
-    .btn-primary {
-      background-color: #9B8FCD;
-    }
-    .btn-primary:hover {
-       background-color: #8274C1;
-    }
-    .btn-primary.focus,.btn-primary:focus {
-      -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
-      box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
-    }
-    .btn-primary.disabled,.btn-primary:disabled {
-       border-color: #ccc;
-    }
-    
-    .btn-secondary {
-      background-color: #a0d468;
-    }
-    .btn-secondary:hover {
-       background-color: #8cc152;
-    }
-
 
     /* Buttons calendar
 ------------------------------------------------------------------------*/
@@ -328,21 +283,32 @@ button.fc-button:active, button.fc-button:focus {
   text-align: right;
   padding-right: 10px;
 }
+#logo {
+	width: 100%;
+}
+    /* Small viewport or below */
+    @media (max-width : 767px) {
+      #logo {
+	    width: 50%;
+      }
+    }
     </style>
   </head>
   <body>
     <div class="container-fluid">
       <div class="row">
         <nav class="navbar col-md-2 col-sm-12">
+          <!--
           <div class="row top">
             <div class="col-12">
-              <a class="navbar-brand" href="#">
-               <!-- <img src="https://v4-alpha.getbootstrap.com/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-middle" alt="" />-->
+              < ! - -<a class="navbar-brand" href="#">
+               < ! - - <img src="https://v4-alpha.getbootstrap.com/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-middle" alt="" /> - - >
                 Notes
-              </a>
+              </a>- - >
+              <img src="${assetPath(src:'hor_margin_white_72_300x87.png')}" class="align-middle" alt="Psy.Notes" id="logo" />
               <button class="navbar-toggler navbar-toggler-right collapse" type="button" data-toggle="collapse" data-target="#menu"><i class="fa fa-bars" aria-hidden="true"></i></button>
             </div>
-          </div><!-- top -->
+          </div>
           <div class="row navbar-collapse" id="menu">
             <div class="col-12">
               <ul class="navbar-nav flex-column">
@@ -363,7 +329,32 @@ button.fc-button:active, button.fc-button:focus {
                 </li>
               </ul>
             </div>
-          </div><!-- menu -->
+          </div>
+          -->
+
+          <div id="logo_container top">
+            <img src="${assetPath(src:'hor_margin_white_72_300x87.png')}" class="align-middle" alt="Psy.Notes" id="logo" />
+            <button class="navbar-toggler navbar-toggler-right collapse" type="button" data-toggle="collapse" data-target="#menu"><i class="fa fa-bars" aria-hidden="true"></i></button>
+          </div>
+          <div class="navbar-collapse" id="menu">
+            <ul class="navbar-nav flex-column">
+	            <li class="nav-item">
+	              <g:link controller="dashboard" action="index" class="nav-link ${(controllerName=='dashboard')?'active':''}"><i class="fa fa-tachometer fa-fw" aria-hidden="true"></i> <g:message code="menu.dashboard"/></g:link>
+	            </li>
+	            <li class="nav-item">
+	              <g:link controller="patient" action="index" class="nav-link ${(controllerName=='patient')?'active':''}"><i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i> <g:message code="menu.patients"/></g:link>
+	            </li>
+	            <li class="nav-item">
+	              <g:link controller="timeSlot" action="index" class="nav-link ${(controllerName=='timeSlot')?'active':''}"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> <g:message code="menu.agenda"/></g:link>
+	            </li>
+	            <li class="nav-item">
+	              <g:link controller="noteCategory" action="index" class="nav-link ${(controllerName=='noteCategory')?'active':''}"><i class="fa fa-th-list fa-fw" aria-hidden="true"></i> <g:message code="menu.categories"/></g:link>
+	            </li>
+	            <li class="nav-item">
+	              <g:link controller="logout" class="nav-link"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i> <g:message code="menu.logout"/></g:link>
+	            </li>
+	          </ul>
+          </div>
         </nav>
         <main class="col-md-10 col-sm-12">
           <g:layoutBody/>

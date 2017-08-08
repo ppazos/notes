@@ -1,5 +1,8 @@
-.login-panel {
+#logo {
   margin-top: 15%;
+}
+.login-panel {
+  margin-top: 10px;
 }
 #login {
   margin: 15px 0px;
