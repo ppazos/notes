@@ -56,7 +56,7 @@
                   
                   <div class="form-group">
                     <label for="name"><g:message code="timeslot.attr.name"/></label>
-                    <input type="text" class="form-control" id="name" name="name" />
+                    <input type="text" class="form-control" id="name" name="name" required="true" />
                   </div>
                   <div class="form-group">
                     <label for="start"><g:message code="timeslot.attr.start"/></label>
