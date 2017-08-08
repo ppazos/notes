@@ -6,6 +6,9 @@
     <asset:stylesheet src="login.css"/>
   </head>
   <body>
+    <div class="pull-right">
+      <g:localeSelector uri="${request.forwardURI}" />
+    </div>
     <div class="row">
       <div class="col-md-4 offset-md-4">
         <div align="center" id="logo">
