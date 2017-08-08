@@ -33,7 +33,7 @@
             <g:each in="${row}" var="note">
               <div class="card">
                 <div class="card-header">
-                  ${note.id} ${note.dateCreated}
+                  <g:formatDate date="${note.dateCreated}" type="datetime" style="MEDIUM"/>
                 </div>
                 <div class="card-block">
                   <p class="card-text">

@@ -102,7 +102,7 @@
                 <i class="fa fa-user-circle-o fa-4x" aria-hidden="true"></i>
               </div>
               <div class="col-8 text-right">
-                ${patient.name} ${patient.lastname} (${patient.sex})
+                ${patient.name} ${patient.lastname} (${patient.sex}) <g:formatDate date="${patient.dob}" type="date" style="MEDIUM"/>
               </div>
             </div>
           </div>

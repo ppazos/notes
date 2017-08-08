@@ -14,7 +14,7 @@
           <g:link controller="note" action="index" params="[pid: p.id]">${p.name}</g:link>
         </td>
         <td>${p.lastname}</td>
-        <td>${p.dob}</td>
+        <td><g:formatDate date="${p.dob}" type="date" style="MEDIUM"/></td>
         <td>${p.sex}</td>
       </tr>
     </g:each>
