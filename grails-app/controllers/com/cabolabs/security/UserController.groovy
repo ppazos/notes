@@ -55,7 +55,7 @@ class UserController {
        Thread.start {
            
            sendMail {
-              to "pablo.swp@gmail.com"
+              to user.username //"pablo.swp@gmail.com"
               subject "Welcome to notes!"
               html '<b>Welcome!</b> <a href="'+ u +'">Set your password</a>'
            }
@@ -189,7 +189,7 @@ class UserController {
         Thread.start {
            
             sendMail {
-               to "pablo.swp@gmail.com"
+               to user.username //"pablo.swp@gmail.com"
                subject "Your notes password reset!"
                html '<b>Hey!</b> we have received a password reset request. If it was you, please <a href="'+ u +'">update your password</a>'
             }
