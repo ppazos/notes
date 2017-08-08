@@ -24,14 +24,14 @@
               <fieldset>
                   <div class="form-group ${errors?.password ? 'has-danger':''}">
                     <label for="password"><g:message code="reset.password.label"/></label>
-                    <input type="text" class="form-control ${errors?.password ? 'form-control-danger':''}" name="password" id="password" required="required" autofocus="true" value="${params.password}" />
+                    <input type="password" class="form-control ${errors?.password ? 'form-control-danger':''}" name="password" id="password" required="required" autofocus="true" value="${params.password}" />
                     <g:if test="${errors?.password}">
                        <small class="form-control-feedback"><g:message code="user.password.${errors.password.code}" /></small>
                      </g:if>
                   </div>
                   <div class="form-group ${errors?.confirm ? 'has-danger':''}">
                     <label for="confirm"><g:message code="reset.confirm.label"/></label>
-                    <input type="text" class="form-control ${errors?.confirm ? 'form-control-danger':''}" name="confirm" id="confirm" required="required" value="${params.confirm}" />
+                    <input type="password" class="form-control ${errors?.confirm ? 'form-control-danger':''}" name="confirm" id="confirm" required="required" value="${params.confirm}" />
                     <g:if test="${errors?.confirm}">
                        <small class="form-control-feedback"><g:message code="user.confirm.${errors.confirm.code}" /></small>
                      </g:if>
