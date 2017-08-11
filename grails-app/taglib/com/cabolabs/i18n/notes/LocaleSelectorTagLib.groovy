@@ -22,7 +22,7 @@ class LocaleSelectorTagLib implements GrailsConfigurationAware {
 
     def localeSelector = { args ->
         String uri = args.uri
-
+        out << '<ul class="locale-selector">'
         for ( String lang : languages )
         {
             String languageCode = "language.$lang"
@@ -30,5 +30,6 @@ class LocaleSelectorTagLib implements GrailsConfigurationAware {
             def msg = messageSource.getMessage(languageCode, [] as Object[], null, locale) 
             out << "<li><a href='${uri}?lang=${lang}'>${msg}</a></li>"
         }
+        out << '</ul>'
     }
 }

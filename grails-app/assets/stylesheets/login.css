@@ -1,5 +1,10 @@
+.locale-selector li {
+  display: inline;
+  margin-left: 10px;
+}
+
 #logo {
-  margin-top: 15%;
+  margin-top: 10%;
 }
 .login-panel {
   margin-top: 10px;

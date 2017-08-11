@@ -6,8 +6,12 @@
     <asset:stylesheet src="login.css"/>
   </head>
   <body>
-    <div class="pull-right">
+    <div class="row">
+      <div class="col-md-4 offset-md-4">
+    <div class="locale-selector-container pull-right">
       <g:localeSelector uri="${request.forwardURI}" />
+    </div>
+    </div>
     </div>
     <div class="row">
       <div class="col-md-4 offset-md-4">
