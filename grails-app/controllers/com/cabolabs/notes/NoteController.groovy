@@ -13,6 +13,7 @@ class NoteController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def springSecurityService
+    def ehrServerService
 
     def index(Integer max, Long pid, String categoryName, boolean uncategorized)
     {
@@ -28,7 +29,7 @@ class NoteController {
         if (!params.offset) params.offset = 0
         params.sort = "id"
         params.order = "desc"
-        
+
         def patient = Patient.get(pid)
         def loggedInUser = springSecurityService.currentUser
         def categories = NoteCategory.findAllByOwner(loggedInUser)
@@ -91,14 +92,11 @@ class NoteController {
 // TODO: note text is required, validate + error report
 
         note.properties = params
-        
 
         def loggedInUser = springSecurityService.currentUser
-
-
-        def username = springSecurityService.principal.username
-        note.color = 'info' // TODO: set by user, is a bootstrap class
-        note.author = User.findByUsername(username)
+        //def username = springSecurityService.principal.username
+        note.color = 'info' // TODO: set by user, is a tw bootstrap class
+        note.author = loggedInUser //User.findByUsername(username)
         note.patient = Patient.get(pid)
         note.validate()
 
@@ -118,9 +116,10 @@ class NoteController {
             render note.errors.fieldErrors as JSON, status: 400, contentType: "application/json"
             return
         }
-        
+
         note.save flush:true
 
+        ehrServerService.prepareCommit(note, loggedInUser)
 
 /*
         // TODO: put this on a service
