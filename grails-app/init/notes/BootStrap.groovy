@@ -43,9 +43,9 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 */
 
         def adminRole = Role.findOrSaveByAuthority('ROLE_ADMIN')
-        def admin
+        def admin = User.findByUsername('admin@admin.com')
 
-        if (!User.findByUsername('admin'))
+        if (!admin)
         {
             admin = new User(username: 'admin@admin.com', password: 'admin',
                              name: 'Pablo', lastname: 'Pazos').save(failOnError:true)
@@ -55,61 +55,62 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
             User.withSession { it.flush() }
         }
 
+        def user = User.findByUsername('user@user.com')
         // other user
-        if (!User.findByUsername('user'))
+        if (!user)
         {
-            def user = new User(username: 'user@user.com', password: 'user',
-                             name: 'User', lastname: 'Resu').save(failOnError:true)
+            user = new User(username: 'user@user.com', password: 'user',
+                            name: 'User', lastname: 'Resu').save(failOnError:true)
 
             UserRole.create user, adminRole
 
             User.withSession { it.flush() }
         }
 
+        if (Patient.count() == 0)
+        {
+            def patient = new Patient(name: 'Manuel',
+                                      lastname: 'Perez',
+                                      phone: '2523452542',
+                                      sex: 'M',
+                                      email: 'man@uel.com',
+                                      dob: (new Date() - (10*365)),
+                                      owner: admin).save(failOnError: true)
+            def patient2 = new Patient(name: 'Carol',
+                                      lastname: 'Suarez',
+                                      phone: '5555224234',
+                                      sex: 'F',
+                                      email: 'car@ol.com',
+                                      dob: (new Date() - (25*365)),
+                                      owner: admin).save(failOnError: true)
+            def patient3 = new Patient(name: 'Carlos',
+                                      lastname: 'Perez',
+                                      phone: '54745477547',
+                                      sex: 'M',
+                                      email: 'car@los.com',
+                                      dob: (new Date() - (29*365)),
+                                      owner: admin).save(failOnError: true)
+            def patient4 = new Patient(name: 'Miguel',
+                                      lastname: 'Rodriguez',
+                                      phone: '36346363643',
+                                      sex: 'M',
+                                      email: 'mi@guel.com',
+                                      dob: (new Date() - (63*365)),
+                                      owner: admin).save(failOnError: true)
 
-        def patient = new Patient(name: 'Manuel',
-                                  lastname: 'Perez',
-                                  phone: '2523452542',
-                                  sex: 'M',
-                                  email: 'man@uel.com',
-                                  dob: (new Date() - (10*365)),
-                                  owner: admin).save(failOnError: true)
-        def patient2 = new Patient(name: 'Carol',
-                                  lastname: 'Suarez',
-                                  phone: '5555224234',
-                                  sex: 'F',
-                                  email: 'car@ol.com',
-                                  dob: (new Date() - (25*365)),
-                                  owner: admin).save(failOnError: true)
-        def patient3 = new Patient(name: 'Carlos',
-                                  lastname: 'Perez',
-                                  phone: '54745477547',
-                                  sex: 'M',
-                                  email: 'car@los.com',
-                                  dob: (new Date() - (29*365)),
-                                  owner: admin).save(failOnError: true)
-        def patient4 = new Patient(name: 'Miguel',
-                                  lastname: 'Rodriguez',
-                                  phone: '36346363643',
-                                  sex: 'M',
-                                  email: 'mi@guel.com',
-                                  dob: (new Date() - (63*365)),
-                                  owner: admin).save(failOnError: true)
+            def cat1 = new NoteCategory(name: 'Patient', owner: admin).save(failOnError: true)
+            def cat2 = new NoteCategory(name: 'Family', owner: admin).save(failOnError: true)
+            def cat3 = new NoteCategory(name: 'Work', owner: admin).save(failOnError: true)
 
-        def cat1 = new NoteCategory(name: 'Patient', owner: admin).save(failOnError: true)
-        def cat2 = new NoteCategory(name: 'Family', owner: admin).save(failOnError: true)
-        def cat3 = new NoteCategory(name: 'Work', owner: admin).save(failOnError: true)
-
-        (1..5).each {
-            new Note(
-                color: 'success',
-                text: 'dfas sdf a asfasf asdasdf asd fas fas fasdfasdf asdf as fas dfas fasd fasf as dfasd fasd fasdf asdf asdf asdf asdfas fasd fasd fas dfasd fasd fasdf asf asdfasd fasdfa',
-                author: admin,
-                patient: patient,
-                category: cat1).save(failOnError: true)
+            (1..5).each {
+                new Note(
+                    color: 'success',
+                    text: 'dfas sdf a asfasf asdasdf asd fas fas fasdfasdf asdf as fas dfas fasd fasf as dfasd fasd fasdf asdf asdf asdf asdfas fasd fasd fas dfasd fasd fasdf asf asdfasd fasdfa',
+                    author: admin,
+                    patient: patient,
+                    category: cat1).save(failOnError: true)
+            }
         }
-
-
 
         for (String url in [
           '/error', '/index', '/index.gsp', '/**/favicon.ico', '/shutdown',
