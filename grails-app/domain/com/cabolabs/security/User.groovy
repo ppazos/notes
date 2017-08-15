@@ -36,6 +36,7 @@ class User implements Serializable {
 	}
 
 	static mapping = {
+		table '`User`' // user reserved on postgres
 		password column: '`password`'
 	}
 

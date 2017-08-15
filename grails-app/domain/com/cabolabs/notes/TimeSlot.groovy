@@ -7,7 +7,7 @@ class TimeSlot {
    User owner
 
    String uid = java.util.UUID.randomUUID() as String
-   
+
    String name
    String color
    Date start
@@ -28,5 +28,10 @@ class TimeSlot {
       status(inList: ['open','scheduled'])
       scheduledOn(nullable: true)
       scheduledFor(nullable: true)
+   }
+
+   static mapping = {
+     start column: 'slot_start' // reserved on previous versions of postgres
+     end column: 'slot_end' // reserved for postgres
    }
 }
