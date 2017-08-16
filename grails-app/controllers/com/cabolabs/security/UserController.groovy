@@ -26,7 +26,7 @@ class UserController {
         name:     name,
         lastname: lastname,
         username: username)
-       
+
        // temp password, user disabled until pass reset
        user.password = java.util.UUID.randomUUID() as String
        user.enabled = false
@@ -51,13 +51,16 @@ class UserController {
        // email
        def g = grailsApplication.mainContext.getBean('org.grails.plugins.web.taglib.ApplicationTagLib')
        def u = g.createLink(controller:'user', action:'reset', absolute:true, params:[token:user.resetPasswordToken])
-
+       def s = message(code:'signup.subject')
+       def b = message(code:'signup.body', args:[u])
        Thread.start {
-           
+
            sendMail {
               to user.username //"pablo.swp@gmail.com"
-              subject "Welcome to notes!"
-              html '<b>Welcome!</b> <a href="'+ u +'">Set your password</a>'
+              //subject "Welcome to notes!"
+              //html '<b>Welcome!</b> <a href="'+ u +'">Set your password</a>'
+              subject s
+              html b
            }
        }
 
@@ -187,7 +190,7 @@ class UserController {
         def u = g.createLink(controller:'user', action:'reset', absolute:true, params:[token:user.resetPasswordToken])
 
         Thread.start {
-           
+
             sendMail {
                to user.username //"pablo.swp@gmail.com"
                subject "Your notes password reset!"
