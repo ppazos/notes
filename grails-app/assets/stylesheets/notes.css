@@ -31,7 +31,7 @@ h1 {
   right: 0;
 }
 .navbar-toggler-containder button i {
-  
+
 }
 .navbar-toggler-containder button {
   font-size: 2em;
@@ -40,7 +40,7 @@ h1 {
 
 /* button material */
 .btn {
-  font-size: .8rem;
+  font-size: 1.0rem;
   padding: .85rem 2.13rem;
   border-radius: 2px;
   border: 0;
