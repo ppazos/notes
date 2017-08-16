@@ -8,10 +8,10 @@
   <body>
     <div class="row">
       <div class="col-md-4 offset-md-4">
-    <div class="locale-selector-container pull-right">
-      <g:localeSelector uri="${request.forwardURI}" />
-    </div>
-    </div>
+        <div class="locale-selector-container pull-right">
+          <g:localeSelector uri="${request.forwardURI}" />
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col-md-4 offset-md-4">
@@ -39,7 +39,7 @@
                   <div class="form-group">
                   <input type="submit" id="submit" name="submit" class="btn btn-lg btn-success btn-block" value="${message(code: 'login.button.text')}"/>
                   </div>
-                  <div class="form-group" style="margin:0; padding:15px 0 0 0; text-align:center;">
+                  <div class="form-group" style="margin:0; padding:0 0 0 0; text-align:center;">
                     <g:link controller="user" action="signup">
                       <g:message code="user.signup.action"/>
                     </g:link>
@@ -60,6 +60,14 @@
             </form>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12" align="center">
+        <a href="https://cabolabs.com" target="_blank"><asset:image src="CaboLabs.png" height="28"/></a>
+        <a href="https://cloudehrserver.com" target="_blank"><asset:image src="EHRServer.png" height="42" /></a>
+        <a href="http://openehr.org" target="_blank"><asset:image src="openEHR.png" height="50" /></a>
+        <a href="https://www.nirdhost.com" target="_blank"><asset:image src="NIRDHost.png" height="24" /></a>
       </div>
     </div>
   </body>
