@@ -53,8 +53,7 @@ class UserController {
        def u = g.createLink(controller:'user', action:'reset', absolute:true, params:[token:user.resetPasswordToken])
        def s = message(code:'signup.subject')
        def b = message(code:'signup.body', args:[u])
-       Thread.start {
-
+       Thread.start { // TODO: try/catch this and log the error to try again later.
            sendMail {
               to user.username //"pablo.swp@gmail.com"
               //subject "Welcome to notes!"
@@ -188,13 +187,14 @@ class UserController {
         // email
         def g = grailsApplication.mainContext.getBean('org.grails.plugins.web.taglib.ApplicationTagLib')
         def u = g.createLink(controller:'user', action:'reset', absolute:true, params:[token:user.resetPasswordToken])
+        def s = message(code:'forgot.subject')
+        def b = message(code:'forgot.body', args:[u])
 
-        Thread.start {
-
+        Thread.start { // TODO: try/catch this and log the error to try again later.
             sendMail {
                to user.username //"pablo.swp@gmail.com"
-               subject "Your notes password reset!"
-               html '<b>Hey!</b> we have received a password reset request. If it was you, please <a href="'+ u +'">update your password</a>'
+               subject s
+               html b
             }
         }
 
