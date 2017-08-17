@@ -8,14 +8,30 @@ import com.cabolabs.security.*
 @Transactional
 class EhrServerService {
 
+   def assetResourceLocator
+
    def prepareCommit(Note note, User committer)
    {
       String PS = System.getProperty("file.separator")
 
       // TODO: full path prefix should be ENV
       //def template_document = new File("openehr" +PS+ "Psychotherapy_Note_tags_envelope.xml")
-      def template_document = new File("openehr" +PS+ "with_category" +PS+ "Psychotherapy_Note.EN.v1_tags_envelope.xml")
-      def xml = template_document.text
+      //def template_document = new File("openehr" +PS+ "with_category" +PS+ "Psychotherapy_Note.EN.v1_tags_envelope.xml")
+
+
+      def a = assetResourceLocator?.findAssetForURI('Psychotherapy_Note.EN.v1_tags_envelope.xml')
+      def b = a?.getInputStream()
+      def c = b?.bytes
+
+println "========"
+println assetResourceLocator
+      println a
+      println b
+      //println c
+
+      def xml = new String(c, "UTF-8")
+      println xml
+      //def xml = template_document.text
 
       def datetime_format_openEHR = "yyyyMMdd'T'HHmmss,SSSZ"
       def format_oehr = new SimpleDateFormat(datetime_format_openEHR)
@@ -35,8 +51,8 @@ class EhrServerService {
         '[[COMPOSITION:::UUID:::ANY]]'           : java.util.UUID.randomUUID() as String,
         '[[COMPOSITION_DATE:::DATETIME:::NOW]]'  : str_date_openEHR,
         '[[Synopsis:::STRING:::]]'               : groovy.xml.XmlUtil.escapeXml(note_text),
-        '[[Category.Name]]'                      : note.category.name,
-        '[[Category.Code]]'                      : note.category.uid
+        '[[Category.Name]]'                      : note.category?.name ?: 'Uncategorized', // TODO: i18n, or remove the category elements from the XML.
+        '[[Category.Code]]'                      : note.category?.uid ?: 'c666'
       ]
 
       data.each { k, v ->
