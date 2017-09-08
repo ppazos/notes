@@ -23,14 +23,8 @@ class EhrServerService {
       def b = a?.getInputStream()
       def c = b?.bytes
 
-println "========"
-println assetResourceLocator
-      println a
-      println b
-      //println c
-
       def xml = new String(c, "UTF-8")
-      println xml
+      //println xml
       //def xml = template_document.text
 
       def datetime_format_openEHR = "yyyyMMdd'T'HHmmss,SSSZ"
@@ -39,7 +33,7 @@ println assetResourceLocator
       println str_date_openEHR
 
       def note_text = note.text.replace('&', '&amp;')
-      println note_text
+      //println note_text
 
 
       def data = [
