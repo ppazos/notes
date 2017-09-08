@@ -26,9 +26,12 @@ class LocaleSelectorTagLib implements GrailsConfigurationAware {
         for ( String lang : languages )
         {
             String languageCode = "language.$lang"
-            def locale = RequestContextUtils.getLocale(request) 
-            def msg = messageSource.getMessage(languageCode, [] as Object[], null, locale) 
-            out << "<li><a href='${uri}?lang=${lang}'>${msg}</a></li>"
+            def locale = RequestContextUtils.getLocale(request)
+            def msg = messageSource.getMessage(languageCode, [] as Object[], null, locale)
+            if (lang == locale.language)
+               out << "<li><b><a href='${uri}?lang=${lang}'>${msg}</a></b></li>"
+            else
+               out << "<li><a href='${uri}?lang=${lang}'>${msg}</a></li>"
         }
         out << '</ul>'
     }
