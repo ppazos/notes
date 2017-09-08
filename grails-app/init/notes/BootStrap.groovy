@@ -42,7 +42,11 @@ println ">>>>>>>>>>>>>>>>>>>>>>>>>>>>"
 println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 */
 
+        // Roles
         def adminRole = Role.findOrSaveByAuthority('ROLE_ADMIN')
+        def clinicianRole = Role.findOrSaveByAuthority('ROLE_CLIN')
+        def patientRole = Role.findOrSaveByAuthority('ROLE_PAT')
+
         def admin = User.findByUsername('admin@admin.com')
 
         if (!admin)
@@ -119,7 +123,8 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
           '/logout', '/logout.*', '/logout/*',
           '/user/signup',
           '/user/reset',
-          '/user/forgot']) {
+          '/user/forgot',
+          '/user/feedback']) {
        new RequestMap(url: url, configAttribute: 'permitAll').save()
     }
 
