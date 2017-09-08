@@ -40,8 +40,8 @@
     body {
       background-color: #8274C1;
     }
-    button {
-      cursor: pointer;
+    a, a:hover, a:active, a:visited, button {
+      cursor: pointer !important;
     }
     nav > div {
       margin: 0
@@ -345,6 +345,12 @@ button.fc-button:active, button.fc-button:focus {
 	            <li class="nav-item">
 	              <g:link controller="logout" class="nav-link"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i> <g:message code="menu.logout"/></g:link>
 	            </li>
+
+              <sec:ifAnyGranted roles="ROLE_ADMIN">
+                <li class="nav-item admin">
+                  <g:link controller="user" action="index" class="nav-link ${(controllerName=='user')?'active':''}"><i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i> <g:message code="menu.users"/></g:link>
+                </li>
+              </sec:ifAnyGranted>
 	          </ul>
           </div>
         </nav>

@@ -43,10 +43,8 @@ class UserController {
            return
        }
 
-       // TODO: role user
-       def ur = UserRole.create user, Role.findByAuthority('ROLE_ADMIN'), true
+       def ur = UserRole.create user, Role.findByAuthority('ROLE_CLIN'), true
        println ur.errors
-
 
        // email
        def g = grailsApplication.mainContext.getBean('org.grails.plugins.web.taglib.ApplicationTagLib')
@@ -213,13 +211,27 @@ class UserController {
     def feedback() {}
 
 
+    def index(Integer max)
+    {
+    }
+
+    def users_table(Integer max)
+    {
+        //def loggedInUser = springSecurityService.currentUser
+        params.max = Math.min(max ?: 10, 100)
+
+        def c = User.createCriteria()
+        def userList =  c.list(params) {
+            //eq('owner', loggedInUser)
+        }
+        
+        render(template: "users_table", model: [userList: userList])
+    }
+
     /*
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond User.list(params), model:[userCount: User.count()]
-    }
+    
 
     def show(User user) {
         respond user

@@ -66,7 +66,7 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
             user = new User(username: 'user@user.com', password: 'user',
                             name: 'User', lastname: 'Resu').save(failOnError:true)
 
-            UserRole.create user, adminRole
+            UserRole.create user, clinicianRole
 
             User.withSession { it.flush() }
         }
@@ -128,13 +128,14 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
        new RequestMap(url: url, configAttribute: 'permitAll').save()
     }
 
-        new RequestMap(url: '/', configAttribute: 'ROLE_ADMIN').save()
+        new RequestMap(url: '/', configAttribute: 'ROLE_ADMIN,ROLE_CLIN').save()
         new RequestMap(url: '/dbconsole/**', configAttribute: 'ROLE_ADMIN').save()
-        new RequestMap(url: '/note/**', configAttribute: 'ROLE_ADMIN').save()
-        new RequestMap(url: '/patient/**', configAttribute: 'ROLE_ADMIN').save()
-        new RequestMap(url: '/timeSlot/**', configAttribute: 'ROLE_ADMIN').save()
-        new RequestMap(url: '/noteCategory/**', configAttribute: 'ROLE_ADMIN').save()
-        new RequestMap(url: '/dashboard/**', configAttribute: 'ROLE_ADMIN').save()
+        new RequestMap(url: '/note/**', configAttribute: 'ROLE_ADMIN,ROLE_CLIN').save()
+        new RequestMap(url: '/patient/**', configAttribute: 'ROLE_ADMIN,ROLE_CLIN').save()
+        new RequestMap(url: '/timeSlot/**', configAttribute: 'ROLE_ADMIN,ROLE_CLIN').save()
+        new RequestMap(url: '/noteCategory/**', configAttribute: 'ROLE_ADMIN,ROLE_CLIN').save()
+        new RequestMap(url: '/dashboard/**', configAttribute: 'ROLE_ADMIN,ROLE_CLIN').save()
+        new RequestMap(url: '/user/**', configAttribute: 'ROLE_ADMIN').save()
 
         springSecurityService.clearCachedRequestmaps()
     }
