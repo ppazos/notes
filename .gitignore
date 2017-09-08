@@ -42,3 +42,7 @@ build
 out
 logs
 classes
+
+*.bin
+
+*.lock
