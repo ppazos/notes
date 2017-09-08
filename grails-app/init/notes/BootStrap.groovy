@@ -125,8 +125,8 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
           '/user/reset',
           '/user/forgot',
           '/user/feedback']) {
-       new RequestMap(url: url, configAttribute: 'permitAll').save()
-    }
+            new RequestMap(url: url, configAttribute: 'permitAll').save()
+        }
 
         new RequestMap(url: '/', configAttribute: 'ROLE_ADMIN,ROLE_CLIN').save()
         new RequestMap(url: '/dbconsole/**', configAttribute: 'ROLE_ADMIN').save()
