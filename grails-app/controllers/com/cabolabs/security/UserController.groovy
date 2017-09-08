@@ -63,8 +63,8 @@ class UserController {
            }
        }
 
-       flash.message = message(code:'user.signup.done', args:[user.username])
-       redirect action:'signup'
+       session.feedback = message(code:'user.signup.done', args:[user.username])
+       redirect action:'feedback'
     }
 
     /*
@@ -88,20 +88,22 @@ class UserController {
     */
     def reset(String token, String password, String confirm)
     {
-        if (!params.submit)
-        {
-            return params
-        }
-
         def user = User.findByResetPasswordToken(token)
-
         if (!user)
         {
-            return params
+            session.feedback = message(code:'user.reset.not_found')
+            redirect action:'feedback'
+            return
         }
 
+        if (!params.submit)
+        {
+            return params // GUI
+        }
+        
         if (!password || !confirm)
         {
+          println "missing data"
             return [
               errors: [
                 password: [
@@ -138,8 +140,11 @@ class UserController {
             return params
         }
 
-        flash.message = message(code:'user.reset.done')
-        redirect controller:'login'
+        //flash.message = message(code:'user.reset.done')
+        //redirect controller:'login'
+
+        session.feedback = message(code:'user.reset.done')
+        redirect action:'feedback'
     }
 
 
@@ -148,6 +153,7 @@ class UserController {
     */
     def forgot(String email)
     {
+        println "'"+ email +"'"
         if (!params.submit)
         {
             return params
@@ -198,9 +204,13 @@ class UserController {
             }
         }
 
-        flash.message = message(code:'user.forgot.done', args:[user.username])
-        return
+        session.feedback = message(code:'user.forgot.done', args:[user.username])
+        redirect action:'feedback'
     }
+
+    // generic action to show generic UI with feedback from user management
+    // actions like success signup, pw reset request, etc.
+    def feedback() {}
 
 
     /*
