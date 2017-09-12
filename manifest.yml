@@ -13,6 +13,8 @@ applications:
     services:
       - notes
     path: build/libs/notes-0.2.war
+    env:
+      FORCE_HTTPS: true
     buildpack: java_buildpack
     command: mkdir documents && mkdir documents/pending && mkdir documents/sent && CALCULATED_MEMORY=$($PWD/.java-buildpack/open_jdk_jre/bin/java-buildpack-memory-calculator-2.0.2_RELEASE
                    -memorySizes=metaspace:64m..,stack:228k.. -memoryWeights=heap:65,metaspace:10,native:15,stack:10

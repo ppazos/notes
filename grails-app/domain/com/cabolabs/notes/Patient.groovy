@@ -15,5 +15,7 @@ class Patient {
    User owner
 
    static constraints = {
+      email(nullable:true)
+      phone(nullable:true)
    }
 }

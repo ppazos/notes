@@ -70,6 +70,18 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
 
             User.withSession { it.flush() }
         }
+        
+
+        // change all roles to clin
+        /*
+        User.list().each {
+          if (it.username != 'admin@admin.com')
+          {
+            UserRole.removeAll(it)
+            UserRole.create it, clinicianRole
+          }
+        }
+        */
 
         if (Patient.count() == 0)
         {
@@ -115,6 +127,8 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
                     category: cat1).save(failOnError: true)
             }
         }
+
+        RequestMap.list()*.delete()
 
         for (String url in [
           '/error', '/index', '/index.gsp', '/**/favicon.ico', '/shutdown',

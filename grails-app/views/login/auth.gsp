@@ -4,6 +4,14 @@
     <meta name="layout" content="notes-modal" />
     <title><g:message code="login.card.title" /></title>
     <asset:stylesheet src="login.css"/>
+    <script>
+    var loc = window.location.href+'';
+    var parser = document.createElement('a');
+    parser.href = loc;
+    if (parser.hostname != 'localhost' && !parser.hostname.startsWith('192') && loc.indexOf('http://')==0){
+      window.location.href = loc.replace('http://','https://');
+    }
+    </script>
   </head>
   <body>
     <div class="row">
