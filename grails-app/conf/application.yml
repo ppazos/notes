@@ -198,3 +198,11 @@ grails:
         #    mail.smtp.socketFactory.port: System.getenv('NOTES_EMAIL_PORT')
         #    mail.smtp.socketFactory.class: "javax.net.ssl.SSLSocketFactory"
         #    mail.smtp.socketFactory.fallback: "false"
+
+---
+grails:
+    plugin:
+        databasemigration:
+            updateOnStart: true
+            updateOnStartFileNames: changelog.groovy
+    
