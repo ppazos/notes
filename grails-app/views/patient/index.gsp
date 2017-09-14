@@ -38,14 +38,15 @@
                   </div>
                   <div class="form-group">
                     <label for="dob"><g:message code="patient.attr.dob"/></label>
-                    <input type="date" class="form-control" id="dob" name="dob">
+                    <!--<input type="date" class="form-control" id="dob" name="dob">-->
+                    <g:datePicker name="dob" id="dob" class="form-control" precision="day" noSelection="['':'']"/>
                   </div>
                   <div class="form-group">
                     <label for="phone"><g:message code="patient.attr.phone"/></label>
                     <input type="text" class="form-control" id="phone" name="phone">
                   </div>
                   <div class="form-group">
-                    <label for="phone"><g:message code="patient.attr.email"/></label>
+                    <label for="email"><g:message code="patient.attr.email"/></label>
                     <input type="email" class="form-control" id="email" name="email">
                   </div>
                   
