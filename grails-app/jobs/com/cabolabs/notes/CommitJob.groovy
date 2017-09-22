@@ -51,8 +51,9 @@ class CommitJob {
              if (res.status in 200..299)
              {
                 println res
-               assert res != null
-               assert res.type.text() == 'AA'
+               //assert res != null
+               //assert res.type.text() == 'AA'
+               println res.message
 
                // move
                //f.renameTo(new File(sent, f.name))
