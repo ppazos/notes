@@ -3,6 +3,8 @@ package com.cabolabs.notes
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.converters.JSON
+import com.cabolabs.ehrserver.* // groovy client
+import grails.core.GrailsApplication
 
 @Transactional(readOnly = true)
 class PatientController {
@@ -10,6 +12,7 @@ class PatientController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def springSecurityService
+    GrailsApplication grailsApplication
 
     def index(Integer max)
     {
@@ -127,6 +130,32 @@ class PatientController {
         patient.save flush:true
 
         // TODO: EHRServer create EHR for patient and save uid
+
+        def protocol = grailsApplication.config.getProperty('ehrserver.protocol')
+        def ip       = grailsApplication.config.getProperty('ehrserver.ip')
+        def port     = grailsApplication.config.getProperty('ehrserver.port', Integer)
+        def path     = grailsApplication.config.getProperty('ehrserver.path')
+
+        println 'server '+ protocol+ ip +':'+ port + path
+
+        def ehrserver = new EhrServerClient(protocol, ip, port, path)
+        ehrserver.login('admin', 'pablopablo', '123456')
+        def res = ehrserver.createEhr(patient.uid)
+        if (res.status in 200..299)
+        {
+            println "res OK"
+            println res
+            println res.ehrUid
+            
+            patient.ehrUid = res.ehrUid
+            patient.save flush:true
+        }
+        else
+        {
+            println "Error creating EHR "+ res.description
+            // TODO: handle
+        }
+        
 
         // TODO: return the html update to the list to update the partial
         //render patient as JSON

@@ -65,5 +65,8 @@ println assetResourceLocator
       // generate file to commit
       def out = new File("documents" +PS+ "pending" +PS+ data['[[COMPOSITION:::UUID:::ANY]]'] +".xml")
       out << xml
+
+      def commit = new Commit(note: note, filepath: out.path)
+      commit.save failOnError: true, flush: true
    }
 }

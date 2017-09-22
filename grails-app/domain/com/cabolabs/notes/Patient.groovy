@@ -11,11 +11,14 @@ class Patient {
    String email
    String sex
    Date dob
+
+   String ehrUid
    
    User owner
 
    static constraints = {
       email(nullable:true)
       phone(nullable:true)
+      ehrUid(nullable:true)
    }
 }
