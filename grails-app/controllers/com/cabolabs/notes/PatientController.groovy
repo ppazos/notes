@@ -12,6 +12,7 @@ class PatientController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def springSecurityService
+    def ehrServerService
     GrailsApplication grailsApplication
 
     def index(Integer max)
@@ -129,8 +130,11 @@ class PatientController {
 
         patient.save flush:true
 
-        // TODO: EHRServer create EHR for patient and save uid
+        // EHRServer create EHR for patient and save uid
+        // TODO: handle EHR creation fail
+        ehrServerService.createEHRForPatient(patient)
 
+/*
         def protocol = grailsApplication.config.getProperty('ehrserver.protocol')
         def ip       = grailsApplication.config.getProperty('ehrserver.ip')
         def port     = grailsApplication.config.getProperty('ehrserver.port', Integer)
@@ -155,7 +159,7 @@ class PatientController {
             println "Error creating EHR "+ res.description
             // TODO: handle
         }
-        
+*/
 
         // TODO: return the html update to the list to update the partial
         //render patient as JSON

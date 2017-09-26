@@ -1,14 +1,16 @@
 package com.cabolabs.notes
 
 import grails.transaction.Transactional
-
+import grails.core.GrailsApplication
 import java.text.SimpleDateFormat
 import com.cabolabs.security.*
+import com.cabolabs.ehrserver.* // groovy client
 
 @Transactional
 class EhrServerService {
 
    def assetResourceLocator
+   GrailsApplication grailsApplication
 
    def prepareCommit(Note note, User committer)
    {
@@ -25,9 +27,7 @@ class EhrServerService {
 
 //println "========"
 //println assetResourceLocator
-//      println a
-//      println b
-      //println c
+
 
       def xml = new String(c, "UTF-8")
       //println xml
@@ -68,5 +68,33 @@ class EhrServerService {
 
       def commit = new Commit(note: note, filepath: out.path)
       commit.save failOnError: true, flush: true
+   }
+
+   def createEHRForPatient(Patient patient)
+   {
+      def protocol = grailsApplication.config.getProperty('ehrserver.protocol')
+      def ip       = grailsApplication.config.getProperty('ehrserver.ip')
+      def port     = grailsApplication.config.getProperty('ehrserver.port', Integer)
+      def path     = grailsApplication.config.getProperty('ehrserver.path')
+
+      println 'server '+ protocol+ ip +':'+ port + path
+
+      def ehrserver = new EhrServerClient(protocol, ip, port, path)
+      ehrserver.login('admin', 'pablopablo', '123456')
+      def res = ehrserver.createEhr(patient.uid)
+      if (res.status in 200..299)
+      {
+          println "res OK"
+          println res
+          println res.ehrUid
+          
+          patient.ehrUid = res.ehrUid
+          patient.save flush:true
+      }
+      else
+      {
+          println "Error creating EHR "+ res.description
+          // TODO: handle
+      }
    }
 }

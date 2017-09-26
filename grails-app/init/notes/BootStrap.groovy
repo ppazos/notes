@@ -9,6 +9,7 @@ class BootStrap {
 
     def springSecurityService
     def mailService
+    def ehrServerService
 
     def init = { servletContext ->
 
@@ -91,32 +92,32 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
                                       sex: 'M',
                                       email: 'man@uel.com',
                                       dob: (new Date() - (10*365)),
-                                      owner: admin).save(failOnError: true)
+                                      owner: admin).save(failOnError: true, flush: true)
             def patient2 = new Patient(name: 'Carol',
                                       lastname: 'Suarez',
                                       phone: '5555224234',
                                       sex: 'F',
                                       email: 'car@ol.com',
                                       dob: (new Date() - (25*365)),
-                                      owner: admin).save(failOnError: true)
+                                      owner: admin).save(failOnError: true, flush: true)
             def patient3 = new Patient(name: 'Carlos',
                                       lastname: 'Perez',
                                       phone: '54745477547',
                                       sex: 'M',
                                       email: 'car@los.com',
                                       dob: (new Date() - (29*365)),
-                                      owner: admin).save(failOnError: true)
+                                      owner: admin).save(failOnError: true, flush: true)
             def patient4 = new Patient(name: 'Miguel',
                                       lastname: 'Rodriguez',
                                       phone: '36346363643',
                                       sex: 'M',
                                       email: 'mi@guel.com',
                                       dob: (new Date() - (63*365)),
-                                      owner: admin).save(failOnError: true)
+                                      owner: admin).save(failOnError: true, flush: true)
 
-            def cat1 = new NoteCategory(name: 'Patient', owner: admin).save(failOnError: true)
-            def cat2 = new NoteCategory(name: 'Family', owner: admin).save(failOnError: true)
-            def cat3 = new NoteCategory(name: 'Work', owner: admin).save(failOnError: true)
+            def cat1 = new NoteCategory(name: 'Patient', owner: admin).save(failOnError: true, flush: true)
+            def cat2 = new NoteCategory(name: 'Family', owner: admin).save(failOnError: true, flush: true)
+            def cat3 = new NoteCategory(name: 'Work', owner: admin).save(failOnError: true, flush: true)
 
             (1..5).each {
                 new Note(
@@ -124,8 +125,14 @@ println "<<<<<<<<<<<<<<<<<<<<<<<<<<<"
                     text: 'dfas sdf a asfasf asdasdf asd fas fas fasdfasdf asdf as fas dfas fasd fasf as dfasd fasd fasdf asdf asdf asdf asdfas fasd fasd fas dfasd fasd fasdf asf asdfasd fasdfa',
                     author: admin,
                     patient: patient,
-                    category: cat1).save(failOnError: true)
+                    category: cat1).save(failOnError: true, flush: true)
             }
+        }
+
+        // if there are patients without EHR, create it
+        Patient.findAllByEhrUidIsNull().each { patient ->
+           println "Creating missing EHR for patient "+ patient.name
+           ehrServerService.createEHRForPatient(patient)
         }
 
         RequestMap.list()*.delete()
