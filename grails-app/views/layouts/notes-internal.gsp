@@ -99,7 +99,7 @@
         display: none;
       }
       #menu.collapse.show, #menu.collapsing {
-        display: inline-block;
+        display: block;
       }
     }
     /* medium or above */
