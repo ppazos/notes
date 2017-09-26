@@ -51,14 +51,17 @@ class CommitJob {
              if (res.status in 200..299)
              {
                 println res
-               //assert res != null
-               //assert res.type.text() == 'AA'
-               println res.message
+                //assert res != null
+                //assert res.type.text() == 'AA'
+                println res.message
 
-               // move
-               //f.renameTo(new File(sent, f.name))
-               commit.status = "completed"
-               commit.save(flush: true)
+                // move
+                //f.renameTo(new File(sent, f.name))
+                commit.status = "completed"
+                if (!commit.save(flush: true))
+                {
+                   println commit.errors
+                }
              }
              else
              {
