@@ -3,6 +3,7 @@ package com.cabolabs.notes
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.converters.JSON
+import groovy.time.*
 
 @Transactional(readOnly = true)
 class TimeSlotController {
@@ -12,14 +13,24 @@ class TimeSlotController {
     static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
 
     def index(Integer max) {
-        
+
     }
 
-    def timeslot_list(Integer max)
+    def timeslot_list(Integer max, String start, String end)
     {
+        def dstart, dend
+        if (start) dstart = Date.parse("yyyy-MM-dd", start)
+        if (end) dend = Date.parse("yyyy-MM-dd", end)
+
         def loggedInUser = springSecurityService.currentUser
         params.max = Math.min(max ?: 10, 100)
-        render TimeSlot.findAllByOwner(loggedInUser, params) as JSON //, model:[timeSlotCount: TimeSlot.count()]
+        def list = TimeSlot.withCriteria {
+          eq('owner', loggedInUser)
+          ge('start', dstart)
+          le('start', dend)
+        }
+        //render TimeSlot.findAllByOwner(loggedInUser, params) as JSON //, model:[timeSlotCount: TimeSlot.count()]
+        render list as JSON
     }
 
     def show(TimeSlot timeSlot) {
@@ -31,7 +42,7 @@ class TimeSlotController {
     }
 
     @Transactional
-    def save(TimeSlot timeSlot)
+    def save(TimeSlot timeSlot, String repeat, int times)
     {
         println "save"
         println params
@@ -48,13 +59,48 @@ class TimeSlotController {
 
 println timeSlot.uid
 
+        def repeatTimeSlots = [] // user to create other TS in the series
+        if (repeat != 'once')
+        {
+           def start = timeSlot.start
+           def end   = timeSlot.end
+           def period
+           if (repeat == 'weekly')
+           {
+              //period = 7
+              period = 'week'
+           }
+           if (repeat == 'monthly')
+           {
+              //period = 30 // TODO: same day next month is not exactly now + 30
+              period = 'month'
+           }
+
+           // -1 because the initial ts counts in the total
+           (times-1).times { i ->
+
+              use (TimeCategory) {
+                 start += 1."$period"
+                 end += 1."$period"
+              }
+
+              println start
+
+              repeatTimeSlots << new TimeSlot(start: start, end: end,
+                name: timeSlot.name, owner: loggedInUser,
+                 color: timeSlot.color)
+           }
+        }
+
         timeSlot.owner = loggedInUser
         timeSlot.validate()
 
         if (timeSlot.hasErrors())
         {
-            transactionStatus.setRollbackOnly()
-            //respond timeSlot.errors, view:'create'
+           transactionStatus.setRollbackOnly()
+           //respond timeSlot.errors, view:'create'
+
+           println timeSlot.errors
 
 /*
 
@@ -66,6 +112,12 @@ println timeSlot.uid
         }
 
         timeSlot.save flush:true
+
+        repeatTimeSlots.each {
+           it.save flush:true
+
+           println it.errors
+        }
 
 /*
         request.withFormat {
@@ -91,7 +143,7 @@ println timeSlot.uid
         println params
 
         def timeSlot = TimeSlot.findByUid(params.uid)
-        
+
         if (timeSlot == null)
         {
             transactionStatus.setRollbackOnly()
@@ -102,7 +154,7 @@ println timeSlot.uid
         def wasScheduled = (timeSlot.status == 'scheduled')
 
         timeSlot.properties = params
-        
+
         if (timeSlot.status == 'scheduled')
         {
             if (!params.scheduledForUid)

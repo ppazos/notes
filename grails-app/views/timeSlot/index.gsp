@@ -9,7 +9,7 @@
 
     <asset:javascript src="tempusdominus-bootstrap-4.min.js" />
     <asset:stylesheet src="tempusdominus-bootstrap-4.min.css"/>
-    
+
     <style>
     #calendar h2 {
       font-size: 22px;
@@ -53,7 +53,7 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  
+
                   <div class="form-group">
                     <label for="name"><g:message code="timeslot.attr.name"/></label>
                     <input type="text" class="form-control" id="name" name="name" required="true" />
@@ -69,6 +69,17 @@
                   <div class="form-group">
                     <label for="color"><g:message code="timeslot.attr.color"/></label>
                     <input type="color" id="color" name="color" value="#9B8FCD" />
+                  </div>
+                  <div class="form-group">
+                    <label for="repeat"><g:message code="timeslot.attr.repeat"/></label>
+                    <select name="repeat">
+                      <option value="once">Once</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="monthly">Monthly</option>
+                    </select>
+
+                    <input type="number" id="times" name="times" value="" />
+                    <label for="times"><g:message code="timeslot.attr.times"/></label>
                   </div>
                   <div class="form-group" id="status">
                     <label><g:message code="timeslot.attr.status"/></label>
@@ -111,16 +122,16 @@
                     // ajax patient lookup launched when the user stops writing for 500ms.
                     var timer;
                     $('[name=patientSearch]').on('keyup', function(){
-                      
+
                       clearTimeout(timer);
-                      
+
                       if (this.value)
                       {
                         timer = setTimeout(lookup.bind(null, this.value), 400);
                       }
                     });
                     var lookup = function(q) {
-                      
+
                       $.ajax({
                         type: "GET",
                         url: '${createLink(controller:"patient", action:"lookup")}',
@@ -214,7 +225,7 @@
           }
         }
       });
-      
+
       $('#calendar').fullCalendar({
         header: {
           left:   'title',
@@ -337,7 +348,7 @@
             error: function(response, statusText)
             {
               //console.log(JSON.parse(response.responseText));
-              
+
               // Display validation errors on for fields
               errors = JSON.parse(response.responseText);
               $.each(errors, function( index, error ) {
@@ -368,7 +379,7 @@
             error: function(response, statusText)
             {
               //console.log(JSON.parse(response.responseText));
-              
+
               // Display validation errors on for fields
               errors = JSON.parse(response.responseText);
               $.each(errors, function( index, error ) {
@@ -425,7 +436,7 @@
           $('#create_modal').modal('show');
 /*
             // TODO: render on server response
-            $('#calendar').fullCalendar('renderEvent', 
+            $('#calendar').fullCalendar('renderEvent',
             {
               title : 'my pickup slot',
               start : start.toDate(),
@@ -474,7 +485,7 @@
           error: function(response, statusText)
           {
             //console.log(JSON.parse(response.responseText));
-            
+
             // Display validation errors on for fields
             errors = JSON.parse(response.responseText);
             $.each(errors, function( index, error ) {
