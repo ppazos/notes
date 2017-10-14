@@ -18,7 +18,8 @@
       background-color: #8274C1;
       color: #FFF;
     }
-    #status, #patients, #scheduledForContainer {
+    /*#status, */
+    #times_container, #patients, #scheduledForContainer {
       display: none; /* display for event edit */
     }
     .timepicker-picker .btn {
@@ -30,6 +31,13 @@
     }
     .timepicker-picker .btn span:hover {
       background-color: #8274C1 !important;
+    }
+    input[name=times] {
+      width: 85px !important;
+      text-align: right;
+    }
+    #repeat > * {
+      margin-right: 5px; /* adds space between inline elements for repeat/times */
     }
     </style>
   </head>
@@ -70,23 +78,27 @@
                     <label for="color"><g:message code="timeslot.attr.color"/></label>
                     <input type="color" id="color" name="color" value="#9B8FCD" />
                   </div>
-                  <div class="form-group">
+                  <div class="form-inline form-group" id="repeat">
                     <label for="repeat"><g:message code="timeslot.attr.repeat"/></label>
-                    <select name="repeat">
-                      <option value="once">Once</option>
-                      <option value="weekly">Weekly</option>
-                      <option value="monthly">Monthly</option>
+                    <select name="repeat" class="form-control">
+                      <option value="once"><g:message code="timeslot.attr.period.once"/></option>
+                      <option value="weekly"><g:message code="timeslot.attr.period.weekly"/></option>
+                      <option value="monthly"><g:message code="timeslot.attr.period.monthly"/></option>
                     </select>
-
-                    <input type="number" id="times" name="times" value="" />
-                    <label for="times"><g:message code="timeslot.attr.times"/></label>
+                    <label for="times" id="times_container">
+                      <input type="number" id="times" name="times" value="2" min="2" class="form-control" />
+                      <g:message code="timeslot.attr.times"/>
+                    </label>
+                    <br/>
+                    <small class="form-text text-muted"><g:message code="timeslot.attr.repeat.help"/></small>
                   </div>
                   <div class="form-group" id="status">
                     <label><g:message code="timeslot.attr.status"/></label>
                     <div>
-                    <label><input type="radio" name="status" value="open" /> <g:message code="timeslot.attr.status_open"/></label>
-                    <label><input type="radio" name="status" value="scheduled" /> <g:message code="timeslot.attr.status_scheduled"/></label>
+                      <label><input type="radio" name="status" value="open" checked="checked" /> <g:message code="timeslot.attr.status_open"/></label>
+                      <label><input type="radio" name="status" value="scheduled" /> <g:message code="timeslot.attr.status_scheduled"/></label>
                     </div>
+                    <small class="form-text text-muted"><g:message code="timeslot.attr.status.help"/></small>
                   </div>
                   <!-- patient data for already scheduled -->
                   <div class="form-group" id="scheduledForContainer">
@@ -186,6 +198,18 @@
     <script type="text/javascript">
     $(document).ready(function() {
 
+      $('select[name=repeat]').on('change', function(e) {
+        console.log(this.value);
+        if (this.value != 'once')
+        {
+          $('#times_container').show();
+        }
+        else
+        {
+          $('#times_container').hide();
+        }
+      });
+
       // ---------------------------------------------------------
       // start/end fields are datetime pickers
       $('#start').datetimepicker({sideBySide: true, icons: {up: 'fa fa-chevron-up', down: 'fa fa-chevron-down'}, useCurrent: false});
@@ -259,13 +283,16 @@
             $(element).css('border-width', '3px');
           }
         },
-        eventClick: function(evn, jsEvent, view) {
+        eventClick: function(evn, jsEvent, view) { // event show
 
           //console.log('Event: ' + evn.title +' '+ new Date(evn.start));
           //console.log(evn.id, evn.color);
           console.log(evn, evn.status);
           //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
           //alert('View: ' + view.name); // month
+
+          // the repeat fields are only for the create not the show
+          $('#repeat').hide();
 
           // clean search
           $('[name=patientSearch]').val('');
@@ -282,10 +309,12 @@
 
             patient = evn.scheduledFor;
 
+            console.log(patient);
+
             $('#scheduledForTable > tbody').empty();
 
             $('#scheduledForTable > tbody').append(
-              '<tr><td>'+patient.name+'</td><td>'+patient.lastname+'</td><td>'+patient.dob+'</td><td>'+patient.sex+'</td></tr>'
+              '<tr><td>'+patient.name+'</td><td>'+patient.lastname+'</td><td>'+new Date(patient.dob).toLocaleDateString()+'</td><td>'+patient.sex+'</td></tr>'
             );
           }
           else
@@ -321,7 +350,7 @@
           $('#end').data('datetimepicker').date(evn.end);
 
           $('[name=status][value='+ evn.status +']').prop('checked', true);
-          $('#status').show();
+          //$('#status').show();
 
           $('#create_modal').modal('show');
         },
@@ -388,7 +417,7 @@
             }
           });
         },
-        select: function( start, end, jsEvent, view, resource ) {
+        select: function( start, end, jsEvent, view, resource ) { // calendar select, create new event
 
           //console.log(start, end, jsEvent, view, resource);
 
@@ -425,6 +454,8 @@
           //$('#start').val('');
           //$('#end').val('');
 
+          // the repeat fields are only for the create, the show might hide them
+          $('#repeat').show();
           $('#start').data('datetimepicker').date(start);
           $('#end').data('datetimepicker').date(end);
 
@@ -510,7 +541,7 @@
         $('#end').data('datetimepicker').date(null);
 
         $('#calendar').fullCalendar('unselect');
-        $('#status').hide();
+        //$('#status').hide();
       });
     </script>
 

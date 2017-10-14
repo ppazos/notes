@@ -55,10 +55,37 @@ class TimeSlotController {
         }
 
         def loggedInUser = springSecurityService.currentUser
-        timeSlot.uid = java.util.UUID.randomUUID() as String
+        timeSlot.uid = java.util.UUID.randomUUID() as String // there is an uid field on the ui that comes empty on creation and is binded as null
 
-println timeSlot.uid
+        // schedule on creation?
+        if (timeSlot.status == 'scheduled')
+        {
+            if (!params.scheduledForUid)
+            {
+                render text: [result: 'NO_CONTENT'] as JSON, status: 400, contentType: "application/json"
+                return
+            }
 
+            def patient = Patient.findByUid(params.scheduledForUid)
+
+            if (!patient)
+            {
+                render text: [result: 'UNKOWN_PATIENT'] as JSON, status: 404, contentType: "application/json"
+                return
+            }
+
+            // check that is my patient, throw unknown to avoid showing that the patient exists
+            if (patient.owner.id != loggedInUser.id)
+            {
+                render text: [result: 'UNKOWN_PATIENT'] as JSON, status: 404, contentType: "application/json"
+                return
+            }
+
+            timeSlot.scheduledFor = patient
+            timeSlot.scheduledOn = new Date()
+        }
+
+        // periodic events?
         def repeatTimeSlots = [] // user to create other TS in the series
         if (repeat != 'once')
         {
@@ -88,7 +115,10 @@ println timeSlot.uid
 
               repeatTimeSlots << new TimeSlot(start: start, end: end,
                 name: timeSlot.name, owner: loggedInUser,
-                 color: timeSlot.color)
+                 color: timeSlot.color, status: timeSlot.status,
+                 scheduledFor: timeSlot.scheduledFor,
+                 scheduledOn: timeSlot.scheduledOn)
+
            }
         }
 
