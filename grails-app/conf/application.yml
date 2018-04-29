@@ -141,6 +141,7 @@ environments:
            port: "80"
            path: "/" # should start and end with /
            token: ${NOTES_EHRSERVER_TOKEN}
+           use_cloud_backend: false
            #protocol: "http://" # https://
            #ip: "192.168.1.108"
            #port: "8090"
@@ -192,6 +193,7 @@ environments:
             port: "443"
             path: "/" # should start and end with /
             token: ${NOTES_EHRSERVER_TOKEN}
+            use_cloud_backend: true
 
 ---
 grails:

@@ -14,6 +14,13 @@ class EhrServerService {
 
    def prepareCommit(Note note, User committer)
    {
+      def use_back = grailsApplication.config.getProperty('ehrserver.use_cloud_backend', Boolean)
+      if (!use_back)
+      {
+         println "Not using backend, enable with use_cloud_backend: true"
+         return
+      }
+
       String PS = System.getProperty("file.separator")
 
       // TODO: full path prefix should be ENV
@@ -68,6 +75,13 @@ class EhrServerService {
 
    def createEHRForPatient(Patient patient)
    {
+      def use_back = grailsApplication.config.getProperty('ehrserver.use_cloud_backend', Boolean)
+      if (!use_back)
+      {
+         println "Not using backend, enable with use_cloud_backend: true"
+         return
+      }
+
       def protocol = grailsApplication.config.getProperty('ehrserver.protocol')
       def ip       = grailsApplication.config.getProperty('ehrserver.ip')
       def port     = grailsApplication.config.getProperty('ehrserver.port', Integer)
