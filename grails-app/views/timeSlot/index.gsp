@@ -459,7 +459,7 @@
           $('#start').data('datetimepicker').date(start);
           $('#end').data('datetimepicker').date(end);
 
-          console.log($('#start').data('datetimepicker').date(), $('#end').data('datetimepicker').date());
+          console.log('calendar click', $('#start').data('datetimepicker').date(), $('#end').data('datetimepicker').date());
 
           //$('input[name=start]').val('2017-07-21T10:00'); // This works but moment is not retrieving the right format
           //$('input[name=start]').val(start.format('YYYY-MM-DD[T]hh:mm')); // format needed by HTML5 datetime-local
@@ -477,6 +477,31 @@
         }
       })
     });
+
+    /*
+     * hides and reoves stuff from the event create modal to show the modal again on it's original state.
+     */
+    var reset_modal = function()
+    {
+      // by default the event uid field should be empty
+      $('input[name=uid]').val('');
+
+      // by default hide patient table
+      $('#scheduledForContainer').hide();
+      $('#patients').hide();
+
+      // by default repeat times should be hidden
+      $('#times_container').hide();
+
+      $("#create_form")[0].reset();
+
+      // this also updates the minDate/maxDate constraints
+      $('#start').data('datetimepicker').date(null);
+      $('#end').data('datetimepicker').date(null);
+
+      $('#calendar').fullCalendar('unselect');
+      //$('#status').hide();
+    };
     </script>
 
     <script>
@@ -531,17 +556,11 @@
 
       /*
        * Reset form on modal close.
+       * This is called when: close btn click, X click, save btn click (after submit response is received)
        */
       $('#create_modal').on('hide.bs.modal', function (event) {
 
-        $("#create_form")[0].reset();
-
-        // this also updates the minDate/maxDate constraints
-        $('#start').data('datetimepicker').date(null);
-        $('#end').data('datetimepicker').date(null);
-
-        $('#calendar').fullCalendar('unselect');
-        //$('#status').hide();
+        reset_modal();
       });
     </script>
 
