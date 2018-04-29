@@ -20,9 +20,13 @@ h1 {
   position: relative;
   max-height: 80px;
   border-bottom: 1px solid #8274C1;
+  width: 100%;
 }
 #top_bar img {
   margin: 5px;
+}
+.navbar {
+  display: block !important;
 }
 .navbar-toggler-containder {
   height: 100%;

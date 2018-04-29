@@ -4,11 +4,19 @@
     <meta name="layout" content="notes-modal" />
     <title><g:message code="login.card.title" /></title>
     <asset:stylesheet src="login.css"/>
+    <script>
+    var loc = window.location.href+'';
+    var parser = document.createElement('a');
+    parser.href = loc;
+    if (parser.hostname != 'localhost' && !parser.hostname.startsWith('192') && loc.indexOf('http://')==0){
+      window.location.href = loc.replace('http://','https://');
+    }
+    </script>
   </head>
   <body>
     <div class="row">
       <div class="col-md-4 offset-md-4">
-        <div class="locale-selector-container pull-right">
+        <div class="locale-selector-container text-center">
           <g:localeSelector uri="${request.forwardURI}" />
         </div>
       </div>
@@ -62,7 +70,7 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row logos">
       <div class="col-md-12" align="center">
         <a href="https://cabolabs.com" target="_blank"><asset:image src="CaboLabs.png" height="28"/></a>
         <a href="https://cloudehrserver.com" target="_blank"><asset:image src="EHRServer.png" height="42" /></a>

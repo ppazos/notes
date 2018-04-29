@@ -62,7 +62,7 @@ class NoteCategoryController {
 
         noteCategory.save flush:true
 
-        redirect action: 'category_list'
+        forward action: 'category_list'
     }
 
     def edit(NoteCategory noteCategory) {

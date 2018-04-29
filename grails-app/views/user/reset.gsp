@@ -8,6 +8,13 @@
   <body>
     <div class="row">
       <div class="col-md-4 offset-md-4">
+        <div class="locale-selector-container text-center">
+          <g:localeSelector uri="${request.forwardURI}" />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 offset-md-4">
         <div align="center" id="logo">
           <asset:image src="hor_margin_white_72_300x87.png" />
         </div>

@@ -1,10 +1,18 @@
+.logos {
+  margin-top: 1em;
+}
+.logos img {
+  margin: 0 0 1em 0;
+}
+.locale-selector {
+  margin: 1em 0 0 0;
+}
 .locale-selector li {
   display: inline;
   margin-left: 10px;
 }
-
 #logo {
-  margin-top: 10%;
+  margin-top: 1em;
 }
 .login-panel {
   margin-top: 10px;

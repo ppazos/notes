@@ -120,8 +120,8 @@ dataSource:
     #username: sa
     #password:
     driverClassName: "org.postgresql.Driver"
-    username: "postgres"
-    password: "postgres"
+    username: "apple"
+    password: ""
 
 environments:
     development:
@@ -144,6 +144,8 @@ environments:
             url: jdbc:postgresql://localhost:5432/notes_test
             #url: jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
     production:
+        grails:
+            serverURL: https://notes.nirdhost.com
         dataSource:
             dbCreate: update
             url: jdbc:postgres://${PROD_DB_USER}:${PROD_DB_PASS}@${PROD_DB_IP}:${PROD_DB_PORT}/${PROD_DB_NAME} #jdbc:postgresql://localhost:5432/notes
@@ -196,3 +198,11 @@ grails:
         #    mail.smtp.socketFactory.port: System.getenv('NOTES_EMAIL_PORT')
         #    mail.smtp.socketFactory.class: "javax.net.ssl.SSLSocketFactory"
         #    mail.smtp.socketFactory.fallback: "false"
+
+---
+grails:
+    plugin:
+        databasemigration:
+            updateOnStart: true
+            updateOnStartFileNames: changelog.groovy
+    

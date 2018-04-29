@@ -20,10 +20,10 @@
     display: block;
     margin: 2px 0;
     padding: 4px;
-    width: 12.8vw; }
-    @media (min-width: 576px) {
-      .bootstrap-datetimepicker-widget.dropdown-menu.timepicker-sbs {
-        width: 38em; } }
+    width: auto; }
+    @media (max-width: 767px) {
+      .bootstrap-datetimepicker-widget.dropdown-menu {
+        right: 15px !important; } }
     @media (min-width: 768px) {
       .bootstrap-datetimepicker-widget.dropdown-menu.timepicker-sbs {
         width: 38em; } }

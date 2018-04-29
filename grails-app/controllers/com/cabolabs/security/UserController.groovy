@@ -43,10 +43,8 @@ class UserController {
            return
        }
 
-       // TODO: role user
-       def ur = UserRole.create user, Role.findByAuthority('ROLE_ADMIN'), true
+       def ur = UserRole.create user, Role.findByAuthority('ROLE_CLIN'), true
        println ur.errors
-
 
        // email
        def g = grailsApplication.mainContext.getBean('org.grails.plugins.web.taglib.ApplicationTagLib')
@@ -63,8 +61,8 @@ class UserController {
            }
        }
 
-       flash.message = message(code:'user.signup.done', args:[user.username])
-       redirect action:'signup'
+       session.feedback = message(code:'user.signup.done', args:[user.username])
+       redirect action:'feedback'
     }
 
     /*
@@ -88,20 +86,22 @@ class UserController {
     */
     def reset(String token, String password, String confirm)
     {
-        if (!params.submit)
-        {
-            return params
-        }
-
         def user = User.findByResetPasswordToken(token)
-
         if (!user)
         {
-            return params
+            session.feedback = message(code:'user.reset.not_found')
+            redirect action:'feedback'
+            return
         }
 
+        if (!params.submit)
+        {
+            return params // GUI
+        }
+        
         if (!password || !confirm)
         {
+          println "missing data"
             return [
               errors: [
                 password: [
@@ -138,8 +138,11 @@ class UserController {
             return params
         }
 
-        flash.message = message(code:'user.reset.done')
-        redirect controller:'login'
+        //flash.message = message(code:'user.reset.done')
+        //redirect controller:'login'
+
+        session.feedback = message(code:'user.reset.done')
+        redirect action:'feedback'
     }
 
 
@@ -148,6 +151,7 @@ class UserController {
     */
     def forgot(String email)
     {
+        println "'"+ email +"'"
         if (!params.submit)
         {
             return params
@@ -198,18 +202,36 @@ class UserController {
             }
         }
 
-        flash.message = message(code:'user.forgot.done', args:[user.username])
-        return
+        session.feedback = message(code:'user.forgot.done', args:[user.username])
+        redirect action:'feedback'
     }
 
+    // generic action to show generic UI with feedback from user management
+    // actions like success signup, pw reset request, etc.
+    def feedback() {}
+
+
+    def index(Integer max)
+    {
+    }
+
+    def users_table(Integer max)
+    {
+        //def loggedInUser = springSecurityService.currentUser
+        params.max = Math.min(max ?: 10, 100)
+
+        def c = User.createCriteria()
+        def userList =  c.list(params) {
+            //eq('owner', loggedInUser)
+        }
+        
+        render(template: "users_table", model: [userList: userList])
+    }
 
     /*
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond User.list(params), model:[userCount: User.count()]
-    }
+    
 
     def show(User user) {
         respond user
