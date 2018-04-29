@@ -76,7 +76,9 @@ class EhrServerService {
       println 'server '+ protocol+ ip +':'+ port + path
 
       def ehrserver = new EhrServerClient(protocol, ip, port, path)
-      ehrserver.login('admin', 'pablopablo', '123456')
+      //ehrserver.login('admin', 'pablopablo', '123456')
+      ehrserver.setAPIKey(grailsApplication.config.getProperty('ehrserver.token'))
+
       def res = ehrserver.createEhr(patient.uid)
       if (res.status in 200..299)
       {
