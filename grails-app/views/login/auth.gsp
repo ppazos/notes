@@ -75,7 +75,7 @@
         <a href="https://cabolabs.com" target="_blank"><asset:image src="CaboLabs.png" height="28"/></a>
         <a href="https://cloudehrserver.com" target="_blank"><asset:image src="EHRServer.png" height="42" /></a>
         <a href="http://openehr.org" target="_blank"><asset:image src="openEHR.png" height="50" /></a>
-        <a href="https://www.nirdhost.com" target="_blank"><asset:image src="NIRDHost.png" height="24" /></a>
+        <!--<a href="https://www.nirdhost.com" target="_blank"><asset:image src="NIRDHost.png" height="24" /></a>-->
       </div>
     </div>
   </body>

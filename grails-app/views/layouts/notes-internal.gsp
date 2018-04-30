@@ -49,9 +49,19 @@
     body {
       background-color: #8274C1;
     }
+
+    /* fix anchor color, same as btn-primary, also for hover. that is on notes.css */
+    a {
+      color: #9B8FCD;
+    }
+    a:hover {
+      color: #8274C1;
+    }
+
     a, a:hover, a:active, a:visited, button {
       cursor: pointer !important;
     }
+
     nav > div {
       margin: 0
     }
@@ -147,14 +157,14 @@ button.fc-button:active, button.fc-button:focus {
 .fc-header .fc-button {
   margin-right: -1px;
 }
-  
+
 .fc-header .fc-corner-right,  /* non-theme */
 .fc-header .ui-corner-right { /* theme */
   margin-right: 0; /* back to normal */
 }
-  
+
 /* button layering (for border precedence) */
-  
+
 .fc-header .fc-state-hover,
 .fc-header .ui-state-hover {
   z-index: 2;
@@ -186,7 +196,7 @@ button.fc-button:active, button.fc-button:focus {
 }
 .fc-state-default {
   border-color: #ff3b30;
-  color: #ff3b30; 
+  color: #ff3b30;
 }
 .fc-state-default.fc-corner-left { /* non-theme */
   border-top-left-radius: 0;
@@ -225,7 +235,7 @@ button.fc-button:active, button.fc-button:focus {
   position: relative;
   float: left;
   margin-top: -50%;
-  
+
   *margin-top: 0;
   *top: -50%;
 }
@@ -343,7 +353,7 @@ button.fc-button:active, button.fc-button:focus {
 	              <g:link controller="dashboard" action="index" class="nav-link ${(controllerName=='dashboard')?'active':''}"><i class="fa fa-tachometer fa-fw" aria-hidden="true"></i> <g:message code="menu.dashboard"/></g:link>
 	            </li>
 	            <li class="nav-item">
-	              <g:link controller="patient" action="index" class="nav-link ${(controllerName=='patient')?'active':''}"><i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i> <g:message code="menu.patients"/></g:link>
+	              <g:link controller="patient" action="index" class="nav-link ${(['patient', 'note'].contains(controllerName))?'active':''}"><i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i> <g:message code="menu.patients"/></g:link>
 	            </li>
 	            <li class="nav-item">
 	              <g:link controller="timeSlot" action="index" class="nav-link ${(controllerName=='timeSlot')?'active':''}"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> <g:message code="menu.agenda"/></g:link>
