@@ -47,7 +47,6 @@ dependencies {
     runtime "com.bertramlabs.plugins:asset-pipeline-grails:2.14.1"
     //runtime "com.h2database:h2"
     //runtime "org.postgresql:postgresql:42.1.4"
-    //runtime 'mysql:mysql-connector-java:5.1.46'
     runtime 'mysql:mysql-connector-java:8.0.11'
 
     testCompile "org.grails:grails-plugin-testing"
