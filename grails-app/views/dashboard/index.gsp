@@ -100,6 +100,27 @@
           -->
         </div>
       </div>
+
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-6">
+                <i class="fa fa-dollar fa-dash" aria-hidden="true"></i>
+              </div>
+              <div class="col-6 text-right">
+                <div class="dashboard-number">${payments}</div>
+                <div><g:message code="dashboard.payments.label"/></div>
+              </div>
+            </div>
+          </div>
+          <!--
+          <div class="card-footer">
+          foot
+          </div>
+          -->
+        </div>
+      </div>
     </div>
   </body>
 </html>

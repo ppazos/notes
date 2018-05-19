@@ -358,6 +358,9 @@ button.fc-button:active, button.fc-button:focus {
 	            <li class="nav-item">
 	              <g:link controller="timeSlot" action="index" class="nav-link ${(controllerName=='timeSlot')?'active':''}"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> <g:message code="menu.agenda"/></g:link>
 	            </li>
+              <li class="nav-item">
+	              <g:link controller="payments" action="index" class="nav-link ${(['payments'].contains(controllerName))?'active':''}"><i class="fa fa-dollar fa-fw" aria-hidden="true"></i> <g:message code="menu.payments"/></g:link>
+	            </li>
 	            <li class="nav-item">
 	              <g:link controller="noteCategory" action="index" class="nav-link ${(controllerName=='noteCategory')?'active':''}"><i class="fa fa-th-list fa-fw" aria-hidden="true"></i> <g:message code="menu.categories"/></g:link>
 	            </li>
