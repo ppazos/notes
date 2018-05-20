@@ -28,18 +28,6 @@
       .nav > .nav-item > a {
         color: #FFF;
       }
-      .zero-state-container {
-        height: 300px;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-align-items: center;
-        -align-items: center;
-        -webkit-justify-content: center;
-        justify-content: center;
-      }
-      .zero-state {
-        color: #DDD;
-      }
     </style>
   </head>
   <body>
@@ -80,7 +68,7 @@
             </g:form>
           </div>
         </div>
-        
+
         <h1><g:message code="note.index.title" /></h1>
       </div>
     </div>
@@ -162,7 +150,7 @@
           error: function(response, statusText)
           {
             //console.log(JSON.parse(response.responseText));
-            
+
             // Display validation errors on for fields
             errors = JSON.parse(response.responseText);
             $.each(errors, function( index, error ) {

@@ -20,11 +20,15 @@ class TimeSlot {
    // paid marker to simplify querying
    boolean paid = false
 
-   static transients = ['durationInMinutes']
+   static transients = ['durationInMinutes', 'payment']
 
    def getDurationInMinutes()
    {
       groovy.time.TimeCategory.minus(this.end, this.start).toMilliseconds() / 1000 / 60
+   }
+   def getPayment()
+   {
+      Payment.findBySession(this)
    }
 
    static constraints = {

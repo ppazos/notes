@@ -92,3 +92,16 @@ h1 {
 .btn-secondary:hover {
    background-color: #8cc152;
 }
+
+.zero-state-container {
+  height: 300px;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  -align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+.zero-state {
+  color: #DDD;
+}
