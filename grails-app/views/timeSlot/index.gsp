@@ -102,6 +102,7 @@
                   </div>
                   <!-- patient data for already scheduled -->
                   <div class="form-group" id="scheduledForContainer">
+                    <input type="hidden" name="scheduledForUid" /><!-- Set by JS when a slot is selected and is scheduled for someone, needed for update -->
                     <table id="scheduledForTable" class="table">
                       <thead>
                       <tr>
@@ -305,9 +306,10 @@
 
           if (evn.scheduledFor)
           {
-            $('#scheduledForContainer').show();
-
             patient = evn.scheduledFor;
+
+            $('#scheduledForContainer').show();
+            $('input[name=scheduledForUid]', '#scheduledForContainer').val(patient.uid);
 
             console.log(patient);
 
@@ -328,7 +330,7 @@
           $('input[name=uid]').val(evn.id);
           $('input[name=color]').val(evn.color);
 
-/*
+          /*
           console.log(evn.start, evn.start.format());
           console.log($('#start').data('datetimepicker').date());
           console.log(evn.end, evn.end.format());
@@ -525,7 +527,11 @@
         data.find( function(el){ if (el.name == 'start') return el; } ).value = $('#start').data('datetimepicker').date().toISOString();
         data.find( function(el){ if (el.name == 'end')   return el; } ).value = $('#end').data('datetimepicker').date().toISOString();
 
-        //console.log(data, $.param(data), $('#start').data('datetimepicker').date().toISOString());
+        // patientSearch is not needed for the save/update, here we remove it from the params
+        psi = data.findIndex( function(el){ if (el.name == 'patientSearch')   return el; } );
+        if (psi > -1) data.splice(psi, 1);
+
+      //  console.log(data, $.param(data), $('#start').data('datetimepicker').date().toISOString());
 
         $.ajax({
           type: "POST",
