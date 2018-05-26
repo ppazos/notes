@@ -28,6 +28,9 @@
       .nav > .nav-item > a {
         color: #FFF;
       }
+      p.card-text {
+        padding: 1em;
+      }
     </style>
   </head>
   <body>
@@ -36,7 +39,10 @@
 
         <!-- Button trigger modal -->
         <span class="float-right">
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_modal"> + </button>
+          <!--
+          <button type="button" class="btn btn-primary btn-create" data-toggle="modal" data-target="#create_modal"> + </button>
+        -->
+          <button type="button" class="btn btn-primary btn-create"> + </button>
         </span>
 
         <!-- Modal -->
@@ -112,6 +118,12 @@
     <asset:javascript src="tinymce/tinymce.min.js"/>
     <script>
       $(document).ready(function() {
+
+        $('.btn-create').on('click', function(){
+          console.log('check plan TODO');
+          $('#create_modal').modal('show');
+        });
+
         tinymce.init({
            selector:'#editor',
            height: 400,

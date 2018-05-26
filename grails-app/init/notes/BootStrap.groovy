@@ -30,10 +30,10 @@ class BootStrap {
         // Roles
         def adminRole = Role.findOrSaveByAuthority('ROLE_ADMIN')
         def clinicianRole = Role.findOrSaveByAuthority('ROLE_CLIN')
-        def patientRole = Role.findOrSaveByAuthority('ROLE_PAT')
+        //def patientRole = Role.findOrSaveByAuthority('ROLE_PAT')
 
+        // Users
         def admin = User.findByUsername('admin@admin.com')
-
         if (!admin)
         {
             admin = new User(username: 'admin@admin.com', password: 'admin',
@@ -56,6 +56,21 @@ class BootStrap {
             User.withSession { it.flush() }
         }
 
+        // Plans
+        def plans = [
+           new Plan(name: 'basico', maxPatients: 5, maxNotesPerMonth: 25),
+           new Plan(name: 'profesional', maxPatients: 20, maxNotesPerMonth: 99999),
+           new Plan(name: 'clinica', maxPatients: 50, maxNotesPerMonth: 99999),
+           new Plan(name: 'test', maxPatients: 200, maxNotesPerMonth: 99999)
+        ]
+        plans.each { plan ->
+           plan.save(failOnError: true)
+        }
+
+        User.list().each { u ->
+           def assoc = new PlanAssociation(plan: plans[3], user: u, validFrom: new Date(), validTo: new Date() + 365)
+           assoc.save(failOnError: true)
+        }
 
         // change all roles to clin
         /*
@@ -141,6 +156,7 @@ class BootStrap {
         new RequestMap(url: '/timeSlot/**', configAttribute: 'ROLE_ADMIN,ROLE_CLIN').save()
         new RequestMap(url: '/noteCategory/**', configAttribute: 'ROLE_ADMIN,ROLE_CLIN').save()
         new RequestMap(url: '/dashboard/**', configAttribute: 'ROLE_ADMIN,ROLE_CLIN').save()
+        new RequestMap(url: '/plan/**', configAttribute: 'ROLE_ADMIN,ROLE_CLIN').save()
         new RequestMap(url: '/user/**', configAttribute: 'ROLE_ADMIN').save()
 
         springSecurityService.clearCachedRequestmaps()

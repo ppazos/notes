@@ -10,21 +10,27 @@ import com.cabolabs.security.*
 @Transactional(readOnly = true)
 class NoteController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+   static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def springSecurityService
-    def ehrServerService
+   def springSecurityService
+   def ehrServerService
 
-    def index(Integer max, Long pid, String categoryName, boolean uncategorized)
-    {
-        def loggedInUser = springSecurityService.currentUser
-        def categories = NoteCategory.findAllByOwner(loggedInUser)
-        [categories: categories, patient: Patient.get(pid)]
-    }
+   def index(Integer max, Long pid, String categoryName, boolean uncategorized)
+   {
+      // TODO: patient exists?
+      // TODO: is my patient?
+      def loggedInUser = springSecurityService.currentUser
+      def categories = NoteCategory.findAllByOwner(loggedInUser)
+      [categories: categories, patient: Patient.get(pid)]
+   }
 
     def note_list(Integer max, Long pid, String categoryName, boolean uncategorized)
     {
         println params
+
+        // TODO: patient exists?
+        // TODO: is my patient?
+
         params.max = Math.min(max ?: 9, 100)
         if (!params.offset) params.offset = 0
         params.sort = "id"

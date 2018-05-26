@@ -8,38 +8,38 @@ import groovy.time.*
 @Transactional(readOnly = true)
 class TimeSlotController {
 
-    def springSecurityService
+   def springSecurityService
 
-    static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
+   static allowedMethods = [save: "POST", update: "POST", delete: "DELETE"]
 
-    def index(Integer max) {
+   def index(Integer max) {
 
-    }
+   }
 
-    def timeslot_list(Integer max, String start, String end)
-    {
-        def dstart, dend
-        if (start) dstart = Date.parse("yyyy-MM-dd", start)
-        if (end) dend = Date.parse("yyyy-MM-dd", end)
+   def timeslot_list(Integer max, String start, String end)
+   {
+      def dstart, dend
+      if (start) dstart = Date.parse("yyyy-MM-dd", start)
+      if (end) dend = Date.parse("yyyy-MM-dd", end)
 
-        def loggedInUser = springSecurityService.currentUser
-        params.max = Math.min(max ?: 10, 100)
-        def list = TimeSlot.withCriteria {
-          eq('owner', loggedInUser)
-          ge('start', dstart)
-          le('start', dend)
-        }
-        //render TimeSlot.findAllByOwner(loggedInUser, params) as JSON //, model:[timeSlotCount: TimeSlot.count()]
-        render list as JSON
-    }
+      def loggedInUser = springSecurityService.currentUser
+      params.max = Math.min(max ?: 10, 100)
+      def list = TimeSlot.withCriteria {
+         eq('owner', loggedInUser)
+         ge('start', dstart)
+         le('start', dend)
+      }
+      //render TimeSlot.findAllByOwner(loggedInUser, params) as JSON //, model:[timeSlotCount: TimeSlot.count()]
+      render list as JSON
+   }
 
-    def show(TimeSlot timeSlot) {
-        respond timeSlot
-    }
+   def show(TimeSlot timeSlot) {
+      respond timeSlot
+   }
 
-    def create() {
-        respond new TimeSlot(params)
-    }
+   def create() {
+      respond new TimeSlot(params)
+   }
 
     @Transactional
     def save(TimeSlot timeSlot, String repeat, int times)
