@@ -68,7 +68,7 @@ class BootStrap {
         }
 
         User.list().each { u ->
-           def assoc = new PlanAssociation(plan: plans[3], user: u, validFrom: new Date(), validTo: new Date() + 365)
+           def assoc = new PlanAssociation(plan: plans[0], user: u, validFrom: new Date(), validTo: new Date() + 365)
            assoc.save(failOnError: true)
         }
 
@@ -167,13 +167,13 @@ class BootStrap {
    def registerJSONMarshallers()
    {
       JSON.registerObjectMarshaller(TimeSlot) { ts ->
-        return [id:     ts.uid,
-                start:  ts.start,
-                end:    ts.end,
+        return [id:       ts.id,
+                start:    ts.start,
+                end:      ts.end,
                 duration: ts.durationInMinutes,
-                title:  ts.name,
-                color:  ts.color,
-                status: ts.status,
+                title:    ts.name,
+                color:    ts.color,
+                status:   ts.status,
                 scheduledOn: ts.scheduledOn,
                 scheduledFor: ts.scheduledFor
                ]

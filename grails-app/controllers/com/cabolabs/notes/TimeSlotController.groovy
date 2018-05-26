@@ -42,7 +42,7 @@ class TimeSlotController {
    }
 
     @Transactional
-    def save(TimeSlot timeSlot, String repeat, int times)
+    def save(TimeSlot timeSlot, String repeat, int times, String pid)
     {
         println "save"
         println params
@@ -55,19 +55,18 @@ class TimeSlotController {
         }
 
         def loggedInUser = springSecurityService.currentUser
-        timeSlot.uid = java.util.UUID.randomUUID() as String // there is an uid field on the ui that comes empty on creation and is binded as null
+        //timeSlot.uid = java.util.UUID.randomUUID() as String // there is an uid field on the ui that comes empty on creation and is binded as null
 
         // schedule on creation?
         if (timeSlot.status == 'scheduled')
         {
-            if (!params.scheduledForUid)
+            if (!pid)
             {
                 render text: [result: 'NO_CONTENT'] as JSON, status: 400, contentType: "application/json"
                 return
             }
 
-            def patient = Patient.findByUid(params.scheduledForUid)
-
+            def patient = Patient.get(pid)
             if (!patient)
             {
                 render text: [result: 'UNKOWN_PATIENT'] as JSON, status: 404, contentType: "application/json"
@@ -113,12 +112,12 @@ class TimeSlotController {
 
               println start
 
-              repeatTimeSlots << new TimeSlot(start: start, end: end,
-                name: timeSlot.name, owner: loggedInUser,
+              repeatTimeSlots << new TimeSlot(
+                 start: start, end: end,
+                 name: timeSlot.name, owner: loggedInUser,
                  color: timeSlot.color, status: timeSlot.status,
                  scheduledFor: timeSlot.scheduledFor,
                  scheduledOn: timeSlot.scheduledOn)
-
            }
         }
 
@@ -167,13 +166,12 @@ class TimeSlotController {
     }
 
     @Transactional
-    def update()
+    def update(String id, String pid)
     {
         println "timeslot update"
         println params
 
-        def timeSlot = TimeSlot.findByUid(params.uid)
-
+        def timeSlot = TimeSlot.get(params.id)
         if (timeSlot == null)
         {
             transactionStatus.setRollbackOnly()
@@ -181,38 +179,37 @@ class TimeSlotController {
             return
         }
 
+        // timeslot loaded form the DB can be scheduled and current params.status be open, so the change is from scheduled to open
         def wasScheduled = (timeSlot.status == 'scheduled')
 
-        timeSlot.properties = params
+        timeSlot.properties = params // binds status if that comes
 
-        if (timeSlot.status == 'scheduled')
+        if (params.status == 'scheduled')
         {
-            if (!params.scheduledForUid)
+            // only updates the scheduledFor if a pid comes
+            // the case that the slot is scheduled, and then moved, doesnt send a pid, so scheduledFor should not be updated
+            if (pid)
             {
-                render text: [result: 'NO_CONTENT'] as JSON, status: 400, contentType: "application/json"
-                return
+               def patient = Patient.get(pid)
+               if (!patient)
+               {
+                   render text: [result: 'UNKOWN_PATIENT'] as JSON, status: 404, contentType: "application/json"
+                   return
+               }
+
+               // check that is my patient, throw unknown to avoid showing that the patient exists
+               def loggedInUser = springSecurityService.currentUser
+               if (patient.owner.id != loggedInUser.id)
+               {
+                   render text: [result: 'UNKOWN_PATIENT'] as JSON, status: 404, contentType: "application/json"
+                   return
+               }
+
+               timeSlot.scheduledFor = patient
+               timeSlot.scheduledOn = new Date()
             }
-
-            def patient = Patient.findByUid(params.scheduledForUid)
-
-            if (!patient)
-            {
-                render text: [result: 'UNKOWN_PATIENT'] as JSON, status: 404, contentType: "application/json"
-                return
-            }
-
-            // check that is my patient, throw unknown to avoid showing that the patient exists
-            def loggedInUser = springSecurityService.currentUser
-            if (patient.owner.id != loggedInUser.id)
-            {
-                render text: [result: 'UNKOWN_PATIENT'] as JSON, status: 404, contentType: "application/json"
-                return
-            }
-
-            timeSlot.scheduledFor = patient
-            timeSlot.scheduledOn = new Date()
         }
-        else // currently open
+        else if (params.status == 'open')
         {
             if (wasScheduled)
             {
@@ -224,6 +221,8 @@ class TimeSlotController {
                 // TODO: notify patient
             }
         }
+
+        // if status is not coming, e.g. event was just moved, it doesnt change the status or the scheduledFor
 
         timeSlot.validate()
 

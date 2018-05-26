@@ -15,36 +15,39 @@ class PatientController {
     def ehrServerService
     GrailsApplication grailsApplication
 
-    def index(Integer max)
-    {
-    }
+   def index(Integer max)
+   {
+   }
 
-    def patients_table(Integer max)
-    {
-        def loggedInUser = springSecurityService.currentUser
-        params.max = Math.min(max ?: 10, 100)
+   def patients_table(Integer max)
+   {
+      def loggedInUser = springSecurityService.currentUser
+      params.max = Math.min(max ?: 10, 100)
 
-        def c = Patient.createCriteria()
-        def patientList =  c.list(params) {
-            eq('owner', loggedInUser)
-        }
-        
-        render(template: "patients_table", model: [patientList: patientList])
-    }
+      def c = Patient.createCriteria()
+      def patientList =  c.list(params) {
+         eq('owner', loggedInUser)
+      }
 
-    def lookup(String q)
-    {
-        def matched = Patient.withCriteria {
-            or {
-                ilike('name', '%'+q+'%')
-                ilike('lastname', '%'+q+'%')
-                ilike('email', '%'+q+'%')
-            }
-        }
+      render(template: "patients_table", model: [patientList: patientList])
+   }
 
-        render matched as JSON, status: 200, contentType: "application/json"
-        return
-    }
+   def lookup(String q)
+   {
+      def loggedInUser = springSecurityService.currentUser
+
+      def matched = Patient.withCriteria {
+         eq('owner', loggedInUser)
+         or {
+            ilike('name', '%'+q+'%')
+            ilike('lastname', '%'+q+'%')
+            //ilike('email', '%'+q+'%')
+         }
+      }
+
+      render matched as JSON, status: 200, contentType: "application/json"
+      return
+   }
 /*
     def show(Patient patient)
     {
@@ -144,13 +147,13 @@ class PatientController {
 
         def ehrserver = new EhrServerClient(protocol, ip, port, path)
         ehrserver.login('admin', 'pablopablo', '123456')
-        def res = ehrserver.createEhr(patient.uid)
+        def res = ehrserver.createEhr(patient.id)
         if (res.status in 200..299)
         {
             println "res OK"
             println res
             println res.ehrUid
-            
+
             patient.ehrUid = res.ehrUid
             patient.save flush:true
         }

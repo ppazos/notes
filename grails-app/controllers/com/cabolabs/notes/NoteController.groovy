@@ -15,117 +15,122 @@ class NoteController {
    def springSecurityService
    def ehrServerService
 
-   def index(Integer max, Long pid, String categoryName, boolean uncategorized)
+   def index(Integer max, String pid, String categoryName, boolean uncategorized)
    {
-      // TODO: patient exists?
-      // TODO: is my patient?
+      // added by interceptor
+      def patient = params.patient
       def loggedInUser = springSecurityService.currentUser
+
       def categories = NoteCategory.findAllByOwner(loggedInUser)
-      [categories: categories, patient: Patient.get(pid)]
+      [categories: categories, patient: patient]
    }
 
-    def note_list(Integer max, Long pid, String categoryName, boolean uncategorized)
-    {
-        println params
+   def note_list(Integer max, String categoryName, boolean uncategorized)
+   {
+      //println 'note_list params: '+ params
 
-        // TODO: patient exists?
-        // TODO: is my patient?
+      // TODO: patient exists?
+      // TODO: is my patient?
 
-        params.max = Math.min(max ?: 9, 100)
-        if (!params.offset) params.offset = 0
-        params.sort = "id"
-        params.order = "desc"
+      params.max = Math.min(max ?: 9, 100)
+      if (!params.offset) params.offset = 0
+      params.sort = "id"
+      params.order = "desc"
 
-        def patient = Patient.get(pid)
-        def loggedInUser = springSecurityService.currentUser
-        def categories = NoteCategory.findAllByOwner(loggedInUser)
+      // added by interceptor
+      def patient = params.patient
+      def loggedInUser = springSecurityService.currentUser
+      def categories = NoteCategory.findAllByOwner(loggedInUser)
 
-        // Default category to list notes, can be null and show no category notes
-        def category = categories[0]
+      // Default category to list notes, can be null and show no category notes
+      def category = categories[0]
 
-        if (categoryName)
-        {
-            category = categories.find {it.name == categoryName}
-        }
+      if (categoryName)
+      {
+         category = categories.find {it.name == categoryName}
+      }
 
-        if (uncategorized)
-        {
-            category = null
-        }
+      if (uncategorized)
+      {
+         category = null
+      }
 
-        def c = Note.createCriteria()
-        def noteList = c.list(params) {
-            eq('patient', patient)
-            if (category)
-            {
-                eq('category', category)
-            }
-            else
-            {
-                isNull('category')
-            }
-        }
+      def c = Note.createCriteria()
+      def noteList = c.list(params) {
+         eq('patient', patient)
+         if (category)
+         {
+             eq('category', category)
+         }
+         else
+         {
+             isNull('category')
+         }
+      }
 
-        render template: 'note_list',
-               model:[
-                 noteList:   noteList,
-                 patient:    patient,
-                 categories: categories,
-                 category:   category
-               ]
-    }
+      render template: 'note_list',
+            model:[
+              noteList:   noteList,
+              patient:    patient,
+              categories: categories,
+              category:   category
+            ]
+   }
 
-    def show(Note note) {
-        respond note
-    }
+   def show(Note note) {
+      respond note
+   }
 
-    def create() {
-        respond new Note(params)
-    }
+   def create() {
+      respond new Note(params)
+   }
 
-    @Transactional
-    def save(Note note, Long pid)
-    {
-        println "save "+ params
+   @Transactional
+   def save(Note note)
+   {
+      println "save "+ params
 
-        if (note == null)
-        {
-            transactionStatus.setRollbackOnly()
-            notFound()
-            return
-        }
+      if (note == null)
+      {
+         transactionStatus.setRollbackOnly()
+         notFound()
+         return
+      }
+
+      // added by interceptor
+      def patient = params.patient
 
 // TODO: note text is required, validate + error report
 
-        note.properties = params
+      note.properties = params
 
-        def loggedInUser = springSecurityService.currentUser
-        //def username = springSecurityService.principal.username
-        note.color = 'info' // TODO: set by user, is a tw bootstrap class
-        note.author = loggedInUser //User.findByUsername(username)
-        note.patient = Patient.get(pid)
-        note.validate()
+      def loggedInUser = springSecurityService.currentUser
+      //def username = springSecurityService.principal.username
+      note.color = 'info' // TODO: set by user, is a tw bootstrap class
+      note.author = loggedInUser //User.findByUsername(username)
+      note.patient = patient
+      note.validate()
 
-        if (note.hasErrors())
-        {
-            println "note errors"
-            //println note.errors
-            //println note.errors.allErrors
-            println note.errors.fieldErrors
+      if (note.hasErrors())
+      {
+         println "note errors"
+         //println note.errors
+         //println note.errors.allErrors
+         println note.errors.fieldErrors
 
-            transactionStatus.setRollbackOnly()
-            //respond note.errors, view:'index'
-            //return
+         transactionStatus.setRollbackOnly()
+         //respond note.errors, view:'index'
+         //return
 
-            // TODO: report error like patient save
-            //redirect action: 'index', params: [pid: pid]
-            render note.errors.fieldErrors as JSON, status: 400, contentType: "application/json"
-            return
-        }
+         // TODO: report error like patient save
+         //redirect action: 'index', params: [pid: pid]
+         render note.errors.fieldErrors as JSON, status: 400, contentType: "application/json"
+         return
+      }
 
-        note.save flush:true
+      note.save flush:true
 
-        ehrServerService.prepareCommit(note, loggedInUser)
+      ehrServerService.prepareCommit(note, loggedInUser)
 
 /*
         // TODO: put this on a service
@@ -143,7 +148,6 @@ class NoteController {
 
         def note_text = note.text.replace('&', '&amp;')
         println note_text
-
 
         def data = [
           '[[CONTRIBUTION:::UUID:::ANY]]'          : java.util.UUID.randomUUID() as String,
@@ -170,66 +174,69 @@ class NoteController {
         //// test
 */
 
+      redirect action: 'note_list', params: [categoryName: note.category?.name, pid: patient.id, uncategorized: (note.category == null)]
+   }
 
-        redirect action: 'note_list', params: [categoryName: note.category?.name, pid: pid, uncategorized: (note.category == null)]
-    }
+   def edit(Note note)
+   {
+      respond note
+   }
 
-    def edit(Note note) {
-        respond note
-    }
+   @Transactional
+   def update(Note note)
+   {
+      if (note == null)
+      {
+         transactionStatus.setRollbackOnly()
+         notFound()
+         return
+      }
 
-    @Transactional
-    def update(Note note) {
-        if (note == null) {
-            transactionStatus.setRollbackOnly()
-            notFound()
-            return
-        }
+      if (note.hasErrors()) {
+         transactionStatus.setRollbackOnly()
+         respond note.errors, view:'edit'
+         return
+      }
 
-        if (note.hasErrors()) {
-            transactionStatus.setRollbackOnly()
-            respond note.errors, view:'edit'
-            return
-        }
+      note.save flush:true
 
-        note.save flush:true
+      request.withFormat {
+         form multipartForm {
+            flash.message = message(code: 'default.updated.message', args: [message(code: 'note.label', default: 'Note'), note.id])
+            redirect note
+         }
+         '*'{ respond note, [status: OK] }
+      }
+   }
 
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'note.label', default: 'Note'), note.id])
-                redirect note
-            }
-            '*'{ respond note, [status: OK] }
-        }
-    }
+   @Transactional
+   def delete(Note note)
+   {
+      if (note == null)
+      {
+         transactionStatus.setRollbackOnly()
+         notFound()
+         return
+      }
 
-    @Transactional
-    def delete(Note note) {
+      note.delete flush:true
 
-        if (note == null) {
-            transactionStatus.setRollbackOnly()
-            notFound()
-            return
-        }
+      request.withFormat {
+         form multipartForm {
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'note.label', default: 'Note'), note.id])
+            redirect action:"index", method:"GET"
+         }
+         '*'{ render status: NO_CONTENT }
+      }
+   }
 
-        note.delete flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'note.label', default: 'Note'), note.id])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
-        }
-    }
-
-    protected void notFound() {
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'note.label', default: 'Note'), params.id])
-                redirect action: "index", method: "GET"
-            }
-            '*'{ render status: NOT_FOUND }
-        }
-    }
+   protected void notFound() {
+      request.withFormat {
+         form multipartForm {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'note.label', default: 'Note'), params.id])
+            redirect action: "index", method: "GET"
+         }
+         '*'{ render status: NOT_FOUND }
+      }
+   }
 }

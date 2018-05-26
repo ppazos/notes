@@ -4,15 +4,12 @@ import com.cabolabs.security.User
 
 class TimeSlot {
 
+   String id
    User owner
-
-   String uid = java.util.UUID.randomUUID() as String
-
    String name
    String color
    Date start
    Date end
-
    String status = 'open'
    Date scheduledOn // when status changes to scheduled, records that moment
    Patient scheduledFor
@@ -38,6 +35,7 @@ class TimeSlot {
    }
 
    static mapping = {
+     id generator:'uuid2'
      start column: 'slot_start' // reserved on previous versions of postgres
      end column: 'slot_end' // reserved for postgres
    }

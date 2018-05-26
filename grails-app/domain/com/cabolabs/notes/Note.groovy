@@ -4,6 +4,7 @@ import com.cabolabs.security.User
 
 class Note {
 
+   String id
    Date dateCreated
    String color
    String text
@@ -21,6 +22,7 @@ class Note {
    }
 
    static mapping = {
+      id generator:'uuid2'
       month formula: 'MONTH(date_created)' // WARN: MySQL MONTH starts on 1
    }
 

@@ -24,7 +24,7 @@ class PaymentsController {
     * paidOn payment.paidOn date
     */
    @Transactional
-   def save(Long id)
+   def save(String id)
    {
       println params
       if (!id)

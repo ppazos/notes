@@ -28,8 +28,14 @@
       .nav > .nav-item > a {
         color: #FFF;
       }
-      p.card-text {
-        padding: 1em;
+      div.card-block {
+        padding: 12px;
+        margin-bottom: 24px; /* fix margin bottom from the footer */
+      }
+      div.card-footer { /* fix for footer going up in the card when content is small */
+        bottom: 0;
+        position: absolute;
+        width: 100%;
       }
     </style>
   </head>
@@ -82,7 +88,14 @@
     <g:if test="${flash.message}">
       <div class="row">
         <div class="col">
-          <div class="message" role="status">${flash.message}</div>
+          <div class="col">
+            <div class="alert alert-custom  fade in alert-dismissable show">
+             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true" style="font-size:20px">&times;</span>
+              </button>
+              <g:message code="${flash.message}" />
+            </div>
+          </div>
         </div>
       </div>
     </g:if>
@@ -120,8 +133,24 @@
       $(document).ready(function() {
 
         $('.btn-create').on('click', function(){
-          console.log('check plan TODO');
-          $('#create_modal').modal('show');
+          $.ajax({
+            type: "GET",
+            url: "${createLink(controller:'plan', action:'canCreateNote')}",
+            data: $("#create_form").serialize(),
+            success: function(data, statusText, response)
+            {
+              console.log(data);
+
+              if (data.result) // true: can create notes
+              {
+                $('#create_modal').modal('show');
+              }
+              else
+              {
+                $('main .row > .col:first').append('<div class="alert alert-custom fade in alert-dismissable show"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" style="font-size:20px">&times;</span></button>'+ data.message +'</div>');
+              }
+            }
+          });
         });
 
         tinymce.init({
@@ -130,6 +159,7 @@
            resize: false,
            menubar: false,
            branding: false,
+           forced_root_block : "" // avoids adding extra P element to the text
            //border: 0
         }).then(function(editors){
           //$('.mce-tinymce').css('border','0');
@@ -154,7 +184,7 @@
           data: $("#create_form").serialize(),
           success: function(data, statusText, response)
           {
-            console.log(data);
+            //console.log(data);
             // Update patient table with new patient
             $('#list_container').html(data);
             $('#create_modal').modal('hide');

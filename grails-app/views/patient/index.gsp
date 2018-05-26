@@ -25,7 +25,7 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  
+
                   <div class="form-group">
                     <label for="name"><g:message code="patient.attr.firstname"/></label>
                     <input type="text" class="form-control" id="name" name="name" aria-describedby="fileHelp">
@@ -49,7 +49,7 @@
                     <label for="email"><g:message code="patient.attr.email"/></label>
                     <input type="email" class="form-control" id="email" name="email">
                   </div>
-                  
+
                   <div class="form-group">
                     <label><g:message code="patient.attr.sex"/></label>
                     <div class="form-check">
@@ -82,7 +82,12 @@
     <g:if test="${flash.message}">
       <div class="row">
         <div class="col">
-          <div class="message" role="status">${flash.message}</div>
+          <div class="alert alert-custom fade in alert-dismissable show">
+           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true" style="font-size:20px">&times;</span>
+            </button>
+            <g:message code="${flash.message}" />
+          </div>
         </div>
       </div>
     </g:if>
@@ -115,12 +120,12 @@
           error: function(response, statusText)
           {
             //console.log(JSON.parse(response.responseText));
-            
+
             // Display validation errors on for fields
             errors = JSON.parse(response.responseText);
             $.each(errors, function( index, error ) {
               console.log(error.defaultMessage, error.field, $('[name='+error.field+']'));
-              //$('[name='+error.field+']').parent().addClass('has-danger'); // shows border on form-control 
+              //$('[name='+error.field+']').parent().addClass('has-danger'); // shows border on form-control
               $('[name='+error.field+']').addClass('is-invalid'); // shows icon if input
             });
           }

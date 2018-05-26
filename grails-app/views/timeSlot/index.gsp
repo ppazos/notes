@@ -52,7 +52,7 @@
         <div class="modal fade" id="create_modal" tabindex="-1" role="dialog" aria-labelledby="create_modal_label" aria-hidden="true">
           <div class="modal-dialog modal-lg" role="document">
             <g:form url="[action:'save']" id="create_form">
-              <input type="hidden" name="uid" value="" />
+              <input type="hidden" name="id" value="" />
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="create_modal_label"><g:message code="timeslot.new.title"/></h5>
@@ -102,7 +102,7 @@
                   </div>
                   <!-- patient data for already scheduled -->
                   <div class="form-group" id="scheduledForContainer">
-                    <input type="hidden" name="scheduledForUid" /><!-- Set by JS when a slot is selected and is scheduled for someone, needed for update -->
+                    <input type="hidden" name="pid" /><!-- Set by JS when a slot is selected and is scheduled for someone, needed for update -->
                     <table id="scheduledForTable" class="table">
                       <thead>
                       <tr>
@@ -158,7 +158,7 @@
                           $.each(data, function( index, patient ) {
                             console.log(patient);
                             $('#scheduledForLookupTable > tbody').append(
-                              '<tr><td>'+patient.name+'</td><td>'+patient.lastname+'</td><td>'+patient.dob+'</td><td>'+patient.sex+'</td><td><input type="radio" name="scheduledForUid" value="'+patient.uid+'" required="true"/></td></tr>'
+                              '<tr><td>'+patient.name+'</td><td>'+patient.lastname+'</td><td>'+patient.dob+'</td><td>'+patient.sex+'</td><td><input type="radio" name="pid_radio" value="'+patient.id+'" required="true"/></td></tr>'
                             );
                           });
                         },
@@ -186,7 +186,14 @@
     <g:if test="${flash.message}">
       <div class="row">
         <div class="col">
-          <div class="message" role="status">${flash.message}</div>
+          <div class="col">
+            <div class="alert alert-custom  fade in alert-dismissable show">
+             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true" style="font-size:20px">&times;</span>
+              </button>
+              <g:message code="${flash.message}" />
+            </div>
+          </div>
         </div>
       </div>
     </g:if>
@@ -288,7 +295,7 @@
 
           //console.log('Event: ' + evn.title +' '+ new Date(evn.start));
           //console.log(evn.id, evn.color);
-          console.log(evn, evn.status);
+          //console.log(evn, evn.status);
           //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
           //alert('View: ' + view.name); // month
 
@@ -309,9 +316,9 @@
             patient = evn.scheduledFor;
 
             $('#scheduledForContainer').show();
-            $('input[name=scheduledForUid]', '#scheduledForContainer').val(patient.uid);
+            $('input[name=pid]', '#scheduledForContainer').val(patient.id);
 
-            console.log(patient);
+            //console.log(patient);
 
             $('#scheduledForTable > tbody').empty();
 
@@ -327,7 +334,7 @@
           // change the border color just for fun
           //$(this).css('border-color', 'red');
           $('input[name=name]').val(evn.title);
-          $('input[name=uid]').val(evn.id);
+          $('input[name=id]').val(evn.id);
           $('input[name=color]').val(evn.color);
 
           /*
@@ -358,7 +365,7 @@
         },
         eventDrop: function(event, delta, revertFunc) { // delta is miliseconds
 
-          console.log(event.title + " was dropped on " + event.start.format() +" was changed by "+ delta);
+          //console.log(event.title + " was dropped on " + event.start.format() +" was changed by "+ delta);
 
           //if (!confirm("Are you sure about this change?")) {
           //  revertFunc();
@@ -368,10 +375,10 @@
           $.ajax({
             type: "POST",
             url: '${createLink(action:"update")}',
-            data: {uid: event.id, start: event.start.toISOString(), end: event.end.toISOString()},
+            data: {id: event.id, start: event.start.toISOString(), end: event.end.toISOString()},
             success: function(data, statusText, response)
             {
-              console.log(data);
+              //console.log(data);
               $('#create_modal').modal('hide');
 
               $('#calendar').fullCalendar('refetchEvents');
@@ -390,7 +397,7 @@
         },
         eventResize: function(event, delta, revertFunc) {
 
-          console.log(event.title + " end is now " + event.end.format() +" was changed by "+ delta);
+          //console.log(event.title + " end is now " + event.end.format() +" was changed by "+ delta);
 
           //if (!confirm("is this okay?")) {
           //  revertFunc();
@@ -399,10 +406,10 @@
           $.ajax({
             type: "POST",
             url: '${createLink(action:"update")}',
-            data: {uid: event.id, start: event.start.toISOString(), end: event.end.toISOString()},
+            data: {id: event.id, start: event.start.toISOString(), end: event.end.toISOString()},
             success: function(data, statusText, response)
             {
-              console.log(data);
+              //console.log(data);
               $('#create_modal').modal('hide');
 
               $('#calendar').fullCalendar('refetchEvents');
@@ -461,7 +468,7 @@
           $('#start').data('datetimepicker').date(start);
           $('#end').data('datetimepicker').date(end);
 
-          console.log('calendar click', $('#start').data('datetimepicker').date(), $('#end').data('datetimepicker').date());
+          //console.log('calendar click', $('#start').data('datetimepicker').date(), $('#end').data('datetimepicker').date());
 
           //$('input[name=start]').val('2017-07-21T10:00'); // This works but moment is not retrieving the right format
           //$('input[name=start]').val(start.format('YYYY-MM-DD[T]hh:mm')); // format needed by HTML5 datetime-local
@@ -486,14 +493,22 @@
     var reset_modal = function()
     {
       // by default the event uid field should be empty
-      $('input[name=uid]').val('');
+      $('input[name=id]').val('');
 
-      // by default hide patient table
-      $('#scheduledForContainer').hide();
+      $('#scheduledForLookupTable > tbody').empty(); // remove contents of previous search
+      $('#scheduledForTable > tbody').empty(); // remove contents of previous scheduled for patient
+
+      $('input[name=pid]', '#scheduledForContainer').val(''); // remove pid if previously selected for a scheduled slot
+      $('#scheduledForContainer').hide(); // // by default hide patient table
+
       $('#patients').hide();
 
       // by default repeat times should be hidden
       $('#times_container').hide();
+
+      // by default the radio selected for the status is the "open"
+      $("input[name=status][value='open']").prop("checked",true);
+
 
       $("#create_form")[0].reset();
 
@@ -511,7 +526,7 @@
 
         var url = this.action;
 
-        if ($('input[name=uid]').val() != "")
+        if ($('input[name=id]').val() != "")
         {
           url = url.replace('save', 'update'); // reuses the save form for update
         }
@@ -522,16 +537,25 @@
         $('input').parent().removeClass('has-danger');
         $('input').removeClass('form-control-danger');
 
+        selected_pid = $('input[name=pid_radio]:checked').val();
+        if (selected_pid)
+        {
+          $('input[name=pid]').val(selected_pid);
+        }
+
         // format dates in the servers format
         var data = $("#create_form").serializeArray();
         data.find( function(el){ if (el.name == 'start') return el; } ).value = $('#start').data('datetimepicker').date().toISOString();
         data.find( function(el){ if (el.name == 'end')   return el; } ).value = $('#end').data('datetimepicker').date().toISOString();
 
         // patientSearch is not needed for the save/update, here we remove it from the params
-        psi = data.findIndex( function(el){ if (el.name == 'patientSearch')   return el; } );
-        if (psi > -1) data.splice(psi, 1);
+        remove_index = data.findIndex( function(el){ if (el.name == 'patientSearch')   return el; } );
+        if (remove_index > -1) data.splice(remove_index, 1);
 
-      //  console.log(data, $.param(data), $('#start').data('datetimepicker').date().toISOString());
+        remove_indexx = data.findIndex( function(el){ if (el.name == 'pid_radio')   return el; } );
+        if (remove_index > -1) data.splice(remove_index, 1);
+
+        console.log(data, $.param(data), $('#start').data('datetimepicker').date().toISOString());
 
         $.ajax({
           type: "POST",
@@ -565,7 +589,6 @@
        * This is called when: close btn click, X click, save btn click (after submit response is received)
        */
       $('#create_modal').on('hide.bs.modal', function (event) {
-
         reset_modal();
       });
     </script>

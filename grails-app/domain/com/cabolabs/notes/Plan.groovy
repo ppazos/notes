@@ -19,8 +19,8 @@ class Plan {
    static PlanAssociation associatedOn(User user, Date on)
    {
       def pa = PlanAssociation.withCriteria(uniqueResult: true) {
-        le('from', on) // from <= on < to
-        gt('to', on)
+        le('validFrom', on) // from <= on < to
+        gt('validTo', on)
         eq('user', user)
       }
 

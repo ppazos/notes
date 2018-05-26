@@ -4,7 +4,7 @@ import com.cabolabs.security.User
 
 class Patient {
 
-   String uid = java.util.UUID.randomUUID() as String
+   String id
    String name
    String lastname
    String phone
@@ -13,12 +13,16 @@ class Patient {
    Date dob
 
    String ehrUid
-   
+
    User owner
 
    static constraints = {
       email(nullable:true)
       phone(nullable:true)
       ehrUid(nullable:true)
+   }
+
+   static mapping = {
+      id generator:'uuid2'
    }
 }
