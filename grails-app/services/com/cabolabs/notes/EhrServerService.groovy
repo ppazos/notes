@@ -93,7 +93,7 @@ class EhrServerService {
       //ehrserver.login('admin', 'pablopablo', '123456')
       ehrserver.setAPIKey(grailsApplication.config.getProperty('ehrserver.token'))
 
-      def res = ehrserver.createEhr(patient.uid)
+      def res = ehrserver.createEhr(patient.id) // patient id is uuid
       if (res.status in 200..299)
       {
           println "res OK"

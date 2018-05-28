@@ -11,6 +11,10 @@
   font-size: 1.5em;
   color: #8274C1;
 }
+.alert-custom, .alert-custom .close {
+  background-color: #9B8FCD;
+  color: #fff;
+}
 h1 {
   margin-top: 5px;
   color: #8274C1;
@@ -77,20 +81,20 @@ h1 {
   background-color: #9B8FCD;
 }
 .btn-primary:hover {
-   background-color: #8274C1;
+  background-color: #8274C1;
 }
 .btn-primary.focus,.btn-primary:focus {
   -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
   box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
 }
 .btn-primary.disabled,.btn-primary:disabled {
-   border-color: #ccc;
+  border-color: #ccc;
 }
 .btn-secondary {
   background-color: #a0d468;
 }
 .btn-secondary:hover {
-   background-color: #8cc152;
+  background-color: #8cc152;
 }
 
 .zero-state-container {

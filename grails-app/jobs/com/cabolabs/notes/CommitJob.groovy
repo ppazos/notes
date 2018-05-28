@@ -8,7 +8,7 @@ class CommitJob {
    GrailsApplication grailsApplication
 
    static triggers = {
-      simple repeatInterval: 60000l // execute job once in 60 seconds
+      simple repeatInterval: 60000l, startDelay: 100000 // execute job once in 60 seconds
    }
 
    def execute()
@@ -30,6 +30,7 @@ class CommitJob {
       def pending = Commit.findAllByStatus("pending")
       pending.each { commit ->
 
+         /*
          // commit, the file already has the versions envelope
          def ehrserver = new EhrServerClient(protocol, ip, port, path)
          ehrserver.login('admin', 'pablopablo', '123456')
@@ -76,6 +77,7 @@ class CommitJob {
          {
            println "An error ocurred on commit "+ e.message
          }
+         */
       }
 
       /*
@@ -83,7 +85,7 @@ class CommitJob {
 
          if (!f.name.endsWith('.xml')) return
 
-         println "File to commit "+ f.name 
+         println "File to commit "+ f.name
 
          // commit, the file already has the versions envelope
          def ehrserver = new EhrServerClient(protocol, ip, port, path)
