@@ -144,7 +144,8 @@ class BootStrap {
           '/user/signup',
           '/user/reset',
           '/user/forgot',
-          '/user/feedback']) {
+          '/user/feedback',
+          '/browserconfig.xml', '/site.webmanifest']) {
             new RequestMap(url: url, configAttribute: 'permitAll').save()
         }
 

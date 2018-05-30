@@ -11,7 +11,7 @@ class LocaleInterceptor {
     }
     boolean before() {
 
-       println "params "+ params
+       println "LocaleInterceptor params "+ params
        if (params.lang)
        {
          //println request.getClass()
