@@ -219,6 +219,12 @@
       });
 
       // ---------------------------------------------------------
+      // avoids problem of "too much recursion" when reloading
+      // https://github.com/tempusdominus/bootstrap-4/issues/123
+      //
+      $('#start').val('');
+      $('#end').val('');
+
       // start/end fields are datetime pickers
       $('#start').datetimepicker({sideBySide: true, icons: {up: 'fa fa-chevron-up', down: 'fa fa-chevron-down'}, useCurrent: false});
       $('#end').datetimepicker(  {sideBySide: true, icons: {up: 'fa fa-chevron-up', down: 'fa fa-chevron-down'}, useCurrent: false});
