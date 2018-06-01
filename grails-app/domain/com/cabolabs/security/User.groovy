@@ -16,6 +16,10 @@ class User implements Serializable {
 	String name
 	String lastname
 
+   String phone
+   String sex
+   String organization
+
 	String username // is the email
 	String password
 	boolean enabled = true
@@ -33,10 +37,13 @@ class User implements Serializable {
 		password blank: false, password: true
 		username blank: false, unique: true, email: true
 		resetPasswordToken nullable: true
+      phone nullable: true
+      sex nullable: true
+      organization nullable: true
 	}
 
 	static mapping = {
-		table '`User`' // user reserved on postgres
+		table '`sec_user`' // user reserved on postgres
 		password column: '`password`'
 	}
 

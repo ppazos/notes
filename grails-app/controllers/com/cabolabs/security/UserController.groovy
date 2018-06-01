@@ -2,67 +2,68 @@ package com.cabolabs.security
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
+import grails.converters.JSON
 
 @Transactional(readOnly = true)
 class UserController {
 
-    static allowedMethods = [dosignup: "POST"]
+   static allowedMethods = [dosignup: "POST"]
 
-    def signup()
-    {
-        /*
-        if (!params.submit)
-        {
-            return params
-        }
-        */
-    }
+   def signup()
+   {
+      /*
+      if (!params.submit)
+      {
+         return params
+      }
+      */
+   }
 
-    def dosignup(String name, String lastname, String username)
-    {
-       println params
+   def dosignup(String name, String lastname, String username)
+   {
+      println params
 
-       def user = new User(
+      def user = new User(
         name:     name,
         lastname: lastname,
         username: username)
 
-       // temp password, user disabled until pass reset
-       user.password = java.util.UUID.randomUUID() as String
-       user.enabled = false
-       user.setPasswordToken()
+      // temp password, user disabled until pass reset
+      user.password = java.util.UUID.randomUUID() as String
+      user.enabled = false
+      user.setPasswordToken()
 
-       //user.save(failOnError: true)
-       if (!user.save(flush:true))
-       {
-           println user.errors.allErrors
-           println fieldErrors(user.errors.allErrors)
-           flash.message = message(code:'user.signup.error')
-           //redirect action:'signup'
-           render view:'signup', model: [errors: fieldErrors(user.errors.allErrors)]
-           return
-       }
+      //user.save(failOnError: true)
+      if (!user.save(flush:true))
+      {
+         println user.errors.allErrors
+         println fieldErrors(user.errors.allErrors)
+         flash.message = message(code:'user.signup.error')
+         //redirect action:'signup'
+         render view:'signup', model: [errors: fieldErrors(user.errors.allErrors)]
+         return
+      }
 
-       def ur = UserRole.create user, Role.findByAuthority('ROLE_CLIN'), true
-       println ur.errors
+      def ur = UserRole.create user, Role.findByAuthority('ROLE_CLIN'), true
+      println ur.errors
 
-       // email
-       def g = grailsApplication.mainContext.getBean('org.grails.plugins.web.taglib.ApplicationTagLib')
-       def u = g.createLink(controller:'user', action:'reset', absolute:true, params:[token:user.resetPasswordToken])
-       def s = message(code:'signup.subject')
-       def b = message(code:'signup.body', args:[u])
-       Thread.start { // TODO: try/catch this and log the error to try again later.
-           sendMail {
-              to user.username //"pablo.swp@gmail.com"
-              //subject "Welcome to notes!"
-              //html '<b>Welcome!</b> <a href="'+ u +'">Set your password</a>'
-              subject s
-              html b
-           }
-       }
+      // email
+      def g = grailsApplication.mainContext.getBean('org.grails.plugins.web.taglib.ApplicationTagLib')
+      def u = g.createLink(controller:'user', action:'reset', absolute:true, params:[token:user.resetPasswordToken])
+      def s = message(code:'signup.subject')
+      def b = message(code:'signup.body', args:[u])
+      Thread.start { // TODO: try/catch this and log the error to try again later.
+         sendMail {
+            to user.username //"pablo.swp@gmail.com"
+            //subject "Welcome to notes!"
+            //html '<b>Welcome!</b> <a href="'+ u +'">Set your password</a>'
+            subject s
+            html b
+         }
+      }
 
-       session.feedback = message(code:'user.signup.done', args:[user.username])
-       redirect action:'feedback'
+      session.feedback = message(code:'user.signup.done', args:[user.username])
+      redirect action:'feedback'
     }
 
     /*
@@ -98,7 +99,7 @@ class UserController {
         {
             return params // GUI
         }
-        
+
         if (!password || !confirm)
         {
           println "missing data"
@@ -206,32 +207,87 @@ class UserController {
         redirect action:'feedback'
     }
 
-    // generic action to show generic UI with feedback from user management
-    // actions like success signup, pw reset request, etc.
-    def feedback() {}
+   // generic action to show generic UI with feedback from user management
+   // actions like success signup, pw reset request, etc.
+   def feedback()
+   {
+   }
 
+   def index(Integer max)
+   {
+   }
 
-    def index(Integer max)
-    {
-    }
+   def users_table(Integer max)
+   {
+      //def loggedInUser = springSecurityService.currentUser
+      params.max = Math.min(max ?: 10, 100)
 
-    def users_table(Integer max)
-    {
-        //def loggedInUser = springSecurityService.currentUser
-        params.max = Math.min(max ?: 10, 100)
+      def c = User.createCriteria()
+      def userList =  c.list(params) {
+        //eq('owner', loggedInUser)
+      }
 
-        def c = User.createCriteria()
-        def userList =  c.list(params) {
-            //eq('owner', loggedInUser)
-        }
-        
-        render(template: "users_table", model: [userList: userList])
-    }
+      render(template: "users_table", model: [userList: userList])
+   }
+
+   /**
+    * Admin manually registers a user.
+    */
+   @Transactional
+   def save(User user)
+   {
+      if (user == null)
+      {
+         transactionStatus.setRollbackOnly()
+         notFound()
+         return
+      }
+
+      //user.username = params.email
+
+      // temp password, user disabled until pass reset
+      user.password = java.util.UUID.randomUUID() as String
+      user.enabled = false
+      user.setPasswordToken()
+
+      user.validate()
+
+      if (user.hasErrors())
+      {
+         transactionStatus.setRollbackOnly()
+         //respond user.errors, view:'create'
+         render user.errors.fieldErrors as JSON, status: 400, contentType: "application/json"
+         return
+      }
+
+      user.save flush:true
+
+      def ur = UserRole.create user, Role.findByAuthority('ROLE_CLIN'), true
+
+      // email
+      def g = grailsApplication.mainContext.getBean('org.grails.plugins.web.taglib.ApplicationTagLib')
+      def u = g.createLink(controller:'user', action:'reset', absolute:true, params:[token:user.resetPasswordToken])
+      def s = message(code:'register.subject')
+      def b = message(code:'register.body', args:[u])
+      Thread.start { // TODO: try/catch this and log the error to try again later.
+         sendMail {
+            to user.username //"pablo.swp@gmail.com"
+            //subject "Welcome to notes!"
+            //html '<b>Welcome!</b> <a href="'+ u +'">Set your password</a>'
+            subject s
+            html b
+         }
+      }
+
+      session.feedback = message(code:'user.register.done', args:[user.username])
+
+      redirect action:'users_table'
+   }
 
     /*
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    
+
 
     def show(User user) {
         respond user
@@ -241,30 +297,7 @@ class UserController {
         respond new User(params)
     }
 
-    @Transactional
-    def save(User user) {
-        if (user == null) {
-            transactionStatus.setRollbackOnly()
-            notFound()
-            return
-        }
 
-        if (user.hasErrors()) {
-            transactionStatus.setRollbackOnly()
-            respond user.errors, view:'create'
-            return
-        }
-
-        user.save flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), user.id])
-                redirect user
-            }
-            '*' { respond user, [status: CREATED] }
-        }
-    }
 
     def edit(User user) {
         respond user
