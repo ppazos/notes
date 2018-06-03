@@ -7,6 +7,7 @@ import grails.converters.JSON
 class PlanController {
 
    def springSecurityService
+   def planService
 
    /**
     * checks the plan to see if a new note can be created.
@@ -14,17 +15,17 @@ class PlanController {
    def canCreateNote()
    {
       def loggedInUser = springSecurityService.currentUser
-      def planAssoc = Plan.associatedNow(loggedInUser)
-      if (!planAssoc)
+      try
       {
-         render text: [result: false, message: message(code:'plan.notActive')] as JSON, status: 404, contentType: "application/json"
-         return
+         if (planService.canCreateNote(loggedInUser))
+         {
+            render text: [result: true, message: message(code:'plan.notesCanBeCreated')] as JSON, status: 200, contentType: "application/json"
+            return
+         }
       }
-
-      def maxNotesPerMonth = planAssoc.plan.maxNotesPerMonth
-      if (Note.inCurrentMonth(loggedInUser).count() < maxNotesPerMonth)
+      catch (Exception e)
       {
-         render text: [result: true, message: message(code:'plan.notesCanBeCreated')] as JSON, status: 200, contentType: "application/json"
+         render text: [result: false, message: message(code:e.message)] as JSON, status: 404, contentType: "application/json"
          return
       }
 
@@ -39,17 +40,17 @@ class PlanController {
    def canCreatePatient()
    {
       def loggedInUser = springSecurityService.currentUser
-      def planAssoc = Plan.associatedNow(loggedInUser)
-      if (!planAssoc)
+      try
       {
-         render text: [result: false, message: message(code:'plan.notActive')] as JSON, status: 404, contentType: "application/json"
-         return
+         if (planService.canCreatePatient(loggedInUser))
+         {
+            render text: [result: true, message: message(code:'plan.patientsCanBeCreated')] as JSON, status: 200, contentType: "application/json"
+            return
+         }
       }
-
-      def maxNotesPerMonth = planAssoc.plan.maxPatients
-      if (Patient.countByOwner(loggedInUser) < maxNotesPerMonth)
+      catch (Exception e)
       {
-         render text: [result: true, message: message(code:'plan.patientsCanBeCreated')] as JSON, status: 200, contentType: "application/json"
+         render text: [result: false, message: message(code:e.message)] as JSON, status: 404, contentType: "application/json"
          return
       }
 

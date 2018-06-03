@@ -90,8 +90,7 @@
       var url = this.action;
 
       // Reset validation
-      $('input').parent().removeClass('has-danger');
-      $('input').removeClass('form-control-danger');
+      $('input').removeClass('is-invalid');
 
       $.ajax({
         type: "POST",

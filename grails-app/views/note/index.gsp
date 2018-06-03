@@ -45,9 +45,6 @@
 
         <!-- Button trigger modal -->
         <span class="float-right">
-          <!--
-          <button type="button" class="btn btn-primary btn-create" data-toggle="modal" data-target="#create_modal"> + </button>
-        -->
           <button type="button" class="btn btn-primary btn-create"> + </button>
         </span>
 
@@ -131,7 +128,6 @@
     <asset:javascript src="tinymce/tinymce.min.js"/>
     <script>
       $(document).ready(function() {
-
         $('.btn-create').on('click', function(){
           $.ajax({
             type: "GET",
@@ -195,13 +191,21 @@
 
             // Display validation errors on for fields
             errors = JSON.parse(response.responseText);
-            $.each(errors, function( index, error ) {
-              console.log(error.defaultMessage);
-              $('[name='+error.field+']').parent().addClass('has-danger'); // shows border on form-control children
-              $('[name='+error.field+']').addClass('form-control-danger'); // shows icon if input
+            // error: 1. user doesn't have plan, 2. can't create patient
+            if(errors.hasOwnProperty('result') && errors.result == false)
+            {
+              $('#create_modal .modal-body').prepend('<div class="alert alert-custom fade in alert-dismissable show"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" style="font-size:20px">&times;</span></button>'+ errors.message +'</div>');
+            }
+            else // data validation error
+            {
+              $.each(errors, function( index, error ) {
+                console.log(error.defaultMessage);
+                $('[name='+error.field+']').parent().addClass('has-danger'); // shows border on form-control children
+                $('[name='+error.field+']').addClass('form-control-danger'); // shows icon if input
 
-              if (error.field == 'text') $('.mce-tinymce').addClass('form-control'); // shows border
-            });
+                if (error.field == 'text') $('.mce-tinymce').addClass('form-control'); // shows border
+              });
+            }
           }
         });
 

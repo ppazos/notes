@@ -10,7 +10,7 @@
 
         <!-- Button trigger modal -->
         <span class="float-right">
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_modal"> + </button>
+          <button type="button" class="btn btn-primary btn-create"> + </button>
         </span>
 
         <!-- Modal -->
@@ -99,13 +99,36 @@
     </div>
 
     <script>
+      $(document).ready(function() {
+
+        $('.btn-create').on('click', function(){
+          $.ajax({
+            type: "GET",
+            url: "${createLink(controller:'plan', action:'canCreatePatient')}",
+            data: $("#create_form").serialize(),
+            success: function(data, statusText, response)
+            {
+              console.log(data);
+
+              if (data.result) // true: can create notes
+              {
+                $('#create_modal').modal('show');
+              }
+              else
+              {
+                $('main .row > .col:first').append('<div class="alert alert-custom fade in alert-dismissable show"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" style="font-size:20px">&times;</span></button>'+ data.message +'</div>');
+              }
+            }
+          });
+        });
+      });
+
       $("#create_form").submit(function(e) {
 
         var url = this.action;
 
         // Reset validation
-        $('input').parent().removeClass('has-danger');
-        $('input').removeClass('form-control-danger');
+        $('input').removeClass('is-invalid');
 
         $.ajax({
           type: "POST",
@@ -123,11 +146,20 @@
 
             // Display validation errors on for fields
             errors = JSON.parse(response.responseText);
-            $.each(errors, function( index, error ) {
-              console.log(error.defaultMessage, error.field, $('[name='+error.field+']'));
-              //$('[name='+error.field+']').parent().addClass('has-danger'); // shows border on form-control
-              $('[name='+error.field+']').addClass('is-invalid'); // shows icon if input
-            });
+
+            // error: 1. user doesn't have plan, 2. can't create patient
+            if(errors.hasOwnProperty('result') && errors.result == false)
+            {
+              $('#create_modal .modal-body').prepend('<div class="alert alert-custom fade in alert-dismissable show"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" style="font-size:20px">&times;</span></button>'+ errors.message +'</div>');
+            }
+            else // data validation error
+            {
+              $.each(errors, function( index, error ) {
+                console.log(error.defaultMessage, error.field, $('[name='+error.field+']'));
+                //$('[name='+error.field+']').parent().addClass('has-danger'); // shows border on form-control
+                $('[name='+error.field+']').addClass('is-invalid'); // shows icon if input
+              });
+            }
           }
         });
 

@@ -14,6 +14,7 @@ class NoteController {
 
    def springSecurityService
    def ehrServerService
+   def planService
 
    def index(Integer max, String pid, String categoryName, boolean uncategorized)
    {
@@ -97,15 +98,28 @@ class NoteController {
          return
       }
 
+      def loggedInUser = springSecurityService.currentUser
+
+      try
+      {
+         if (!planService.canCreateNote(loggedInUser))
+         {
+            render text: [result: false, message: message(code:'plan.notesCantBeCreated')] as JSON, status: 400, contentType: "application/json"
+            return
+         }
+      }
+      catch (Exception e)
+      {
+         render text: [result: false, message: message(code:e.message)] as JSON, status: 404, contentType: "application/json"
+         return
+      }
+
       // added by interceptor
       def patient = params.patient
 
 // TODO: note text is required, validate + error report
 
       note.properties = params
-
-      def loggedInUser = springSecurityService.currentUser
-      //def username = springSecurityService.principal.username
       note.color = 'info' // TODO: set by user, is a tw bootstrap class
       note.author = loggedInUser //User.findByUsername(username)
       note.patient = patient
