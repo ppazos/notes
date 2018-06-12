@@ -1,3 +1,9 @@
+<g:if test="${!patientList}">
+  <div class="zero-state-container">
+    <h1 class="zero-state"><g:message code="patient.index.zero_state"/></h1>
+  </div>
+</g:if>
+
 <table class="table">
   <thead>
     <tr>
