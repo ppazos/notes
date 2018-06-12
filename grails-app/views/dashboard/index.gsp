@@ -122,5 +122,11 @@
         </div>
       </div>
     </div>
+
+    <div class="row">
+      <div class="col">
+        <g:message code="dashboard.index.quickguide" />
+      </div>
+    </div>
   </body>
 </html>

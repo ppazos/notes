@@ -15,8 +15,11 @@ class Note {
 
    int month // not mapped to the database, formula to do calculations
 
+   // https://anycount.com/WordCountBlog/how-many-words-in-one-page/
+   static int maxNoteLength = 20000
+
    static constraints = {
-      text maxSize: 4096
+      text maxSize: 20000 // this is about 5 pages long with 4000 characters per page, so 5 pages is the max note length
       color inList: ['success', 'info', 'warning', 'danger', 'primary', 'secondary']
       category nullable: true
    }
