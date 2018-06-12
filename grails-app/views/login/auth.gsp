@@ -30,7 +30,7 @@
           <div class="card-header">
             <g:message code="login.card.title" />
           </div>
-          <div class="card-block">
+          <div class="card-body">
             <g:if test="${flash.message}">
               <div class="login_message">${flash.message}</div><br/>
             </g:if>

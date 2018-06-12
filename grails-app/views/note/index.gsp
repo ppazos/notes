@@ -28,8 +28,10 @@
       .nav > .nav-item > a {
         color: #FFF;
       }
-      div.card-block {
-        padding: 12px;
+      .card {
+        margin-bottom: 10px !important;
+      }
+      div.card-body {
         margin-bottom: 24px; /* fix margin bottom from the footer */
       }
       div.card-footer { /* fix for footer going up in the card when content is small */
@@ -167,8 +169,7 @@
         var url = this.action;
 
         // Reset validation
-        $('input').parent().removeClass('has-danger');
-        $('input').removeClass('form-control-danger');
+        $('input').removeClass('is-invalid');
 
         // makes tinyMCE to save the content to the textarea for submit
         // without this, the first submit has empty text
@@ -200,10 +201,8 @@
             {
               $.each(errors, function( index, error ) {
                 console.log(error.defaultMessage);
-                $('[name='+error.field+']').parent().addClass('has-danger'); // shows border on form-control children
-                $('[name='+error.field+']').addClass('form-control-danger'); // shows icon if input
-
-                if (error.field == 'text') $('.mce-tinymce').addClass('form-control'); // shows border
+                if (error.field == 'text') $('.mce-tinymce').addClass('form-control').addClass('is-invalid'); // shows border
+                else $('[name='+error.field+']').addClass('is-invalid');
               });
             }
           }

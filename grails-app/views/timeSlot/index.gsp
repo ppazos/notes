@@ -540,8 +540,7 @@
         //console.log(url, $("#create_form").serialize());
 
         // Reset validation
-        $('input').parent().removeClass('has-danger');
-        $('input').removeClass('form-control-danger');
+        $('input').removeClass('is-invalid');
 
         selected_pid = $('input[name=pid_radio]:checked').val();
         if (selected_pid)
@@ -581,8 +580,7 @@
             // Display validation errors on for fields
             errors = JSON.parse(response.responseText);
             $.each(errors, function( index, error ) {
-              $('input[name='+error.field+']').parent().addClass('has-danger');
-              $('input[name='+error.field+']').addClass('form-control-danger');
+              $('input[name='+error.field+']').addClass('is-invalid');
             });
           }
         });

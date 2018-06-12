@@ -22,28 +22,28 @@
           <div class="card-header">
             <g:message code="reset.card.title" />
           </div>
-          <div class="card-block">
+          <div class="card-body">
             <g:if test="${flash.message}">
               <div class="login_message">${flash.message}</div><br/>
             </g:if>
             <form  action="${createLink(action:'reset')}" method="POST" id="loginForm" class="cssform" autocomplete="off">
               <input type="hidden" name="token" value="${params.token}">
               <fieldset>
-                  <div class="form-group ${errors?.password ? 'has-danger':''}">
+                  <div class="form-group ${errors?.password ? 'is-invalid':''}">
                     <label for="password"><g:message code="reset.password.label"/></label>
-                    <input type="password" class="form-control ${errors?.password ? 'form-control-danger':''}" name="password" id="password" required="required" autofocus="true" value="${params.password}" />
+                    <input type="password" class="form-control ${errors?.password ? 'is-invalid':''}" name="password" id="password" required="required" autofocus="true" value="${params.password}" />
                     <g:if test="${errors?.password}">
                        <small class="form-control-feedback"><g:message code="user.password.${errors.password.code}" /></small>
                      </g:if>
                   </div>
-                  <div class="form-group ${errors?.confirm ? 'has-danger':''}">
+                  <div class="form-group ${errors?.confirm ? 'is-invalid':''}">
                     <label for="confirm"><g:message code="reset.confirm.label"/></label>
-                    <input type="password" class="form-control ${errors?.confirm ? 'form-control-danger':''}" name="confirm" id="confirm" required="required" value="${params.confirm}" />
+                    <input type="password" class="form-control ${errors?.confirm ? 'is-invalid':''}" name="confirm" id="confirm" required="required" value="${params.confirm}" />
                     <g:if test="${errors?.confirm}">
                        <small class="form-control-feedback"><g:message code="user.confirm.${errors.confirm.code}" /></small>
                      </g:if>
                   </div>
-                  
+
                   <input type="submit" id="submit" name="submit" class="btn btn-lg btn-success btn-block" value="${message(code: 'reset.button.text')}"/>
 
                   <div class="form-group" style="margin:0; padding:15px 0 0 0; text-align:center;">
@@ -51,7 +51,7 @@
                       <g:message code="back.action"/>
                     </g:link>
                   </div>
-                  
+
               </fieldset>
             </form>
           </div>

@@ -22,7 +22,7 @@
           <div class="card-header">
             <g:message code="signup.card.title" />
           </div>
-          <div class="card-block">
+          <div class="card-body">
             <g:if test="${flash.message}">
               <div class="login_message">${raw(flash.message)}</div><br/>
             </g:if>
@@ -30,23 +30,23 @@
               <fieldset>
                   <div class="form-group ${errors?.name ? 'has-danger':''}">
                     <label for="name"><g:message code="signup.name.label"/></label>
-                    <input type="text" class="form-control ${errors?.name ? 'form-control-danger':''}" name="name" id="name" required="required" autofocus="true" value="${params.name}" />
+                    <input type="text" class="form-control ${errors?.name ? 'is-invalid':''}" name="name" id="name" required="required" autofocus="true" value="${params.name}" />
                   </div>
                   <div class="form-group ${errors?.lastname ? 'has-danger':''}">
                     <label for="lastname"><g:message code="signup.lastname.label"/></label>
-                    <input type="text" class="form-control ${errors?.lastname ? 'form-control-danger':''}" name="lastname" id="lastname" required="required" value="${params.lastname}" />
+                    <input type="text" class="form-control ${errors?.lastname ? 'is-invalid':''}" name="lastname" id="lastname" required="required" value="${params.lastname}" />
                   </div>
                   <div class="form-group ${errors?.username ? 'has-danger':''}">
                     <label for="username"><g:message code="signup.email.label"/></label>
-                    <input type="email" class="form-control ${errors?.username ? 'form-control-danger':''}"
+                    <input type="email" class="form-control ${errors?.username ? 'is-invalid':''}"
                      name="username" id="username" required="required" value="${params.username}" />
                      <g:if test="${errors?.username}">
                        <small class="form-control-feedback"><g:message code="user.username.${errors.username.code}" /></small>
                      </g:if>
                   </div>
-                  
+
                   <input type="submit" id="submit" name="submit" class="btn btn-lg btn-success btn-block" value="${message(code: 'signup.button.text')}"/>
-                  
+
                   <div class="form-group" style="margin:0; padding:15px 0 0 0; text-align:center;">
                     <g:link controller="login">
                       <g:message code="back.action"/>

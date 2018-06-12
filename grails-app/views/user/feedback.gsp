@@ -15,7 +15,7 @@
           <div class="card-header">
             <g:message code="feedback.card.title" />
           </div>
-          <div class="card-block">
+          <div class="card-body">
             <g:if test="${session.feedback}">
               <div class="login_message">${raw(session.feedback)}</div><br/>
             </g:if>

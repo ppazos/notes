@@ -35,7 +35,7 @@
                 <div class="card-header">
                   <g:formatDate date="${note.dateCreated}" type="datetime" style="MEDIUM"/>
                 </div>
-                <div class="card-block">
+                <div class="card-body">
                   <p class="card-text">
                     ${note.text.encodeAsRaw()}
                   </p>

@@ -12,7 +12,7 @@
         <span class="float-right">
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_modal"> + </button>
         </span>
-        
+
         <!-- Modal -->
         <div class="modal fade" id="create_modal" tabindex="-1" role="dialog" aria-labelledby="create_modal_label" aria-hidden="true">
           <div class="modal-dialog modal-lg" role="document">
@@ -38,7 +38,7 @@
             </g:form>
           </div>
         </div>
-        
+
         <h1><g:message code="notecategory.index.title" /></h1>
       </div>
     </div>
@@ -65,8 +65,7 @@
         var url = this.action;
 
         // Reset validation
-        $('input').parent().removeClass('has-danger');
-        $('input').removeClass('form-control-danger');
+        $('input').removeClass('is-invalid');
 
         $.ajax({
           type: "POST",
@@ -81,13 +80,12 @@
           error: function(response, statusText)
           {
             //console.log(JSON.parse(response.responseText));
-            
+
             // Display validation errors on for fields
             errors = JSON.parse(response.responseText);
             $.each(errors, function( index, error ) {
               console.log(error.defaultMessage);
-              $('[name='+error.field+']').parent().addClass('has-danger'); // shows border on form-control 
-              $('[name='+error.field+']').addClass('form-control-danger'); // shows icon if input
+              $('[name='+error.field+']').addClass('is-invalid'); // shows icon if input
             });
           }
         });

@@ -128,7 +128,6 @@
             errors = JSON.parse(response.responseText);
             $.each(errors, function( index, error ) {
               console.log(error.defaultMessage, error.field, $('[name='+error.field+']'));
-              //$('[name='+error.field+']').parent().addClass('has-danger'); // shows border on form-control
               $('[name='+error.field+']').addClass('is-invalid'); // shows icon if input
             });
           }
