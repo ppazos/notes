@@ -145,12 +145,13 @@ class BootStrap {
           '/user/reset',
           '/user/forgot',
           '/user/feedback',
+          '/static/**',
           '/browserconfig.xml', '/site.webmanifest']) {
             new RequestMap(url: url, configAttribute: 'permitAll').save()
         }
 
         new RequestMap(url: '/', configAttribute: 'ROLE_ADMIN,ROLE_CLIN').save()
-        new RequestMap(url: '/dbconsole/**', configAttribute: 'ROLE_ADMIN').save()
+        //new RequestMap(url: '/dbconsole/**', configAttribute: 'ROLE_ADMIN').save()
         new RequestMap(url: '/note/**', configAttribute: 'ROLE_ADMIN,ROLE_CLIN').save()
         new RequestMap(url: '/payments/**', configAttribute: 'ROLE_ADMIN,ROLE_CLIN').save()
         new RequestMap(url: '/patient/**', configAttribute: 'ROLE_ADMIN,ROLE_CLIN').save()

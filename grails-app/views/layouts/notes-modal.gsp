@@ -7,8 +7,28 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <asset:link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+
+    <asset:link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+    <asset:link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"/>
+    <asset:link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png"/>
+
+    <link rel="manifest" href="/site.webmanifest"/>
+
+    <asset:link rel="mask-icon" href="safari-pinned-tab.svg" color="#8274C1"/>
+
+    <meta name="apple-mobile-web-app-title" content="PsiSix Notes"/>
+    <meta name="application-name" content="PsiSix Notes"/>
+    <meta name="msapplication-TileColor" content="#8274C1"/>
+
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#8274C1"/>
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#8274C1"/>
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="#8274C1"/>
+
     <title>
-        <g:layoutTitle default="Grails"/>
+      <g:layoutTitle default="PsiSix"/>
     </title>
 
     <script

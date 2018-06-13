@@ -8,6 +8,8 @@ class UrlMappings {
                 // apply constraints here
             }
         }
+        "/browserconfig.xml"(uri:'/static/browserconfig.xml')
+        "/site.webmanifest"(uri:'/static/site.webmanifest')
 
         //"/"(view:"/index")
         "/" {
