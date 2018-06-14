@@ -4,11 +4,16 @@ import com.cabolabs.security.User
 
 class Plan {
 
+   String id
    String name
    Integer maxPatients
    Integer maxNotesPerMonth
 
    static constraints = {
+   }
+
+   static mapping = {
+      id generator:'uuid2'
    }
 
    static PlanAssociation associatedNow(User user)
@@ -25,5 +30,12 @@ class Plan {
       }
 
       return pa // can be null
+   }
+
+   def associateTo(User user)
+   {
+      // TODO: check current plan and unassing it (ends now)
+      def assoc = new PlanAssociation(plan: this, user: user, validFrom: new Date(), validTo: new Date() + 365)
+      assoc.save(failOnError: true)
    }
 }

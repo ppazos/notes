@@ -3,6 +3,7 @@ package com.cabolabs.security
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.converters.JSON
+import com.cabolabs.notes.Plan
 
 @Transactional(readOnly = true)
 class UserController {
@@ -215,6 +216,7 @@ class UserController {
 
    def index(Integer max)
    {
+      [plans: Plan.list()]
    }
 
    def users_table(Integer max)
@@ -255,16 +257,46 @@ class UserController {
       if (user.hasErrors())
       {
          transactionStatus.setRollbackOnly()
-         //respond user.errors, view:'create'
          render user.errors.fieldErrors as JSON, status: 400, contentType: "application/json"
          return
       }
 
       user.save flush:true
 
+      // User role
       def ur = UserRole.create user, Role.findByAuthority('ROLE_CLIN'), true
 
-      // email
+      // User plan
+      def plan = Plan.get(params.plan)
+      if (!plan)
+      {
+         // simulates a validation error
+         render ([[
+                  arguments: ['plan', 'com.cabolabs.security.User'],
+                  code: 'nullable',
+                  codes: ['user.plan.notFound'],
+                  field: 'plan'
+                 ]] as JSON, status: 400, contentType: "application/json")
+         return
+      }
+
+      try
+      {
+         plan.associateTo(user) // creates plan assoc
+      }
+      catch (Exception e)
+      {
+         render ([[
+                  arguments: ['plan', 'com.cabolabs.security.User'],
+                  code: 'nullable',
+                  codes: ['user.plan.cantCreateAssociation'],
+                  field: 'plan'
+                 ]] as JSON, status: 400, contentType: "application/json")
+         return
+      }
+
+
+      // Welcome email (TODO job)
       def g = grailsApplication.mainContext.getBean('org.grails.plugins.web.taglib.ApplicationTagLib')
       def u = g.createLink(controller:'user', action:'reset', absolute:true, params:[token:user.resetPasswordToken])
       def s = message(code:'register.subject')

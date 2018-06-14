@@ -69,6 +69,11 @@
                     <label for="organization"><g:message code="user.attr.organization"/></label>
                     <input type="text" class="form-control" id="organization" name="organization">
                   </div>
+
+                  <div class="form-group">
+                    <label for="plan"><g:message code="user.attr.plan"/></label>
+                    <g:select from="${plans}" optionKey="id" optionValue="name" class="form-control" id="plan" name="plan" required="true" />
+                  </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal"><g:message code="common.action.close"/></button>
