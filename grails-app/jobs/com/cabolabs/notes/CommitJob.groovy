@@ -1,6 +1,6 @@
 package com.cabolabs.notes
 
-import com.cabolabs.ehrserver.* // groovy client
+import com.cabolabs.ehrserver.*
 import grails.core.GrailsApplication
 
 class CommitJob {
@@ -8,17 +8,24 @@ class CommitJob {
    GrailsApplication grailsApplication
 
    static triggers = {
-      simple repeatInterval: 60000l, startDelay: 100000 // execute job once in 60 seconds
+      simple repeatInterval: 300000l, startDelay: 100000 // execute job once in 300 seconds
    }
 
    def execute()
    {
+      def use_back = grailsApplication.config.getProperty('ehrserver.use_cloud_backend', Boolean)
+      if (!use_back)
+      {
+         println "Not using backend, enable with use_cloud_backend: true"
+         return
+      }
+
       def protocol = grailsApplication.config.getProperty('ehrserver.protocol')
       def ip       = grailsApplication.config.getProperty('ehrserver.ip')
       def port     = grailsApplication.config.getProperty('ehrserver.port', Integer)
       def path     = grailsApplication.config.getProperty('ehrserver.path')
 
-      println 'server '+ protocol+ ip +':'+ port + path
+      println 'PsiSix Commit Job: Server '+ protocol+ ip +':'+ port + path
 
       //println "job"
        // execute job
