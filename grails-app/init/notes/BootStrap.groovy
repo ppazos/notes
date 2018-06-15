@@ -57,19 +57,22 @@ class BootStrap {
         }
 
         // Plans
-        def plans = [
-           new Plan(name: 'basico', maxPatients: 5, maxNotesPerMonth: 25),
-           new Plan(name: 'profesional', maxPatients: 20, maxNotesPerMonth: 99999),
-           new Plan(name: 'clinica', maxPatients: 50, maxNotesPerMonth: 99999),
-           new Plan(name: 'test', maxPatients: 200, maxNotesPerMonth: 99999)
-        ]
-        plans.each { plan ->
-           plan.save(failOnError: true)
-        }
+        if (Plan.count() == 0)
+        {
+           def plans = [
+              new Plan(name: 'basico', maxPatients: 5, maxNotesPerMonth: 25),
+              new Plan(name: 'profesional', maxPatients: 20, maxNotesPerMonth: 99999),
+              new Plan(name: 'clinica', maxPatients: 50, maxNotesPerMonth: 99999),
+              new Plan(name: 'test', maxPatients: 200, maxNotesPerMonth: 99999)
+           ]
+           plans.each { plan ->
+              plan.save(failOnError: true)
+           }
 
-        User.list().each { u ->
-           def assoc = new PlanAssociation(plan: plans[0], user: u, validFrom: new Date(), validTo: new Date() + 365)
-           assoc.save(failOnError: true)
+           User.list().each { u ->
+              def assoc = new PlanAssociation(plan: plans[0], user: u, validFrom: new Date(), validTo: new Date() + 365)
+              assoc.save(failOnError: true)
+           }
         }
 
         // change all roles to clin
@@ -126,14 +129,15 @@ class BootStrap {
                     patient: patient,
                     category: cat1).save(failOnError: true, flush: true)
             }
+
+            // if there are patients without EHR, create it
+            Patient.findAllByEhrUidIsNull().each { patient ->
+               println "Creating missing EHR for patient "+ patient.name
+               ehrServerService.createEHRForPatient(patient)
+            }
         }
 
-        // if there are patients without EHR, create it
-        Patient.findAllByEhrUidIsNull().each { patient ->
-           println "Creating missing EHR for patient "+ patient.name
-           ehrServerService.createEHRForPatient(patient)
-        }
-
+        
         RequestMap.list()*.delete()
 
         for (String url in [
