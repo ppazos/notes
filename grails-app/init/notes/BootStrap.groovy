@@ -88,7 +88,7 @@ class BootStrap {
 
         if (Patient.count() == 0)
         {
-            def patient = new Patient(name: 'Manuel',
+            def patient1 = new Patient(name: 'Manuel',
                                       lastname: 'Perez',
                                       phone: '2523452542',
                                       sex: 'M',
@@ -126,7 +126,7 @@ class BootStrap {
                     color: 'success',
                     text: 'dfas sdf a asfasf asdasdf asd fas fas fasdfasdf asdf as fas dfas fasd fasf as dfasd fasd fasdf asdf asdf asdf asdfas fasd fasd fas dfasd fasd fasdf asf asdfasd fasdfa',
                     author: admin,
-                    patient: patient,
+                    patient: patient1,
                     category: cat1).save(failOnError: true, flush: true)
             }
 
@@ -137,7 +137,7 @@ class BootStrap {
             }
         }
 
-        
+
         RequestMap.list()*.delete()
 
         for (String url in [
