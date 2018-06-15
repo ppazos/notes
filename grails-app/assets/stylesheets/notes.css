@@ -6,11 +6,6 @@
   background-color: #8274C1; /* lavender dark */
   color: #fff;
 }
-.navbar-toggler {
-  top: 6px !important;
-  font-size: 1.5em;
-  color: #8274C1;
-}
 .alert-custom, .alert-custom .close {
   background-color: #9B8FCD;
   color: #fff;
@@ -33,6 +28,9 @@ h1 {
 .navbar {
   display: block !important;
 }
+.navbar-nav {
+  width: 100%;
+}
 .navbar-toggler-containder {
   height: 100%;
   position: absolute;
@@ -40,11 +38,16 @@ h1 {
   right: 0;
 }
 .navbar-toggler-containder button i {
-
 }
 .navbar-toggler-containder button {
   font-size: 2em;
   height: 100%;
+}
+.navbar-toggler {
+  top: 6px !important;
+  font-size: 1.5em;
+  color: #8274C1;
+  border: 0;
 }
 
 /* button material */

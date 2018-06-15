@@ -313,14 +313,48 @@
   <body>
     <div class="container-fluid">
       <div class="row">
-        <nav class="navbar col-md-2 col-sm-12">
+
+<!--
+        <nav class="navbar navbar-expand-md navbar-dark col-md-2 col-sm-12">
+          <a class="navbar-brand" href="#">Navbar</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="navbar-collapse collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav flex-column">
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Features</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Pricing</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Dropdown link
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="#">Action</a>
+                  <a class="dropdown-item" href="#">Another action</a>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+-->
+
+
+        <nav class="navbar navbar-expand-md col-md-2 col-sm-12">
           <div id="top_bar">
             <img src="${assetPath(src:'hor_margin_white_72_300x87.png')}" class="align-middle" alt="PsiSix Notes" id="logo" />
             <div class="navbar-toggler-containder pull-right">
-              <button class="navbar-toggler align-middle" type="button" data-toggle="collapse" data-target="#menu"><i class="fa fa-bars" aria-hidden="true"></i></button><!-- navbar-toggler-right -->
+              <button class="navbar-toggler align-middle" type="button" data-toggle="collapse" data-target="#menu"><i class="fa fa-bars" aria-hidden="true"></i></button>
             </div>
           </div>
-          <div class="navbar-collapse" id="menu">
+          <div class="navbar-collapse collapse" id="menu">
             <ul class="navbar-nav flex-column">
               <li class="nav-item">
                 <g:link controller="dashboard" action="index" class="nav-link ${(controllerName=='dashboard')?'active':''}"><i class="fa fa-tachometer fa-fw" aria-hidden="true"></i> <g:message code="menu.dashboard"/></g:link>
@@ -348,6 +382,7 @@
             </ul>
           </div>
         </nav>
+
         <main class="col-md-10 col-sm-12">
           <g:layoutBody/>
         </main>
