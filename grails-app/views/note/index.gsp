@@ -215,7 +215,13 @@
        * Reset form on modal open
        */
       $('#create_modal').on('show.bs.modal', function (event) {
+
         $("#create_form")[0].reset();
+      });
+      $('#create_modal').on('shown.bs.modal', function (event) {
+
+        // focus specific for tinyMCE
+        tinymce.execCommand('mceFocus',false,'editor');
       });
     </script>
   </body>

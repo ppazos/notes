@@ -16,7 +16,7 @@ class NoteController {
    def ehrServerService
    def planService
 
-   def index(Integer max, String pid, String categoryName, boolean uncategorized)
+   def index(Integer max, String categoryName, boolean uncategorized)
    {
       // added by interceptor
       def patient = params.patient

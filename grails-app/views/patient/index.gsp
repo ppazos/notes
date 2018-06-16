@@ -169,7 +169,13 @@
        * Reset form on modal open
        */
       $('#create_modal').on('show.bs.modal', function (event) {
+
         $("#create_form")[0].reset();
+      });
+      $('#create_modal').on('shown.bs.modal', function (event) {
+
+        // focus on the first input of the form, checking it is enabled and visible
+        $('#create_form .modal-body :input:enabled:first').filter(function(){ return $(this).css('display') != 'none';})[0].focus();
       });
     </script>
   </body>
