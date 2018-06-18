@@ -72,6 +72,13 @@ h1 {
   vertical-align: middle;
   user-select: none;
 }
+.btn-small {
+  padding: 0.3rem 0.6rem;
+  text-transform: none;
+}
+.btn.disabled {
+  background-color: #999 !important;
+}
 
 /* fixes position of buttons for modal submit and top add new */
 .modal-footer .btn, .float-right .btn {

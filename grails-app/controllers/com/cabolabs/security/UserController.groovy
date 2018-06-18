@@ -316,6 +316,41 @@ class UserController {
       redirect action:'users_table'
    }
 
+   /**
+    * Admin reminds inactive users to set a password to their account.
+    */
+   def remind(Long id)
+   {
+      def user = User.get(id)
+      if (!user)
+      {
+         render ([error: true, message: message(code:'user.feedback.not_found')] as JSON, status: 404, contentType: "application/json")
+         return
+      }
+
+      // Welcome email (TODO job)
+      def g = grailsApplication.mainContext.getBean('org.grails.plugins.web.taglib.ApplicationTagLib')
+      def u = g.createLink(controller:'user', action:'reset', absolute:true, params:[token:user.resetPasswordToken])
+      def s = message(code:'register.subject')
+      def b = message(code:'register.body', args:[u])
+
+      try
+      {
+         sendMail {
+            to user.username
+            subject s
+            html b
+         }
+      }
+      catch (Exception e)
+      {
+         render ([error: true, message: e.message] as JSON, status: 400, contentType: "application/json")
+         return
+      }
+
+      render ([error: false, message: message(code:'user.feedback.reminder_sent')] as JSON, status: 200, contentType: "application/json")
+   }
+
     /*
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
