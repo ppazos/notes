@@ -1,3 +1,7 @@
+<g:if test="${session.feedback}">
+  <div class="">${raw(session.feedback)}</div><br/>
+</g:if>
+
 <table class="table">
   <thead>
     <tr>
@@ -16,6 +20,7 @@
         <td>${u.lastname}</td>
         <td>${u.enabled}</td>
         <td>
+          <button type="button" class="btn btn-primary btn-small btn-edit" data-toggle="modal" data-id="${u.id}"><i class="fa fa-pencil" aria-hidden="true"></i></button>
           <g:if test="${!u.enabled}">
             <g:link url="[action: 'remind', id: u.id]" class="remind"><button type="button" class="btn btn-primary btn-small"><g:message code="user.action.remind" /></button></g:link>
           </g:if>
@@ -45,6 +50,50 @@
         }
       });
       e.preventDefault();
+    });
+
+    /*
+     * Edit/Update
+     */
+    $('.btn-edit').on('click', function(){
+
+      set_action_update();
+
+      _user_id = $(this).data('id');
+
+      console.log(_user_id);
+
+      $.ajax({
+        type: "GET",
+        url: "${createLink(controller:'user', action:'show')}",
+        data: {id: _user_id},
+        success: function(data, statusText, response)
+        {
+          console.log(data);
+          if (!data.error) // true: can create notes
+          {
+            _form = $("#create_form");
+            console.log(_form[0].action);
+
+            $('input[name=id]').val(_user_id);
+
+            $('#create_modal').modal('show');
+
+            // populate user data
+            $.each(data, function( field, value ) {
+              _fld = $('[name='+field+']');
+              if (_fld.length == 1) // single field with name
+                $('[name='+field+']').val(value);
+              else // radio button broup
+                $('[name='+field+'][value='+value+']').prop('checked', true);
+            });
+          }
+          else
+          {
+            $('main .row > .col:first').append('<div class="alert alert-custom fade in alert-dismissable show"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" style="font-size:20px">&times;</span></button>'+ data.message +'</div>');
+          }
+        }
+      });
     });
 
     /*

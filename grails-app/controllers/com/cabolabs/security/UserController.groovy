@@ -351,10 +351,55 @@ class UserController {
       render ([error: false, message: message(code:'user.feedback.reminder_sent')] as JSON, status: 200, contentType: "application/json")
    }
 
+   def show(Long id)
+   {
+      def user = User.get(id)
+      if (!user)
+      {
+         render ([error: true, message: message(code:'user.feedback.not_found')] as JSON, status: 404, contentType: "application/json")
+         return
+      }
+
+      def plan_assoc = Plan.associatedNow(user)
+
+      // TODO: user json marshaller
+      //
+      render ([username: user.username, name: user.name, lastname: user.lastname, phone: user.phone, sex: user.sex, organization: user.organization,
+               plan: plan_assoc.plan.id] as JSON, status: 200, contentType: "application/json")
+   }
+
+   @Transactional
+   def update(Long id)
+   {
+      def user = User.get(id)
+      if (!user)
+      {
+         render ([error: true, message: message(code:'user.feedback.not_found')] as JSON, status: 404, contentType: "application/json")
+         return
+      }
+
+      user.properties = params
+
+      user.validate()
+
+      if (user.hasErrors())
+      {
+         transactionStatus.setRollbackOnly()
+         render user.errors.fieldErrors as JSON, status: 400, contentType: "application/json"
+         return
+      }
+
+      user.save flush:true
+
+      // TODO: update plan confirm
+
+      session.feedback = message(code:'user.modified.done', args:[user.username])
+
+      redirect action:'users_table'
+   }
+
     /*
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-
-
 
     def show(User user) {
         respond user
@@ -363,8 +408,6 @@ class UserController {
     def create() {
         respond new User(params)
     }
-
-
 
     def edit(User user) {
         respond user

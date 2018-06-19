@@ -16,7 +16,8 @@
         <!-- Modal -->
         <div class="modal fade" id="create_modal" tabindex="-1" role="dialog" aria-labelledby="create_modal_label" aria-hidden="true">
           <div class="modal-dialog modal-lg" role="document">
-            <g:form url="[action:'save']" id="create_form">
+            <g:form url="[controller:'user']" id="create_form">
+              <input type="hidden" name="id" value="" />
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="create_modal_label"><g:message code="user.new.title"/></h5>
@@ -77,7 +78,8 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal"><g:message code="common.action.close"/></button>
-                  <button type="submit" class="btn btn-primary"><g:message code="common.action.save"/></button>
+                  <button type="submit" class="btn btn-primary" name="_action_save"><g:message code="common.action.save"/></button>
+                  <button type="submit" class="btn btn-primary" name="_action_update"><g:message code="common.action.update"/></button>
                 </div>
               </div>
             </g:form>
@@ -108,17 +110,40 @@
     </div>
 
     <script>
+
+      $(document).ready(function() {
+        set_action_save(); // default action
+      });
+
+      // Set action for the create form, save or update
+      var set_action_save = function()
+      {
+        $('[name=_action_save]', '#create_form').show();
+        $('[name=_action_update]', '#create_form').hide();
+      };
+
+      var set_action_update = function()
+      {
+        $('[name=_action_save]', '#create_form').hide();
+        $('[name=_action_update]', '#create_form').show();
+      };
+
       $("#create_form").submit(function(e) {
 
-        var url = this.action;
+        var url = "${createLink(controller:'user')}";//this.action;
 
         // Reset validation
-        $('input').removeClass('is-invalid');
+        $(':input').removeClass('is-invalid');
+
+        // Adds action submit to decide if this is a save or update
+        data = $("#create_form").serialize() + '&'+ $('[type=submit][clicked=true]').attr('name') +'='+ $('[type=submit][clicked=true]').attr('name');
+
+        //console.log(data);
 
         $.ajax({
           type: "POST",
           url: url,
-          data: $("#create_form").serialize(),
+          data: data,
           success: function(data, statusText, response)
           {
             // Update patient table with new patient
@@ -128,13 +153,20 @@
           error: function(response, statusText)
           {
             //console.log(JSON.parse(response.responseText));
-
-            // Display validation errors on for fields
             errors = JSON.parse(response.responseText);
-            $.each(errors, function( index, error ) {
-              console.log(error.defaultMessage, error.field, $('[name='+error.field+']'));
-              $('[name='+error.field+']').addClass('is-invalid'); // shows icon if input
-            });
+
+            if (errors.error)
+            {
+              $('main .row > .col:first').append('<div class="alert alert-custom fade in alert-dismissable show"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" style="font-size:20px">&times;</span></button>'+ data.message +'</div>');
+            }
+            else
+            {
+              // Display validation errors on for fields
+              $.each(errors, function( index, error ) {
+                console.log(error.defaultMessage, error.field, $('[name='+error.field+']'));
+                $('[name='+error.field+']').addClass('is-invalid'); // shows icon if input
+              });
+            }
           }
         });
 
@@ -142,10 +174,12 @@
       });
 
       /*
-       * Reset form on modal open
+       * Reset form on modal open or close
        */
       $('#create_modal').on('show.bs.modal', function (event) {
 
+        // Reset validation
+        $(':input').removeClass('is-invalid');
         $("#create_form")[0].reset();
       });
       $('#create_modal').on('shown.bs.modal', function (event) {
@@ -153,6 +187,12 @@
         // focus on the first input of the form, checking it is enabled and visible
         $('#create_form .modal-body :input:enabled:first').filter(function(){ return $(this).css('display') != 'none';})[0].focus();
       });
+      $('#create_modal').on('hidden.bs.modal', function (event) {
+
+        set_action_save(); // always back to save action by default, needs to be when the modal closes because the btn-edit event sets action update on the modal show
+      });
+
+
 
     </script>
   </body>
