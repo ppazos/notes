@@ -118,6 +118,7 @@
       // Set action for the create form, save or update
       var set_action_save = function()
       {
+        $('input[name=id]').val('');
         $('[name=_action_save]', '#create_form').show();
         $('[name=_action_update]', '#create_form').hide();
       };
@@ -191,8 +192,6 @@
 
         set_action_save(); // always back to save action by default, needs to be when the modal closes because the btn-edit event sets action update on the modal show
       });
-
-
 
     </script>
   </body>
