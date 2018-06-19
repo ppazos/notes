@@ -17,7 +17,7 @@
         <td>${u.enabled}</td>
         <td>
           <g:if test="${!u.enabled}">
-            <g:link url="[action: 'remind', id: u.id]" elementId="remind"><button type="button" class="btn btn-primary btn-small"><g:message code="user.action.remind" /></button></g:link>
+            <g:link url="[action: 'remind', id: u.id]" class="remind"><button type="button" class="btn btn-primary btn-small"><g:message code="user.action.remind" /></button></g:link>
           </g:if>
         </td>
       </tr>
@@ -50,7 +50,7 @@
     /*
      * Remind AJAX
      */
-    $('#remind').on('click', function(e){
+    $('.remind').on('click', function(e){
 
       e.preventDefault();
 
