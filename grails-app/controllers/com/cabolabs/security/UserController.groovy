@@ -351,11 +351,17 @@ class UserController {
 
       try
       {
-         sendMail {
-            to user.username
-            subject s
-            html b
-         }
+         // remind notification = register notification
+         def title   = g.message(code:'register.email.title')
+         def preview = g.message(code:'register.email.preview')
+         def salute  = g.message(code:'register.email.salute', args:[user.name])
+         def content = g.message(code:'register.email.message', args:[user.username])
+         def url     = g.createLink(controller:'user', action:'reset', absolute:true, params:[token:user.resetPasswordToken])
+         def actions = g.message(code:'register.email.actions', args:[url])
+         def closing = g.message(code:'register.email.closing')
+         def bye     = g.message(code:'register.email.bye')
+
+         _sendMail(user.username, title, preview, salute, content, actions, closing, bye)
       }
       catch (Exception e)
       {
