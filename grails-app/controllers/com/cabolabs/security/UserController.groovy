@@ -297,23 +297,38 @@ class UserController {
 
 
       // Welcome email (TODO job)
-      def g = grailsApplication.mainContext.getBean('org.grails.plugins.web.taglib.ApplicationTagLib')
-      def u = g.createLink(controller:'user', action:'reset', absolute:true, params:[token:user.resetPasswordToken])
-      def s = message(code:'register.subject')
-      def b = message(code:'register.body', args:[u])
-      Thread.start { // TODO: try/catch this and log the error to try again later.
-         sendMail {
-            to user.username //"pablo.swp@gmail.com"
-            //subject "Welcome to notes!"
-            //html '<b>Welcome!</b> <a href="'+ u +'">Set your password</a>'
-            subject s
-            html b
-         }
-      }
+      def title   = g.message(code:'register.email.title')
+      def preview = g.message(code:'register.email.preview')
+      def salute  = g.message(code:'register.email.salute', args:[user.name])
+      def content = g.message(code:'register.email.message', args:[user.username])
+      def url     = g.createLink(controller:'user', action:'reset', absolute:true, params:[token:user.resetPasswordToken])
+      def actions = g.message(code:'register.email.actions', args:[url])
+      def closing = g.message(code:'register.email.closing')
+      def bye     = g.message(code:'register.email.bye')
+
+      _sendMail(user.username, title, preview, salute, content, actions, closing, bye)
 
       session.feedback = message(code:'user.register.done', args:[user.username])
 
       redirect action:'users_table'
+   }
+
+   def _sendMail(String recipient,
+                 String title,
+                 String preview,
+                 String salute,
+                 String message,
+                 String actions,
+                 String closing,
+                 String bye)
+   {
+      sendMail {
+         to recipient
+         subject title
+         html view: "/email",
+              model: [title: title, preview: preview, salute: salute,
+                      message: message, actions: actions, closing: closing, bye: bye]
+      }
    }
 
    /**
