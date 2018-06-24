@@ -87,6 +87,8 @@
               else // radio button broup
                 $('[name='+field+'][value='+value+']').prop('checked', true);
             });
+
+            $('input[name=_current_plan]').val(data.plan);
           }
           else
           {

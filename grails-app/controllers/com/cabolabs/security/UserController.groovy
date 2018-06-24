@@ -412,7 +412,21 @@ class UserController {
 
       user.save flush:true
 
-      // TODO: update plan confirm
+      // update plan
+      def plan_assoc = Plan.associatedNow(user)
+      if (params.plan && params.plan != plan_assoc.plan.id)
+      {
+         def new_plan = Plan.get(params.plan)
+         if (!new_plan)
+         {
+            render ([error: true, message: message(code:'user.feedback.plan_not_found', args:[params.plan])] as JSON, status: 404, contentType: "application/json")
+            return
+         }
+
+         plan_assoc.validTo = new Date() // current plan assoc ends now
+         plan_assoc.save()
+         new_plan.associateTo(user)
+      }
 
       session.feedback = message(code:'user.modified.done', args:[user.username])
 

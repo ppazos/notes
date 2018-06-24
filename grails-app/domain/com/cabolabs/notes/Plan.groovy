@@ -34,7 +34,7 @@ class Plan {
 
    def associateTo(User user)
    {
-      // TODO: check current plan and unassing it (ends now)
+      // TODO: check current plan and unassing it (ends now), this is done on UserController.update
       def assoc = new PlanAssociation(plan: this, user: user, validFrom: new Date(), validTo: new Date() + 365)
       assoc.save(failOnError: true)
    }

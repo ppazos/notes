@@ -73,6 +73,7 @@
 
                   <div class="form-group">
                     <label for="plan"><g:message code="user.attr.plan"/></label>
+                    <input type="hidden" name="_current_plan" />
                     <g:select from="${plans}" optionKey="id" optionValue="name" class="form-control" id="plan" name="plan" required="true" />
                   </div>
                 </div>
@@ -119,6 +120,7 @@
       var set_action_save = function()
       {
         $('input[name=id]').val('');
+        $('input[name=_current_plan]').val('');
         $('[name=_action_save]', '#create_form').show();
         $('[name=_action_update]', '#create_form').hide();
       };
@@ -130,6 +132,16 @@
       };
 
       $("#create_form").submit(function(e) {
+
+        e.preventDefault();
+
+        if ( $(':input[name=_current_plan]').val() != $(':input[name=plan]').val() )
+        {
+          if (!confirm('${message(code:"user.update.confirm_plan_change")}'))
+          {
+            return false;
+          }
+        }
 
         var url = "${createLink(controller:'user')}";//this.action;
 
@@ -170,8 +182,6 @@
             }
           }
         });
-
-        e.preventDefault();
       });
 
       /*
