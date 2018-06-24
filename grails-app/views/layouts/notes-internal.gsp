@@ -379,6 +379,9 @@
                   <g:link controller="user" action="index" class="nav-link ${(controllerName=='user')?'active':''}"><i class="fa fa-user-circle-o fa-fw" aria-hidden="true"></i> <g:message code="menu.users"/></g:link>
                 </li>
               </sec:ifAnyGranted>
+              <li class="nav-item app_version">
+                v${grailsApplication.config.getProperty('info.app.version')}
+              </li>
             </ul>
           </div>
         </nav>
