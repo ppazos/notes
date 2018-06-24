@@ -23,8 +23,14 @@
          </div>
        </g:if>
 
+
+<g:cookie name="layout" />
+<br /><br />
+${layout}
+<br /><br />
+
         <%
-        def cols = 2
+        def cols = layout
         def list = noteList.collect() // new list
         def row = list.take(cols)
         %>

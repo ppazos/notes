@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat
 import grails.converters.JSON
 
 import com.cabolabs.security.*
+import javax.servlet.http.Cookie
 
 @Transactional(readOnly = true)
 class NoteController {
@@ -16,19 +17,63 @@ class NoteController {
    def ehrServerService
    def planService
 
-   def index(Integer max, String categoryName, boolean uncategorized)
+   def index(Integer max, String categoryName, boolean uncategorized, String columns)
    {
       // added by interceptor
       def patient = params.patient
       def loggedInUser = springSecurityService.currentUser
 
+      // without this, if the param columns is sent from the client the first time
+      // the view is displayed, it is ignored on note_list to set the cookie.
+      // sets the cookie if a columns value comes from client
+      if (columns)
+      {
+         def cook = new Cookie('cols', columns)
+         cook.path = '/'
+         cook.maxAge = 999999
+         response.addCookie(cook)
+      }
+      else // if cookie doesnt exists, set default to 2 cols
+      {
+         def cook = request.cookies.find{ it.name == 'cols' }
+         if (!cook)
+         {
+            columns = '2'
+            cook = new Cookie('cols', columns)
+            cook.path = '/'
+            cook.maxAge = 999999
+            response.addCookie(cook)
+         }
+      }
+
       def categories = NoteCategory.findAllByOwner(loggedInUser)
       [categories: categories, patient: patient]
    }
 
-   def note_list(Integer max, String categoryName, boolean uncategorized)
+   def note_list(Integer max, String categoryName, boolean uncategorized, String columns)
    {
       //println 'note_list params: '+ params
+
+      // want to remember how the user wanted to see the notes, so we use cookies
+      request.cookies.each{ println '- '+ it.name +' '+ it.value +' '+ it.path }
+      def cook
+      if (!columns)
+      {
+         cook = request.cookies.find{ it.name == 'cols' }
+         println cook?.value
+         if (cook) // Get from cookie
+         {
+            columns = cook.value
+         }
+      }
+      else // overwrite if value comes from ajax
+      {
+         cook = new Cookie('cols', columns)
+         cook.path = '/'
+         cook.maxAge = 9999
+         response.addCookie(cook)
+      }
+
 
       // TODO: patient exists?
       // TODO: is my patient?
@@ -74,7 +119,8 @@ class NoteController {
               noteList:   noteList,
               patient:    patient,
               categories: categories,
-              category:   category
+              category:   category,
+              layout: columns as Integer
             ]
    }
 
