@@ -63,7 +63,7 @@ dependencies {
 }
 
 bootRun {
-    jvmArgs('-Dspring.output.ansi.enabled=always')
+    jvmArgs('-Dspring.output.ansi.enabled=always', '-Duser.timezone=UTC')
     addResources = true
 }
 

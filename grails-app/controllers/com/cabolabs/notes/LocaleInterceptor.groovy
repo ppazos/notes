@@ -1,5 +1,6 @@
 package com.cabolabs.notes
 
+import java.util.TimeZone
 import org.springframework.beans.propertyeditors.LocaleEditor
 import org.springframework.web.servlet.support.RequestContextUtils
 
@@ -12,6 +13,11 @@ class LocaleInterceptor {
     boolean before() {
 
        println "LocaleInterceptor params "+ params
+
+       // Set timezone of client to show formatted dates stored in UTC,
+       // in the timezone of the client.
+       if (params.tz) session.tz = TimeZone.getTimeZone('GMT'+params.tz)
+
        if (params.lang)
        {
          //println request.getClass()

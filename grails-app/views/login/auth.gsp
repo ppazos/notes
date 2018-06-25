@@ -4,13 +4,33 @@
     <meta name="layout" content="notes-modal" />
     <title><g:message code="login.card.title" /></title>
     <asset:stylesheet src="login.css"/>
+    <asset:javascript src="datetime-utils.js"/>
     <script>
     var loc = window.location.href+'';
     var parser = document.createElement('a');
     parser.href = loc;
-    if (parser.hostname != 'localhost' && !parser.hostname.startsWith('192') && loc.indexOf('http://')==0){
-      window.location.href = loc.replace('http://','https://');
+    if (parser.hostname != 'localhost' && !parser.hostname.startsWith('192') && loc.indexOf('http://')==0)
+    {
+      <%
+      // avoid doing 2 reloads, if not https and not session.tz, do reload once
+      if (!session.tz)
+      {
+        // TODO: do it from form POST to avoid putting the tz in the URL
+        println "window.location.href = loc.replace('http://','https://') +'?tz='+ client_timezone();"
+      }
+      else
+      {
+        println "window.location.href = loc.replace('http://','https://');"
+      }
+      %>
     }
+    <%
+    if (!session.tz)
+    {
+      // TODO: do it from form POST to avoid putting the tz in the URL
+      println "window.location.href = window.location.href +'?tz='+ client_timezone();"
+    }
+    %>
     </script>
   </head>
   <body>
