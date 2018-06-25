@@ -39,7 +39,7 @@
 
     <asset:stylesheet src="font-awesome.min.css"/>
     <asset:stylesheet src="notes.css"/>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+    <link href="//fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
 
     <g:layoutHead/>
 
