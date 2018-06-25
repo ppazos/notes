@@ -55,7 +55,7 @@ class NoteController {
       //println 'note_list params: '+ params
 
       // want to remember how the user wanted to see the notes, so we use cookies
-      request.cookies.each{ println '- '+ it.name +' '+ it.value +' '+ it.path }
+      //request.cookies.each{ println '- '+ it.name +' '+ it.value +' '+ it.path }
       def cook
       if (!columns)
       {
