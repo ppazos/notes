@@ -8,7 +8,7 @@ class CommitJob {
    GrailsApplication grailsApplication
 
    static triggers = {
-      simple repeatInterval: 300000l, startDelay: 100000 // execute job once in 300 seconds
+      simple repeatInterval: 9000000l, startDelay: 100000 // execute job once in 9000 seconds
    }
 
    def execute()
