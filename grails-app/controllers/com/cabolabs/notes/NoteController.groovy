@@ -47,7 +47,7 @@ class NoteController {
       }
 
       def categories = NoteCategory.findAllByOwner(loggedInUser)
-      [categories: categories, patient: patient]
+      [categories: categories, patient: patient, layout: columns as Integer]
    }
 
    def note_list(Integer max, String categoryName, boolean uncategorized, String columns)
@@ -60,7 +60,6 @@ class NoteController {
       if (!columns)
       {
          cook = request.cookies.find{ it.name == 'cols' }
-         println cook?.value
          if (cook) // Get from cookie
          {
             columns = cook.value
@@ -80,7 +79,7 @@ class NoteController {
 
       params.max = Math.min(max ?: 9, 100)
       if (!params.offset) params.offset = 0
-      params.sort = "id"
+      params.sort = "dateCreated"
       params.order = "desc"
 
       // added by interceptor

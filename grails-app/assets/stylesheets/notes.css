@@ -85,6 +85,9 @@ h1 {
 .btn.disabled {
   background-color: #999 !important;
 }
+.btn-primary.disabled, .btn-primary:disabled {
+  border-color: #ccc;
+}
 
 /* fixes position of buttons for modal submit and top add new */
 .modal-footer .btn, .float-right .btn {
@@ -94,18 +97,22 @@ h1 {
   text-decoration: none
 }
 .btn-primary {
-  background-color: #9B8FCD;
+  background-color: #9B8FCD !important;
 }
-.btn-primary:hover {
-  background-color: #8274C1;
+.btn-primary.darker {
+  background-color: #8274C1 !important;
 }
-.btn-primary.focus,.btn-primary:focus {
+.btn-primary:hover, .btn-primary.focus, .btn-primary:focus, .btn-primary:active {
+  background-color: #8274C1 !important;
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+.btn-primary.focus, .btn-primary:focus {
   -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
   box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
 }
-.btn-primary.disabled,.btn-primary:disabled {
-  border-color: #ccc;
-}
+
 .btn-secondary {
   background-color: #a0d468;
 }

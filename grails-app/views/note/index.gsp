@@ -39,6 +39,18 @@
         position: absolute;
         width: 100%;
       }
+      .notes-layout-selector {
+        margin-bottom: 10px;  
+      }
+      .btn.notes-layout {
+
+      }
+      .btn.notes-layout span {
+        width: 1em;
+        display: inline-block;
+        font-size: 1.25em;
+        font-weight: bold;
+      }
     </style>
   </head>
   <body>
@@ -222,6 +234,41 @@
 
         // focus specific for tinyMCE
         tinymce.execCommand('mceFocus',false,'editor');
+      });
+
+      /* layout */
+      $('#list_container').on('click', '.notes-layout-1', function(){
+        $.ajax({
+          type: "POST",
+          url: "${createLink(action:'note_list')}",
+          data: {columns:1, pid:'${params.pid}'},
+          success: function(data, statusText, response)
+          {
+            $('#list_container').html(data);
+          }
+        });
+      });
+      $('#list_container').on('click', '.notes-layout-2', function(){
+        $.ajax({
+          type: "POST",
+          url: "${createLink(action:'note_list')}",
+          data: {columns:2, pid:'${params.pid}'},
+          success: function(data, statusText, response)
+          {
+            $('#list_container').html(data);
+          }
+        });
+      });
+      $('#list_container').on('click', '.notes-layout-3', function(){
+        $.ajax({
+          type: "POST",
+          url: "${createLink(action:'note_list')}",
+          data: {columns:3, pid:'${params.pid}'},
+          success: function(data, statusText, response)
+          {
+            $('#list_container').html(data);
+          }
+        });
       });
     </script>
   </body>
