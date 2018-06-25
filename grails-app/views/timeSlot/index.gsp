@@ -304,6 +304,7 @@
           //console.log(evn, evn.status);
           //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
           //alert('View: ' + view.name); // month
+          reset_modal();
 
           // the repeat fields are only for the create not the show
           $('#repeat').hide();
@@ -385,6 +386,7 @@
             success: function(data, statusText, response)
             {
               //console.log(data);
+              // TODO: feedback
               $('#create_modal').modal('hide');
 
               $('#calendar').fullCalendar('refetchEvents');
@@ -416,6 +418,7 @@
             success: function(data, statusText, response)
             {
               //console.log(data);
+              // TODO: feedback
               $('#create_modal').modal('hide');
 
               $('#calendar').fullCalendar('refetchEvents');
@@ -468,6 +471,7 @@
 
           //$('#start').val('');
           //$('#end').val('');
+          reset_modal();
 
           // the repeat fields are only for the create, the show might hide them
           $('#repeat').show();
@@ -557,7 +561,7 @@
         remove_index = data.findIndex( function(el){ if (el.name == 'patientSearch')   return el; } );
         if (remove_index > -1) data.splice(remove_index, 1);
 
-        remove_indexx = data.findIndex( function(el){ if (el.name == 'pid_radio')   return el; } );
+        remove_index = data.findIndex( function(el){ if (el.name == 'pid_radio')   return el; } );
         if (remove_index > -1) data.splice(remove_index, 1);
 
         console.log(data, $.param(data), $('#start').data('datetimepicker').date().toISOString());
