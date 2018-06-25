@@ -163,7 +163,7 @@ environments:
         dataSource:
             dbCreate: update
             #url: jdbc:postgres://${PROD_DB_USER}:${PROD_DB_PASS}@${PROD_DB_IP}:${PROD_DB_PORT}/${PROD_DB_NAME} #jdbc:postgresql://localhost:5432/notes
-            url: jdbc:mysql://localhost:3306/notes?autoReconnect=true&useSSL=false
+            url: jdbc:mysql://localhost:3306/notes?autoReconnect=true&useSSL=false&useTimezone=true&serverTimezone=UTC
             username: ${NOTES_DB_USER}
             password: ${NOTES_DB_PASS}
             properties:
@@ -201,7 +201,7 @@ environments:
             port: "443"
             path: "/" # should start and end with /
             token: ${NOTES_EHRSERVER_TOKEN}
-            use_cloud_backend: true
+            use_cloud_backend: false
 
 ---
 grails:
