@@ -158,7 +158,7 @@
                           $.each(data, function( index, patient ) {
                             console.log(patient);
                             $('#scheduledForLookupTable > tbody').append(
-                              '<tr><td>'+patient.name+'</td><td>'+patient.lastname+'</td><td>'+patient.dob+'</td><td>'+patient.sex+'</td><td><input type="radio" name="pid_radio" value="'+patient.id+'" required="true"/></td></tr>'
+                              '<tr><td>'+patient.name+'</td><td>'+patient.lastname+'</td><td>'+new Date(patient.dob).toLocaleDateString()+'</td><td>'+patient.sex+'</td><td><input type="radio" name="pid_radio" value="'+patient.id+'" required="true"/></td></tr>'
                             );
                           });
                         },
