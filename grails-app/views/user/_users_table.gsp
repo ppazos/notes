@@ -28,9 +28,11 @@
   </tbody>
 </table>
 
-<div class="pagination">
-  <g:paginate total="${userList.totalCount}" />
-</div>
+<g:if test="${userList.totalCount > params.max}">
+  <div class="pagination">
+    <g:paginate total="${userList.totalCount}" />
+  </div>
+</g:if>
 
 <script>
   $(document).ready(function() {

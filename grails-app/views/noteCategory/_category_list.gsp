@@ -21,6 +21,8 @@
   </tbody>
 </table>
 
-<div class="pagination">
-  <g:paginate total="${noteCategoryCount ?: 0}" />
-</div>
+<g:if test="${noteCategoryCount > params.max}">
+  <div class="pagination">
+    <g:paginate total="${noteCategoryCount ?: 0}" />
+  </div>
+</g:if>
