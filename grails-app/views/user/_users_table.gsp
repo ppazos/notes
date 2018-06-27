@@ -1,6 +1,4 @@
-<g:if test="${session.feedback}">
-  <div class="">${raw(session.feedback)}</div><br/>
-</g:if>
+<g:feedbackAlert clean="true" />
 
 <table class="table">
   <thead>

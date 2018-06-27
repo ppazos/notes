@@ -12,9 +12,11 @@
     if (parser.hostname != 'localhost' && !parser.hostname.startsWith('192') && loc.indexOf('http://')==0)
     {
       <%
+      def avoid_other_check = false
       // avoid doing 2 reloads, if not https and not session.tz, do reload once
       if (!session.tz)
       {
+        avoid_other_check = true
         // TODO: do it from form POST to avoid putting the tz in the URL
         println "window.location.href = loc.replace('http://','https://') +'?tz='+ client_timezone();"
       }
@@ -25,7 +27,7 @@
       %>
     }
     <%
-    if (!session.tz)
+    if (!avoid_other_check && !session.tz)
     {
       // TODO: do it from form POST to avoid putting the tz in the URL
       println "window.location.href = window.location.href +'?tz='+ client_timezone();"

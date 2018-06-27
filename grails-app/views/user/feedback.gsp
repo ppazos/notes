@@ -16,9 +16,7 @@
             <g:message code="feedback.card.title" />
           </div>
           <div class="card-body">
-            <g:if test="${session.feedback}">
-              <div class="login_message">${raw(session.feedback)}</div><br/>
-            </g:if>
+            <g:feedbackPlain />
             <div style="margin:0; padding:15px 0 0 0; text-align:center;">
               <g:link controller="login">
                 <g:message code="back.login.action"/>
