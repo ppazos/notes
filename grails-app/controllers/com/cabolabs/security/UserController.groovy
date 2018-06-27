@@ -48,7 +48,8 @@ class UserController {
       def ur = UserRole.create user, Role.findByAuthority('ROLE_CLIN'), true
       println ur.errors
 
-      // email
+      // Welcome email (TODO job)
+      /*
       def g = grailsApplication.mainContext.getBean('org.grails.plugins.web.taglib.ApplicationTagLib')
       def u = g.createLink(controller:'user', action:'reset', absolute:true, params:[token:user.resetPasswordToken])
       def s = message(code:'signup.subject')
@@ -62,6 +63,17 @@ class UserController {
             html b
          }
       }
+      */
+      def title   = g.message(code:'signup.email.title')
+      def preview = g.message(code:'signup.email.preview')
+      def salute  = g.message(code:'signup.email.salute', args:[user.name])
+      def content = g.message(code:'signup.email.message', args:[user.username])
+      def url     = g.createLink(controller:'user', action:'reset', absolute:true, params:[token:user.resetPasswordToken])
+      def actions = g.message(code:'signup.email.actions', args:[url])
+      def closing = g.message(code:'signup.email.closing')
+      def bye     = g.message(code:'signup.email.bye')
+
+      _sendMail(user.username, title, preview, salute, content, actions, closing, bye)
 
       session.feedback = message(code:'user.signup.done', args:[user.username])
       redirect action:'feedback'
@@ -191,6 +203,7 @@ class UserController {
         user.save(flush:true)
 
         // email
+        /*
         def g = grailsApplication.mainContext.getBean('org.grails.plugins.web.taglib.ApplicationTagLib')
         def u = g.createLink(controller:'user', action:'reset', absolute:true, params:[token:user.resetPasswordToken])
         def s = message(code:'forgot.subject')
@@ -203,6 +216,19 @@ class UserController {
                html b
             }
         }
+        */
+        // Forgot email (TODO job)
+        def title   = g.message(code:'forgot.email.title')
+        def preview = g.message(code:'forgot.email.preview')
+        def salute  = g.message(code:'forgot.email.salute', args:[user.name])
+        def content = g.message(code:'forgot.email.message', args:[user.username])
+        def url     = g.createLink(controller:'user', action:'reset', absolute:true, params:[token:user.resetPasswordToken])
+        def actions = g.message(code:'forgot.email.actions', args:[url])
+        def closing = g.message(code:'forgot.email.closing')
+        def bye     = g.message(code:'forgot.email.bye')
+
+        _sendMail(user.username, title, preview, salute, content, actions, closing, bye)
+
 
         session.feedback = message(code:'user.forgot.done', args:[user.username])
         redirect action:'feedback'
@@ -309,7 +335,6 @@ class UserController {
       _sendMail(user.username, title, preview, salute, content, actions, closing, bye)
 
       session.feedback = message(code:'user.register.done', args:[user.username])
-
       redirect action:'users_table'
    }
 

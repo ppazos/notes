@@ -135,7 +135,8 @@
 
         e.preventDefault();
 
-        if ( $(':input[name=_current_plan]').val() != $(':input[name=plan]').val() )
+        // if action is update and plan is changed, confirm plan change
+        if ($('[name=_action_update]', '#create_form').css('display') != 'none' && $(':input[name=_current_plan]').val() != $(':input[name=plan]').val() )
         {
           if (!confirm('${message(code:"user.update.confirm_plan_change")}'))
           {
