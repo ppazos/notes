@@ -130,8 +130,8 @@ dataSource:
     #https://github.com/hibernate/hibernate-orm/blob/master/hibernate-core/src/main/java/org/hibernate/dialect/MySQL57InnoDBDialect.java
     #dialect: org.hibernate.dialect.MySQL57InnoDBDialect
     dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-    username: "root"
-    password: "toor"
+    username: "user"
+    password: "user123!"
 
 environments:
     development:
